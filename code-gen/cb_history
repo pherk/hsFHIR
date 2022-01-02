@@ -1,0 +1,301 @@
+1 CREATE INDEX resid ON `nabu`(id);
+2 CREATE INDEX typeid ON `nabu`(resourceType,id);
+3 CREATE INDEX patient_name ON `nabu`(name.family, name.given) where resourceType='Patient';
+4 EXPLAIN SELECT * FROM `nabu` WHERE name.family='Vauseweh';
+5 EXPLAIN SELECT * FROM `nabu` WHERE family='Vauseweh';
+6 EXPLAIN SELECT * FROM `nabu` WHERE type='Patient' and family='Vauseweh';
+7 EXPLAIN SELECT * FROM `nabu` WHERE resourceType='Patient' and family='Vauseweh';
+8 EXPLAIN SELECT * FROM `nabu` WHERE resourceType='Patient' and name.family='Vauseweh';
+9 SELECT * FROM `nabu` WHERE resourceType='Patient' and name.family='Vauseweh';
+10 CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY n.family, n.given FOR n IN name WHEN n.use='official' END) where resourceType='Patient';
+11 CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.use='official' END) where resourceType='Patient';
+12 CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.'use'='official' END) where resourceType='Patient';
+13 CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.family='official' END) where resourceType='Patient';
+14 CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.`use`='official' END) where resourceType='Patient';
+15 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN SATISFIES (n.family='Vauseweh');
+16 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES (n.family='Vauseweh');
+17 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES (n.family='Vauseweh') END;
+18 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES (n.family='Vauseweh') AND n.`use`='official' END;
+19 SELECT * FROM `nabu` USE INDEX (patient_official_name) WHERE resourceType='Patient' and ANY n IN name SATISFIES (n.family='Vauseweh') AND n.`use`='official' END;
+20 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES [n.family, n.given] = ['Vauseweh','Nick']) AND n.`use`='official' END;
+21 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES [n.family, n.given] = ['Vauseweh','Nick'] AND n.`use`='official' END;
+22 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES [n.family, n.given] = ['Vauseweh',['Nick']] AND n.`use`='official' END;
+23 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES [n.family, n.given] like ['Vau%',['Nick']] AND n.`use`='official' END;
+24 CREATE INDEX patient_official_family ON `nabu`(ALL ARRAY [n.`use`, n.family] FOR n IN name END) where resourceType='Patient';
+25 CREATE INDEX patient_family ON `nabu`(ALL ARRAY [n.family] FOR n IN name END) where resourceType='Patient';
+26 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' AND n.`use`='official' END;
+27 SELECT * FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' END;
+28 CREATE INDEX patient_family ON `nabu`(DISTINCT ARRAY n.family FOR n IN name END) where resourceType='Patient';
+29 CREATE INDEX patient_given ON `nabu`(ALL ARRAY [n.given] FOR n IN name END) where resourceType='Patient';
+30 CREATE INDEX patient_birthDate ON `nabu`(ALL ARRAY [n.birthDate] FOR n IN name END) where resourceType='Patient';
+31 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' END;
+32 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' and ANY n IN name SATISFIES n.given like 'N%' END;
+33 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' END and ANY n IN name SATISFIES n.given like 'N%' END;
+34 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' END and ANY n IN name SATISFIES n.given = 'Nick' END;
+35 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' END and ANY n IN name SATISFIES n.given = ['Nick'] END;
+36 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY f IN name SATISFIES f.family like 'Vau%' END and ANY g IN name SATISFIES g.given = ['Nick'] END;
+37 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY f IN name SATISFIES f.family like 'Vau%' END and ANY g IN name SATISFIES g.given like ['N%'] END;
+38 CREATE INDEX patient_given ON `nabu`(DISTICT(ARRAY g FOR g IN name[0].given END) where resourceType='Patient';
+39 CREATE INDEX patient_given ON `nabu`(DISTICT(ARRAY g FOR g IN name[0].given END)) where resourceType='Patient';
+40 CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name[0].given END)) where resourceType='Patient';
+41 CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given END)) where resourceType='Patient';
+42 CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given END) WHEN name.`use`='official') where resourceType='Patient';
+43 CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official') END) where resourceType='Patient';
+44 CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official')) END where resourceType='Patient';
+45 CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official'END)) where resourceType='Patient';
+46 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN name SATISFIES g.given like ['N%'] END;
+47 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN name.given SATISFIES g ='Nick' END;
+48 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES (ANY g IN n.given SATISFIES g ='Nick' END);
+49 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES (ANY g IN n.given SATISFIES g ='Nick' END) END;
+50 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES (ANY g IN n.given SATISFIES g ='N%k' END) END;
+51 CREATE INDEX patient_given ON `nabu`(ALL DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official'END)) where resourceType='Patient';
+52 CREATE INDEX patient_given ON `nabu`(ALL TOKENS(name.given)) where resourceType='Patient';
+53 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name.given) SATISFIES g ='Nick' END;
+54 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name[0].given) SATISFIES g ='Nick' END;
+55 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name[name.`use`='official'].given) SATISFIES g ='Nick' END;
+56 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name[`use`='official'].given) SATISFIES g ='Nick' END;
+57 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name[name.`use`='official'].given) SATISFIES g ='Nick' END;
+58 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name['official' IN name.`use`].given) SATISFIES g ='Nick' END;
+59 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY g IN TOKENS(name[0].given) SATISFIES g ='Nick' END;
+60 CREATE INDEX `patient_family` ON `nabu`((ANY distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+61 CREATE INDEX `patient_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+62 CREATE INDEX `patient_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` when n.`use`='official' end))) WHERE (`resourceType` = "Patient")
+63 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY f IN name SATISFIES f.family like 'Vau%' END;
+64 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'Vau%' END;
+65 CREATE INDEX `patient_family` ON `nabu`((distinct (array [n.`use`, `n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+66 CREATE INDEX `patient_family` ON `nabu`((distinct (array [n.`use`, `n`.`family`] for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+67 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES [n.`use`, n.family] like ['official', 'Vau%'] END;
+68 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES [n.`use`, n.family] = ['official', 'Vauseweh'] END;
+69 CREATE INDEX `patient_family` ON `nabu`((distinct (array [`n`.`family`] for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+70 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family = 'Vauseweh' END;
+71 CREATE INDEX `patient_family` ON `nabu`((distinct (array `n`.`family` for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+72 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family = 'V%' END;
+73 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'V%' END;
+74 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family like 'V%' and n.`use`='official' END;
+75 CREATE INDEX `patient_birthDate` ON `nabu`(`birthDate`) WHERE (`resourceType` = "Patient")
+76 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and birthDate like '2000%';
+77 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and birthDate like '2001%';
+78 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and birthDate like '2000%';
+79 CREATE INDEX `patient_name` ON `nabu`(name) WHERE (`resourceType` = "Patient")
+80 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.given like 'N%' and n.`use`='official' END;
+81 CREATE INDEX `patient_name` ON `nabu`(distinct (array `n` for `n` in `name` end)) WHERE (`resourceType` = "Patient")
+82 SELECT id, text.div FROM `nabu` UNNEST name WHERE resourceType='Patient' and ANY n IN name SATISFIES n.given like 'N%' and n.`use`='official' END;
+83 SELECT id, text.div FROM `nabu` UNNEST name WHERE `nabu`.resourceType='Patient' and ANY n IN name SATISFIES n.given like 'N%' and n.`use`='official' END;
+84 SELECT * FROM `nabu` UNNEST name WHERE `nabu`.resourceType='Patient' and ANY n IN name SATISFIES n.given like 'N%' and n.`use`='official' END;
+85 SELECT * FROM `nabu` UNNEST name WHERE `nabu`.resourceType='Patient'
+86 CREATE INDEX `patient_name_given` ON `nabu`(distinct (array `n.given` for `n` in `name` end)) WHERE (`resourceType` = "Patient")
+87 SELECT * FROM `nabu` UNNEST name n WHERE `nabu`.resourceType='Patient' and n.given = 'Nick';
+88 SELECT * FROM `nabu` UNNEST name n WHERE resourceType='Patient' and n.given = 'Nick';
+89 SELECT * FROM `nabu` UNNEST name n WHERE n.given = 'Nick';
+90 SELECT * FROM `nabu` UNNEST name n WHERE n.given = 'Nick' `nabu`.resourceTye = 'Patient';
+91 SELECT * FROM `nabu` UNNEST name n WHERE n.given = 'Nick' and `nabu`.resourceTye = 'Patient';
+92 CREATE INDEX `patient_name_use` ON `nabu`(distinct (array `n.use` for `n` in `name` end)) WHERE (`resourceType` = "Patient")
+93 SELECT * FROM `nabu` UNNEST name n WHERE n.use = 'official' and `nabu`.resourceTye = 'Patient';
+94 SELECT * FROM `nabu` UNNEST name n WHERE n.`use` = 'official' and `nabu`.resourceTye = 'Patient';
+95 SELECT * FROM `nabu` UNNEST name n WHERE `nabu`.resourceTye = 'Patient' and n.`use` = 'official';
+96 CREATE INDEX `patient_name_use` ON `nabu`(distinct (array `n.use` for `n` in `name` end))
+97 SELECT * FROM `nabu` UNNEST name n WHERE n.`use` = 'official';
+98 CREATE INDEX `patient_name_use` ON `nabu`(distinct (array n.`use` for n in name end))
+99 SELECT nabu FROM `nabu` UNNEST name n WHERE n.`use` = 'official';
+100 SELECT nabu FROM `nabu` UNNEST name n WHERE n.`use` = 'official' and n.family like 'V%';
+101 SELECT nabu FROM `nabu` UNNEST name n WHERE n.`use` = 'official' and nabu.name.family like 'V%';
+102 SELECT nabu FROM `nabu` UNNEST name n WHERE n.`use` = 'official' and nabu.n.family like 'V%';
+103 SELECT nabu FROM `nabu` UNNEST name n WHERE n.`use` = 'official' and name.family like 'V%';
+104 SELECT nabu FROM `nabu` UNNEST name n WHERE n.`use` = 'official' and n.family like 'V%';
+105 CREATE INDEX `patient_name_family_use` ON `nabu`(distinct (array n.family for n in name when n.`use`= 'official' end))
+106 SELECT nabu FROM `nabu` UNNEST name n WHERE n.family like 'V%' and n.`use` = 'official' ;
+107 CREATE INDEX `patient_name_family_use` ON `nabu`(distinct (array n.family for n in name when n.`use`= 'official' end)) where resourceType = 'Patient';
+108 SELECT nabu FROM `nabu` UNNEST name n WHERE resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' ;
+109 SELECT nabu FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' ;
+110 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' ;
+111 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%';
+112 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.given = ['Nick'];
+113 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.given = ['Nic'];
+114 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and 'Nick' in tokens(n.given);
+115 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and 'Nic' in tokens(n.given);
+116 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and 'Nic%' in tokens(n.given);
+117 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and 'Nick' like tokens(n.given);
+118 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and any t in tokens(n.given) satisfies t = 'Nick' end;
+119 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and any t in tokens(n.given) satisfies t = 'Ni%' end;
+120 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and any t in tokens(n.given) satisfies t like 'Ni%' end;
+121 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Ni%' end;
+122 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Ni%' end;
+123 SELECT nabu FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Ni%' end;
+124 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Ni%' end;
+125 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Nix' end;
+126 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Nix' end and nabu.birthDate like '2000%';
+127 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Nix' end and nabu.birthDate like '200%';
+128 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Nix' end and nabu.birthDate like '20%';
+129 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Nix' end and nabu.birthDate like '%';
+130 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'Nix' end
+131 SELECT nabu.* FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'N%' end and nabu.birthDate like '2%';
+132 SELECT nabu.id, nabu.text.div FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'V%' and n.`use` = 'official' and any t in tokens(n.given) satisfies t like 'N%' end and nabu.birthDate like '2%';
+133 CREATE INDEX `typeid` ON `history`(`resourceType`,`id`)
+134 CREATE INDEX `patient_name_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+135 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family = 'Vauseweh' and n.`use`='official' END;
+136 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and ANY n IN name SATISFIES n.family = 'Vauseweh' and n.`use`='official' END AND active = 'true';
+137 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' and AND active = 'true' ANY n IN name SATISFIES n.family = 'Vauseweh' and n.`use`='official' END ;
+138 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = 'true' AND ANY n IN name SATISFIES n.family = 'Vauseweh' and n.`use`='official' END ;
+139 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND ANY n IN name SATISFIES n.family = 'Vauseweh' and n.`use`='official' END ;
+140 SELECT COUNT(*) FROM nabu WHERE active="true"
+141 CREATE INDEX `type_active` ON `nabu`(`resourceType`,`active`)
+142 CREATE INDEX `type_active` ON `nabu`(`resourceType`,`status`)
+143 CREATE INDEX `type_status` ON `nabu`(`resourceType`,`status`)
+144 CREATE INDEX `typeid` ON `nabu`(active) WHen `resourceType`='Patient;
+145 CREATE INDEX `patient_active` ON `nabu`(active) WHERE`resourceType`='Patient';
+146 CREATE INDEX `identifier_value` ON `nabu`((distinct (array (`i`.`value`) for `i` in `identifier` end)))
+147 CREATE INDEX `identifier_system_value` ON `nabu`((distinct (array (`i`.`system`,`i`.`value`) for `i` in `identifier` end)))
+148 CREATE INDEX `identifier_system_value` ON `nabu`((distinct (array (`i`.`system`, `i`.`value`) for `i` in `identifier` end)))
+149 CREATE INDEX `identifier_system` ON `nabu`((distinct (array (`i`.`system`) for `i` in `identifier` end)))
+150 CREATE INDEX `identifier_system_value` ON `nabu`((distinct (array {`i`.`system`, `i`.`value`} for `i` in `identifier` end)))
+151 SELECT COUNT(*) FROM nabu WHERE resourceType='Patient' and active="true"
+152 SELECT COUNT(*) FROM nabu WHERE resourceType='Patient' and active=true
+153 SELECT *FROM nabu WHERE resourceType='Patient' and active=true
+154 CREATE INDEX `coding_code` ON `nabu`((distinct (array (`c`.`code`) for `c` in `coding` end)))
+155 SELECT * FROM nabu WHERE UNNEST coding c WHERE c.code 'de-DE';
+156 SELECT * FROM nabu UNNEST coding c WHERE c.code 'de-DE';
+157 SELECT * FROM nabu UNNEST coding c WHERE c.code = 'de-DE';
+158 SELECT * FROM nabu UNNEST communication.language.coding c WHERE c.code = 'de-DE';
+159 CREATE INDEX `language_coding` ON `nabu`((distinct (array (`l`.`coding`) for `l` in `language` end)))
+160 CREATE INDEX `communication_language` ON `nabu`((distinct (array (`cc`.`language`) for `cc` in `communication` end)))
+161 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.code = 'de-DE';
+162 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.code = 'de-DD';
+163 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.code = 'de-DE' and c.system = 'urn:ietf:bcp:47';
+164 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.code = 'de-DE' and c.`system` = 'urn:ietf:bcp:47' END;
+165 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.code = 'de-DE' and c.`system` = 'urn:ietf:bcp:47';
+166 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.`system` = 'urn:ietf:bcp:47';
+167 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.`display` = 'Deutsch';
+168 SELECT nabu.* FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.`display` = 'Deutsch';
+169 CREATE INDEX `type` ON `nabu`(`resourceType`)
+170 CREATE INDEX `patient_id_text` ON `nabu`(id, text.div)
+171 CREATE INDEX `patient_id_text` ON `nabu`(id, text.div) where resourceType = 'Patient';
+172 CREATE INDEX `patient_text_id` ON `nabu`(`text`.`div`, 'id') WHERE (`resourceType` = "Patient" and active = true)
+173 CREATE INDEX `patient_text_id` ON `nabu`(`text`.`div`, `id`) WHERE (`resourceType` = "Patient" and active = true)
+174 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true text.div = 'Vauseweh ;
+175 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and text.div = 'Vauseweh ;
+176 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and text.div = 'Vauseweh' ;
+177 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and text.div like 'Vauseweh' ;
+178 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and text.div like 'Vauseweh%' ;
+179 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and text.div like 'Vauseweh%' and id like '%';
+180 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and id = 'p-21666';
+181 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and id like '%';
+182 SELECT id, text.div FROM `nabu` WHERE resourceType='Patient' AND active = true and text.div like '%2000%';
+183 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND restriction.period.`end` < '2000'
+184 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task'
+185 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND restriction.period.`end` < '2017'
+186 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND restriction.period.`start` < '2017'
+187 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND (is_missing(restriction.period.`start`) OR restriction.period.`start`) < '2017'
+188 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND (is_missing(restriction.period.`start`) OR restriction.period.`start` < '2017')
+189 CREATE INDEX `subject` ON `nabu`(`subject.reference`)
+190 CREATE INDEX `type_status` ON `nabu`(`resourceType`,`status`)
+191 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND `subject` = 'nabu/patients/p-21666';
+192 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND `subject.reference` = 'nabu/patients/p-21666';
+193 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND subject.reference = 'nabu/patients/p-21666';
+194 CREATE INDEX `type_subject` ON `nabu`(`resourceType`,`subject.reference`)
+195 CREATE INDEX `task_for` ON `nabu`(`for.reference`) where resourceType = 'Task';
+196 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND `restriction.period`.`end` < '2017'
+197 SELECT `nabu`.* FROM `nabu` WHERE `resourceType` = 'Task' AND `restriction`.`period`.`end` < '2017'
+198 SELECT count(`nabu`.*) FROM `nabu`
+199 SELECT count(*) FROM `nabu`
+200 SELECT count(*) FROM `nabu` where resourceType='Patient'
+201 SELECT count(*) FROM `nabu` where resourceType='Encounter'
+202 SELECT count(*) FROM `nabu` where resourceType='Observation'
+203 SELECT count(*) FROM `nabu` where subject.reference='urn:uuid:2b0f9903-1529-4449-b8aa-8e87d03a9014'
+204 SELECT count(*) FROM `nabu` where resourceType='Observation' and subject.reference='urn:uuid:2b0f9903-1529-4449-b8aa-8e87d03a9014'
+205 SELECT count(*) FROM `nabu` where subject.reference='urn:uuid:2b0f9903-1529-4449-b8aa-8e87d03a9014' and resourceType='Observation'
+206 CREATE INDEX `type_subject` ON `nabu`(`subject.reference`)
+207 CREATE INDEX `subject` ON `nabu`(`subject.reference`)
+208 SELECT count(*) FROM `nabu` where subject.reference='urn:uuid:2b0f9903-1529-4449-b8aa-8e87d03a9014'
+209 CREATE INDEX `subject` ON `nabu`(subject.reference)
+210
+211 SELECT count(*) FROM `nabu` where subject.reference='urn:uuid:2b0f9903-1529-4449-b8aa-8e87d03a9014' and resourceType='Observation'
+212 CREATE INDEX `type_subject` ON `nabu`(`resourceType`,`subject`.reference)
+213 SELECT nabu FROM `nabu` UNNEST name n WHERE nabu.resourceType = 'Patient' and n.family like 'L%' and any t in tokens(n.given) satisfies t like 'A%' end;
+214 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c WHERE nabu.resourceType='Patient' and c.code = 'en-US';
+215 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c UNNEST name n WHERE nabu.resourceType='Patient' and name.family='Larson43' and c.code = 'en-US';
+216 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c UNNEST name n WHERE nabu.resourceType='Patient' and n.family='Larson43' and c.code = 'en-US';
+217 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c UNNEST nabu.name n WHERE nabu.resourceType='Patient' and n.family='Larson43' and c.code = 'en-US'; 
+218 SELECT * FROM nabu UNNEST communication cc UNNEST cc.language.coding c UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and c.code = 'en-US';
+219 CREATE INDEX `maritalStatus_coding` ON `nabu`((distinct (array (`m`.`coding`) for `m` in `maritalStatus` end)))
+220 SELECT * FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and c.code = 'S';
+221 SELECT * FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and m.code = 'S';
+222 SELECT * FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and m.code = 'S';
+223 SELECT `nabu`.* FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and m.code = 'S';
+224 SELECT `nabu`.* FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and m.code = 'D';
+225 SELECT `nabu`.* FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and m.code = 'M';
+226 SELECT `nabu`.* FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and m.code = 'L';
+227 SELECT `nabu`.maritalStatus.coding.code FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient'
+228 SELECT `nabu`.maritalStatus.coding FROM nabu UNNEST maritalStatus.coding m UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient'
+229 SELECT `nabu`.id FROM nabu WHERE `nabu`.`resourceType` = 'Patient'
+230 CREATE INDEX `resourceType` ON `nabu`(`resourceType`)
+231 CREATE INDEX `type_coding` ON `nabu`((distinct (array (`t`.`coding`) for `t` in `type` end)))
+232 SELECT `nabu`.identifier FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43'
+233 SELECT `nabu`.identifier FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt='MR'
+234 SELECT `nabu`.identifier FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+235 SELECT `nabu`.idt FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+236 SELECT `nabu`.id FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+237 SELECT id FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+238 SELECT idt FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+239 SELECT id FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+240 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and idt.code='MR'
+241 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.value='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.code='MR'
+242 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.code='MR'
+243 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.code='SS'
+244 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.code='MR'
+245 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='999-36-6953' and idt.code='MR'
+246 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='999-36-6953' and idt.code='SS'
+247 SELECT `nabu`.* FROM `nabu` UNNEST `nabu`.identifier AS id WHERE `nabu`.`resourceType` = 'Patient' AND `id`.`value` = '446053' AND `id`.`system` = 'http://uk-koeln.de/#orbis-pnr';
+248 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.code='MR'
+249 SELECT `nabu`.* FROM `nabu` UNNEST `nabu`.identifier AS i WHERE `nabu`.`resourceType` = 'Patient' AND `i`.`value` = '446053' AND `i`.`system` = 'http://uk-koeln.de/#orbis-pnr';
+250 SELECT `nabu`.* FROM `nabu` UNNEST `nabu`.identifier AS id WHERE `nabu`.`resourceType` = 'Patient' AND `id`.`value` = '446053' AND `id`.`system` = 'http://uk-koeln.de/#orbis-pnr';
+251 SELECT `nabu`.* FROM `nabu` UNNEST `nabu`.identifier AS i WHERE `nabu`.`resourceType` = 'Patient' AND `i`.`value` = '446053' AND `i`.`system` = 'http://uk-koeln.de/#orbis-pnr';
+252 SELECT distinct(`nabu`.resourceType) FROM `nabu`
+253 SELECT resourceType, count(*) FROM `nabu` group by resourceType
+254 SELECT nabu.resourceType, count(*) FROM `nabu` group by nabu.resourceType
+255 SELECT `nabu`.`resourceType`, count(*) FROM `nabu` group by `nabu .`resourceType`
+256 SELECT `nabu`.`resourceType`, count(*) FROM `nabu` group by `nabu` .`resourceType`
+257 SELECT `nabu`.`resourceType` FROM `nabu` group by `nabu` .`resourceType`
+258 SELECT `nabu`.`resourceType` FROM `nabu` where `nabu` .`resourceType` = 'Patient';
+259 SELECT `nabu`.`resourceType` FROM `nabu` group by resourceType;
+260 SELECT `nabu`.`resourceType` FROM `nabu` where resourceType is_not_missing group by resourceType;
+261 SELECT `nabu`.`resourceType` FROM `nabu` where resourceType is not missing group by resourceType;
+262 SELECT `nabu`.`resourceType`,count(*) FROM `nabu` where resourceType is not missing group by resourceType;
+263 SELECT count(*) FROM `nabu` where resourceType='Patient' AND gender='female';
+264 SELECT * FROM `nabu` where resourceType='Patient' AND gender='female';
+265 SELECT * FROM `nabu` where resourceType='Patient';
+266 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and id.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and idt.code='MR'
+267 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family='Larson43' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and idt.code='MR'
+268 SELECT nabu.* FROM nabu UNNEST identifier id UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and id.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and idt.code='MR'
+269 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST id.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and i.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and idt.code='MR'
+270 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding idt UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and i.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and idt.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and idt.code='MR'
+271 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and i.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and idt.code='MR'
+272 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and i.`value`='1cdc7796-ec18-4e93-8cb5-59a9eb134f2f' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR'
+273 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR'
+274 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' limit 1
+275 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' limit 10
+276 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' limit 100
+277 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' limit 1000
+278 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' limit 10
+279 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' ORDER BY n.family LIMIT 10
+280 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and t.`system`='http://terminology.hl7.org/CodeSystem/v2-0203' and t.code='MR' ORDER BY n.family DESC LIMIT 10
+281 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Ab%' ORDER BY n.family DESC LIMIT 10
+282 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Abb%' ORDER BY n.family DESC LIMIT 10
+283 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Abbo%' ORDER BY n.family DESC LIMIT 10
+284 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Abb%' ORDER BY n.family DESC LIMIT 10
+285 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Ab%' ORDER BY n.family DESC LIMIT 10
+286 SELECT nabu.* FROM nabu UNNEST identifier i UNNEST i.type.coding t UNNEST nabu.name na WHERE `nabu`.`resourceType` = 'Patient' and na.family LIKE 'Ab%' ORDER BY na.family DESC LIMIT 10
+287 SELECT nabu.* FROM nabu UNNEST nabu.name na WHERE `nabu`.`resourceType` = 'Patient' and na.family LIKE 'Ab%'
+288 SELECT nabu.* FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Ab%'
+289 SELECT nabu.* FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family LIKE 'Abbott774%'
+290 SELECT nabu.* FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and n.family = 'Abbott774'
+291 SELECT nabu.* FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate = '2002-04-04'
+292 SELECT nabu.* FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate = '2002-04-03'
+293 SELECT resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate = '2002-04-03'
+294 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate = '2002-04-03'
+295 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate = '2002-04-04'
+296 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate LIKE '2002%'
+297 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate LIKE '2002%' ORDER BY nabu.birthDate
+298 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate LIKE '2002%'
+299 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate LIKE '2002%' ORDER BY nabu.birthDate DESC
+300 SELECT nabu.resourceType,n.family FROM nabu UNNEST nabu.name n WHERE `nabu`.`resourceType` = 'Patient' and nabu.birthDate LIKE '2002%' ORDER BY nabu.birthDate ASC
+

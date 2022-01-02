@@ -1,0 +1,8 @@
+.stack-work/
+archives/
+*~
+*.tgz
+*.tuc
+*.log
+*.bak
+*.swp

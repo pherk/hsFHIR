@@ -1,0 +1,55 @@
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/10.yaml
+
+# User packages to be built.
+# Various formats can be used as shown in the example below.
+#
+packages:
+  - .
+#  - ../hasFHIR
+# - some-directory
+# - https://example.com/foo/bar/baz-0.0.2.tar.gz
+#   subdirs:
+#   - auto-update
+#   - wai
+# Dependency packages to be pulled from upstream that are not in the resolver.
+# These entries can reference officially published versions as well as
+# forks / in-progress versions pinned to a git hash. For example:
+#
+extra-deps:
+        #  - bytestring-encoding-0.1.1.0@sha256:1c3b97eb6345fd7153006211c8272215cd78bb0cf440c41185290822f1e3f2c2,1738
+  - c2hs-extra-0.1.0.1@sha256:d1a3395cdad371c97351e2548676b054ed32d85a4472ec2e5bcc92c2450d8e17,901
+  - json-0.10@sha256:d9fc6b07ce92b8894825a17d2cf14799856767eb30c8bf55962baa579207d799,3210
+  - git: https://github.com/pherk/couchbase-simple.git
+    commit : c12fdfc77c0c86e08033bd2d4b8f89743169c6ea
+    #  - git: https://github.com/pherk/hasFHIR.git
+    #    commit: 68fac3bd0e385b489772a36a44d16477f65d5345 
+  - servant-xml-1.0.1.4@sha256:6c9f2986ac42e72fe24b794c660763a1966a18d696b34cd4f4ed15165edd4aa0,851
+  - xmlbf-0.6.1@sha256:57867fcb39e0514d17b3328ff5de8d241a18482fc89bb742d9ed820a6a2a5187,1540
+  - xmlbf-xeno-0.2@sha256:39f70fced6052524c290cf595f114661c721452e65fc3e0953a44e7682a6a6b0,950
+  - iso8601-duration-0.1.1.0@sha256:0e9e7531e71b693c20115198186a0280aa3631dc29da226e84e55f0984bec1af,2210
+
+
+# Override default flag values for local packages and extra-deps
+# flags: {}
+
+# Extra package databases containing global packages
+# extra-package-dbs: []
+
+# Control whether we use the GHC we find on the path
+# system-ghc: true
+#
+# Require a specific version of stack, using version ranges
+# require-stack-version: -any # Default
+# require-stack-version: ">=2.5"
+#
+# Override the architecture used by stack, especially useful on Windows
+# arch: i386
+# arch: x86_64
+#
+# Extra directories used by stack for building
+# extra-include-dirs: [/path/to/dir]
+# extra-lib-dirs: [/path/to/dir]
+#
+# Allow a newer minor version of GHC than the snapshot specifies
+# compiler-check: newer-minor

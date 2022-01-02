@@ -1,0 +1,1868 @@
+scVersion : "v4.0.1"
+scStatus : "R4"
+scReservedKeys : 
+    "_id"            : {rkKeyType : Param,   rkDataType : Token,   rkStatus : full}
+    "_lastUpdated"   : {rkKeyType : Param,   rkDataType : Date,    rkStatus : full}
+    "_tag"           : {rkKeyType : Param,   rkDataType : Token,   rkStatus : full}
+    "_profile"       : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_source"        : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_security"      : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_text"          : {rkKeyType : Param,   rkDataType : String,  rkStatus : nyi}
+    "_content"       : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_count"         : {rkKeyType : Result,  rkDataType : Number,  rkStatus : full}
+    "_format"        : {rkKeyType : Control, rkDataType : Token,   rkStatus : full}
+    "_include"       : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_revinclude"    : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_sort"          : {rkKeyType : Control, rkDataType : Token,   rkStatus : full}
+    "_summary"       : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_contained"     : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_containedType" : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_pretty"        : {rkKeyType : Result,  rkDataType : Boolean, rkStatus : nyi}
+    "_total"         : {rkKeyType : Result,  rkDataType : Token,   rkStatus : nyi} #-- none, estimate, accurate 
+    "page"           : {rkKeyType : Result,  rkDataType : Number,  rkStatus : full}
+    "_elements"      : {rkKeyType : Elements, rkDataType : Token,   rkStatus : full}
+    "_list"          : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi}
+    "_type"          : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi}
+    "_filter"        : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi}
+    "_query"         : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi} #-- ??
+scModifierRestrictions :
+    "missing"    : [Boolean,Date,Number,Quantity,Reference,String,Token,Uri]
+    "exact"      : [String]
+    "contains"   : [String]
+    "starts-with": [String]      # non-standard
+    "text"       : [Token]
+    "text"       : [Token]
+    "in"         : [Token]
+    "below"      : [Token, Reference, Uri]
+    "above"      : [Token, Reference, Uri]
+    "not-in"     : [Token]
+    "text"       : [Token]
+    "type"       : [Reference]   # Resource, Identifier
+scPrefixRestrictions :
+    "eq"         : [Date,Number,Quantity]
+    "ne"         : [Date,Number,Quantity]
+    "lt"         : [Date,Number,Quantity]
+    "gt"         : [Date,Number,Quantity]
+    "le"         : [Date,Number,Quantity]
+    "ge"         : [Date,Number,Quantity]
+    "eb"         : [Date,Number,Quantity]
+    "sa"         : [Date,Number,Quantity]
+    "ap"         : [Date,Number,Quantity]
+scExpandKeys :
+    - "filter"
+    - "date"
+    - "offset"
+    - "count"
+    - "includeDesignations"
+    - "designation"
+    - "includeDefinition"
+    - "activeOnly"
+    - "excludeNested"
+    - "excludeNotForUI"
+    - "excludePostCoordinated"
+    - "displayLanguage"
+    - "exclude-system"
+    - "system-version"
+    - "check-system-version"
+    - "force-system-version"
+scCountDefault : 25
+scCountMaximum : 1000
+scResources :
+  "Any" : 
+     riStatus : "N"
+     riSupport : true
+     riQuery :
+       "_id" :
+                spiResourceType : Id
+                spiParamType : String
+                spiPath : "id"
+                spiIndexType : "simple"
+       "_lastUpdated" :
+                spiResourceType : Date
+                spiParamType : Date
+                spiPath : "meta/lastUpdated"
+                spiIndexType : "simple"
+       "_profile" :
+                spiResourceType : Uri
+                spiParamType : String
+                spiPath : "meta/profile"
+                spiIndexType : "array"
+       "_source" :
+                spiResourceType : Uri
+                spiParamType : String
+                spiPath : "meta/source"
+                spiIndexType : "simple"
+       "_security" :
+                spiResourceType : Coding
+                spiParamType : Token
+                spiPath : "meta/security"
+                spiIndexType : "array"
+       "_tag" :
+                spiResourceType : Coding
+                spiParamType : Token
+                spiPath : "meta/tag"
+                spiIndexType : "array"
+       "_text" :
+                spiResourceType : String
+                spiParamType : String
+                spiPath : "text"
+                spiIndexType : "simple"
+       "_content" :
+                spiResourceType : String
+                spiParamType : String
+                spiIndexType : "simple"
+       "_query" :
+                spiResourceType : Token
+                spiParamType : String
+                spiIndexType : "simple"
+     riMandatory : [] 
+  Account :
+     riStatus : "2"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  ActivityDefinition :
+     riStatus : "2"
+     riSupport : true
+     riQuery : 
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [status] 
+  AdverseEvent :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  AllergyIntolerance :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Appointment :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  AppointmentResponse :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  AuditEvent :
+     riStatus : "3"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  Basic :
+     riStatus : "1"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Binary :
+     riStatus : "n"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  BiologicallyDerivedProduct :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  BodyStructure :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Bundle :
+     riStatus : "n"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  CapabilityStatement :
+     riStatus : "n"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  CarePlan :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [status, intent, subject ] 
+  CareTeam :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [] 
+  CatalogEntry :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ChargeItem :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ChargeItemDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Claim :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ClaimResponse :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ClinicalImpression :
+     riStatus : "0"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ <<"status">>, <<"subject">> ]
+  CodeSystem :
+     riStatus : "n"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [ <<"content">>, <<"status">> ]
+  Communication :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ status ] 
+  CommunicationRequest :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  CompartmentDefinition :
+     riStatus : "1"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  Composition :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ <<"status">>, <<"type">>,  <<"date">>,  <<"author">>, <<"title">> ]
+  ConceptMap :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Condition :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ subject ] 
+  Consent :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ <<"status">>, <<"scope">>, <<"category">> ]
+  Contract :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Coverage :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  CoverageEligibilityRequest :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  CoverageEligibilityResponse :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DetectedIssue :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Device :
+     riStatus : "0"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DeviceDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DeviceMetric :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DeviceRequest :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DeviceUseStatement :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DiagnosticReport :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DocumentManifest :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  DocumentReference :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  EffectEvidenceSynthesis :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Encounter :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+        "date" :
+            spiResourceType : Period
+            spiParamType : Date
+            spiPath : "period"
+            spiIndexType : "simple"
+        "participant" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "participant/individual"
+            spiIndexType : "array"
+        "participant-type" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "participant/type"
+            spiIndexType : "array/array"
+        "class" :
+            spiResourceType : Coding
+            spiParamType : Token
+            spiPath : "class"
+            spiIndexType : "simple"
+        "location-period" :
+            spiResourceType : Period
+            spiParamType : Date
+            spiPath : "location/period"
+            spiIndexType : "array/simple"
+        "reason-code" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "reasonCode"
+            spiIndexType : "array/cc"
+        "service-type" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "serviceType"
+            spiIndexType : "cc"
+        "type" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "type"
+            spiIndexType : "array/cc"
+     riMandatory : [ status, class ] 
+  Endpoint :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  EnrollmentRequest :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  EnrollmentResponse :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  EpisodeOfCare :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ <<"status">>, <<"patient">> ]
+  EventDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Evidence :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  EvidenceVariable :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ExampleScenario :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ExplanationOfBenefit :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  FamilyMemberHistory :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Flag :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Goal :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+        "lifecycle-status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ <<"lifecycleStatus">>, <<"description">>, <<"subject">> ]
+  GraphDefinition :
+     riStatus : "1"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  Group :
+     riStatus : "1"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [ <<"type">>, <<"actual">> ]
+  GuidanceResponse :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  HealthcareService :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ImagingStudy :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Immunization :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ImmunizationEvaluation :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ImmunizationRecommendation :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ImplementationGuide :
+     riStatus : "1"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  InsurancePlan :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Invoice :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Library :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Linkage :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  List :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Location :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Measure :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MeasureReport :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Media :
+     riStatus : "1"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Medication :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicationAdministration :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicationDispense :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicationKnowledge :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MedicationRequest :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicationStatement :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicinalProduct :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicinalProductAuthorization :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicinalProductContraindication :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MedicinalProductIndication :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MedicinalProductIngredient :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicinalProductInteraction :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MedicinalProductManufactured :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MedicinalProductPackaged :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicinalProductPharmaceutical :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MedicinalProductUndesirableEffect :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MessageDefinition :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  MessageHeader :
+     riStatus : "4"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  MolecularSequence :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  NamingSystem :
+     riStatus : "1"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  NutritionOrder :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Observation :
+     riStatus : "n"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [<<"status">>, <<"code">> ]
+  ObservationDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : []
+  OperationDefinition :
+     riStatus : "n"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  OperationOutcome :
+     riStatus : "n"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  Order :
+     riStatus : "a"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [<<"status">>, <<"subject">>]
+  Organization :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  OrganizationAffiliation :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Parameters :
+     riStatus : "n"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  Patient :
+      riStatus : "n"
+      riSupport : true
+      riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "active" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "active"
+            spiIndexType : "simple"
+        "birthdate" :
+            spiResourceType : Date
+            spiParamType : Date
+            spiPath : "birthDate"
+            spiIndexType : "simple"
+        "family" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/family"
+            spiIndexType : "array/simple"
+        "given" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/given"
+            spiIndexType : "array/array"
+        "name-use" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "name/use"
+            spiIndexType : "array/simple"
+        "gender" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "gender"
+            spiIndexType : "simple"
+#       "marital-status" :
+#           spiResourceType : Code
+#           spiParamType : Token
+#           spiPath : "maritalStatus"
+#           spiIndexType : "cc"
+        "language" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "communication/language"
+            spiIndexType : "array/cc"
+        "address-city" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/city"
+            spiIndexType : "array/simple"
+        "address-postalcode" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/postalCode"
+            spiIndexType : "array/simple"
+        "address-use" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "address/use"
+            spiIndexType : "array/simple"
+        "email" :
+            spiResourceType : String
+            spiParamType : String 
+            spiPath : "telecom[system='email']/value"
+            spiIndexType : "array/simple"
+        "phone" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom[system='phone']/value"
+            spiIndexType : "array/simple"
+      riMandatory : []
+  PaymentNotice :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  PaymentReconciliation :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Person :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  PlanDefinition :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [status] 
+  Practitioner :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "active" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "active"
+            spiIndexType : "simple"
+        "birthdate" :
+            spiResourceType : Date
+            spiParamType : Date
+            spiPath : "birthDate"
+            spiIndexType : "simple"
+        "family" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/family"
+            spiIndexType : "array/simple"
+        "given" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/given"
+            spiIndexType : "array/array"
+        "name-use" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "name/use"
+            spiIndexType : "array/simple"
+        "gender" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "gender"
+            spiIndexType : "simple"
+        "communication" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "communication/language"
+            spiIndexType : "array/cc"
+        "address-city" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/city"
+            spiIndexType : "array/simple"
+        "address-postalcode" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/postalCode"
+            spiIndexType : "array/simple"
+        "address-use" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "address/use"
+            spiIndexType : "array/simple"
+        "email" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "telecom[system='email']/value"
+            spiIndexType : "array/simple"
+        "phone" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom[system='phone']/value"
+            spiIndexType : "array/simple"
+     riMandatory : [] 
+  PractitionerRole :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+        "active" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "active"
+            spiIndexType : "simple"
+        "date" :
+            spiResourceType : Date
+            spiParamType : Date
+            spiPath : "period/start|end"
+            spiIndexType : "simple"
+        "email" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "telecom[system='email']/value"
+            spiIndexType : "array/simple"
+        "phone" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom[system='phone']/value"
+            spiIndexType : "array/simple"
+        "practitioner" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "practitioner"
+            spiIndexType : "simple"
+        "organization" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "organization"
+            spiIndexType : "simple"
+        "service" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "healthcareService"
+            spiIndexType : "simple"
+        "endpoint" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "endpoint"
+            spiIndexType : "simple"
+        "location" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "location"
+            spiIndexType : "simple"
+        "telecom" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom/value"
+            spiIndexType : "array/simple"
+        "role" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "code"
+            spiIndexType : "array/cc"
+        "speciality" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "speciality"
+            spiIndexType : "array/cc"
+     riMandatory : [] 
+  Procedure :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [<<"status">>, <<"subject">>]
+  Provenance :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [ <<"target">>, <<"recorded">>, <<"agent">>]
+  Questionnaire :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [status] 
+  QuestionnaireResponse :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [status] 
+  RelatedPerson :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  RequestGroup :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+     riMandatory : [status, intent] 
+  ResearchDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ResearchElementDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ResearchStudy :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ResearchSubject :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  RiskAssessment :
+     riStatus : "1"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  RiskEvidenceSynthesis :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Schedule :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SearchParameter :
+     riStatus : "3"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  ServiceRequest :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+     riMandatory : [] 
+  Slot :
+     riStatus : "3"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Specimen :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SpecimenDefinition :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  StructureDefinition :
+     riStatus : "n"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  StructureMap :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Subscription :
+     riStatus : "3"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  Substance :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SubstanceNucleicAcid :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : []
+  SubstancePolymer :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SubstanceProtein:
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : []
+  SubstanceReferenceInformation :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SubstanceSourceMaterial :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : []
+  SubstanceSpecification :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SupplyDelivery :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  SupplyRequest :
+     riStatus : "1"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  Task :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "code" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "code"
+            spiIndexType : "cc"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "for"
+            spiIndexType : "simple"
+        "owner" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "owner"
+            spiIndexType : "simple"
+        "recipient" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "restriction/recipient"
+            spiIndexType : "array"
+        "recipient-date" :
+            spiResourceType : Period
+            spiParamType : Date
+            spiPath : "restriction/period"
+            spiIndexType : "array"
+        "requester" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "requester"
+            spiIndexType : "simple"
+     riMandatory : [status] 
+  TerminologyCapabilities :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  TestReport :
+     riStatus : "0"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  TestScript :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  ValueSet :
+     riStatus : "n"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [ status ] 
+  VerificationResult :
+     riStatus : "0"
+     riSupport : false
+     riQuery : {}
+     riMandatory : [] 
+  VisionPrescription :
+     riStatus : "2"
+     riSupport : false
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 

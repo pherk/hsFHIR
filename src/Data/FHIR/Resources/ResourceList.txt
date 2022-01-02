@@ -1,0 +1,360 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TypeOperators     #-}
+
+module Data.FHIR.Resources.ResourceContainer where
+
+import Data.Aeson  
+import Data.Aeson.Types hiding (parseJSON)
+import GHC.TypeLits
+
+import RIO
+import qualified RIO.Text as T
+import qualified RIO.Vector as V
+import qualified RIO.HashMap as HM
+
+import Data.FHIR.Datatypes
+import Data.FHIR.Resources.ActivityDefinition
+import Data.FHIR.Resources.Binary
+import Data.FHIR.Resources.CapabilityStatement
+import Data.FHIR.Resources.Encounter
+import Data.FHIR.Resources.OperationOutcome
+import Data.FHIR.Resources.Patient
+import qualified Xmlbf as Xmlbf
+ 
+
+type ResourceContainer = DomainResourceC
+
+data DomainResourceC = 
+--  = AccountR Account
+  = ActivityDefinitionDR ActivityDefinition
+--  | AdverseEventDR AdverseEvent
+--  | AllergyIntoleranceDR AllergyIntolerance
+--  | AppointmentDR Appointment
+--  | AppointmentResponseDR AppointmentResponse
+--  | AuditEventDR AuditEvent
+--  | BasicDR Basic
+  | BinaryDR Binary
+--  | BiologicallyDerivedProductDR BiologicallyDerivedProduct
+--  | BodyStructureDR BodyStructure
+  | CapabilityStatementDR CapabilityStatement
+--  | CarePlanDR CarePlan
+--  | CareTeamDR CareTeam
+--  | CatalogEntryDR CatalogEntry
+--  | ChargeItemDR ChargeItem
+--  | ChargeItemDefinitionDR ChargeItemDefinition
+--  | ClaimDR Claim
+--  | ClaimResponseDR ClaimResponse
+--  | ClinicalImpressionDR ClinicalImpression
+--  | CodeSystemDR CodeSystem
+--  | CommunicationDR Communication
+--  | CommunicationRequestDR CommunicationRequest
+--  | CompartmentDefinitionDR CompartmentDefinition
+--  | CompositionDR Composition
+--  | ConceptMapDR ConceptMap
+--  | ConditionDR Condition
+--  | ConsentDR Consent
+--  | ContractDR Contract
+--  | CoverageDR Coverage
+--  | CoverageEligibilityRequestDR CoverageEligibilityRequest
+--  | CoverageEligibilityResponseDR CoverageEligibilityResponse
+--  | DetectedIssueDR DetectedIssue
+--  | DeviceDR Device
+--  | DeviceDefinitionDR DeviceDefinition
+--  | DeviceMetricDR DeviceMetric
+--  | DeviceRequestDR DeviceRequest
+--  | DeviceUseStatementDR DeviceUseStatement
+--  | DiagnosticReportDR DiagnosticReport
+--  | DocumentManifestDR DocumentManifest
+--  | DocumentReferenceDR DocumentReference
+--  | EffectEvidenceSynthesisDR EffectEvidenceSynthesis
+  | EncounterDR Encounter
+--  | EndpointDR Endpoint
+--  | EnrollmentRequestDR EnrollmentRequest
+--  | EnrollmentResponseDR EnrollmentResponse
+--  | EpisodeOfCareDR EpisodeOfCare
+--  | EventDefinitionDR EventDefinition
+--  | EvidenceDR Evidence
+--  | EvidenceVariableDR EvidenceVariable
+--  | ExampleScenarioDR ExampleScenario
+--  | ExplanationOfBenefitDR ExplanationOfBenefit
+--  | FamilyMemberHistoryDR FamilyMemberHistory
+--  | FlagDR Flag
+--  | GoalDR Goal
+--  | GraphDefinitionDR GraphDefinition
+--  | GroupDR Group
+--  | GuidanceResponseDR GuidanceResponse
+--  | HealthcareServiceDR HealthcareService
+--  | ImagingStudyDR ImagingStudy
+--  | ImmunizationDR Immunization
+--  | ImmunizationEvaluationDR ImmunizationEvaluation
+--  | ImmunizationRecommendationDR ImmunizationRecommendation
+--  | ImplementationGuideDR ImplementationGuide
+--  | InsurancePlanDR InsurancePlan
+--  | InvoiceDR Invoice
+--  | LibraryDR Library
+--  | LinkageDR Linkage
+--  | ListDR List
+--  | LocationDR Location
+--  | MeasureDR Measure
+--  | MeasureReportDR MeasureReport
+--  | MediaDR Media
+--  | MedicationDR Medication
+--  | MedicationAdministrationDR MedicationAdministration
+--  | MedicationDispenseDR MedicationDispense
+--  | MedicationKnowledgeDR MedicationKnowledge
+--  | MedicationRequestDR MedicationRequest
+--  | MedicationStatementDR MedicationStatement
+--  | MedicinalProductDR MedicinalProduct
+--  | MedicinalProductAuthorizationDR MedicinalProductAuthorization
+--  | MedicinalProductContraindicationDR MedicinalProductContraindication
+--  | MedicinalProductIndicationDR MedicinalProductIndication
+--  | MedicinalProductIngredientDR MedicinalProductIngredient
+--  | MedicinalProductInteractionDR MedicinalProductInteraction
+--  | MedicinalProductManufacturedDR MedicinalProductManufactured
+--  | MedicinalProductPackagedDR MedicinalProductPackaged
+--  | MedicinalProductPharmaceuticalDR MedicinalProductPharmaceutical
+--  | MedicinalProductUndesirableEffectDR MedicinalProductUndesirableEffect
+--  | MessageDefinitionDR MessageDefinition
+--  | MessageHeaderDR MessageHeader
+--  | MolecularSequenceDR MolecularSequence
+--  | NamingSystemDR NamingSystem
+--  | NutritionOrderDR NutritionOrder
+--  | ObservationDR Observation
+--  | ObservationDefinitionDR ObservationDefinition
+--  | OperationDefinitionDR OperationDefinition
+  | OperationOutcomeDR OperationOutcome
+--  | OrganizationDR Organization
+--  | OrganizationAffiliationDR OrganizationAffiliation
+--  | ParametersDR Parameters
+  | PatientDR Patient
+--  | PaymentNoticeDR PaymentNotice
+--  | PaymentReconciliationDR PaymentReconciliation
+--  | PersonDR Person
+--  | PlanDefinitionDR PlanDefinition
+--  | PractitionerDR Practitioner
+--  | PractitionerRoleDR PractitionerRole
+--  | ProcedureDR Procedure
+--  | ProvenanceDR Provenance
+--  | QuestionnaireDR Questionnaire
+--  | QuestionnaireResponseDR QuestionnaireResponse
+--  | RelatedPersonDR RelatedPerson
+--  | RequestGroupDR RequestGroup
+--  | ResearchDefinitionDR ResearchDefinition
+--  | ResearchElementDefinitionDR ResearchElementDefinition
+--  | ResearchStudyDR ResearchStudy
+--  | ResearchSubjectDR ResearchSubject
+--  | RiskAssessmentDR RiskAssessment
+--  | RiskEvidenceSynthesisDR RiskEvidenceSynthesis
+--  | ScheduleDR Schedule
+--  | SearchParameterDR SearchParameter
+--  | ServiceRequestDR ServiceRequest
+--  | SlotDR Slot
+--  | SpecimenDR Specimen
+--  | SpecimenDefinitionDR SpecimenDefinition
+--  | StructureDefinitionDR StructureDefinition
+--  | StructureMapDR StructureMap
+--  | SubscriptionDR Subscription
+--  | SubstanceDR Substance
+--  | SubstancePolymerDR SubstancePolymer
+--  | SubstanceProteinDR SubstanceProtein
+--  | SubstanceReferenceInformationDR SubstanceReferenceInformation
+--  | SubstanceSpecificationDR SubstanceSpecification
+--  | SubstanceSourceMaterialDR SubstanceSourceMaterial
+--  | SupplyDeliveryDR SupplyDelivery
+--  | SupplyRequestDR SupplyRequest
+--  | TaskDR Task
+--  | TerminologyCapabilitiesDR TerminologyCapabilities
+--  | TestReportDR TestReport
+--  | TestScriptDR TestScript
+--  | ValueSetDR ValueSet
+--  | VerificationResultDR VerificationResult
+  deriving (Eq, Show)
+
+instance ToJSON DomainResourceC where
+   toJSON (ActivityDefinitionDR b) = toJSON b
+   toJSON (BinaryDR b) = toJSON b
+   toJSON (EncounterDR b) = toJSON b
+   toJSON (OperationOutcomeDR b) = toJSON b
+   toJSON (PatientDR b) = toJSON b
+instance FromJSON DomainResourceC where
+   parseJSON (Object v) = do
+       case rt of
+         Just "ActivityDefinition" -> ActivityDefinitionDR <$> parseJSON (Object v)
+         Just "Binary"           -> BinaryDR <$> parseJSON (Object v)
+         Just "Encounter"        -> EncounterDR <$> parseJSON (Object v)
+         Just "OperationOutcome" -> OperationOutcomeDR <$> parseJSON (Object v)
+         Just "Patient"          -> PatientDR <$> parseJSON (Object v)
+       where rt = HM.lookup "resourceType" v
+
+instance Xmlbf.ToXml DomainResourceC where
+  toXml (ActivityDefinitionDR e)           = Xmlbf.toXml e
+  toXml (BinaryDR e)              = Xmlbf.toXml e
+  toXml (EncounterDR e)           = Xmlbf.toXml e
+  toXml (OperationOutcomeDR p)    = Xmlbf.toXml p
+  toXml (PatientDR p)             = Xmlbf.toXml p
+instance Xmlbf.FromXml DomainResourceC where
+  fromXml = do
+    r <- Xmlbf.pAnyElement fromAny 
+    return r
+    where fromAny = do
+            n <- Xmlbf.pName
+            case n of
+              "ActivityDefinition"  ->  ActivityDefinitionDR  <$> Xmlbf.fromXml 
+              "Binary"     ->  BinaryDR     <$> Xmlbf.fromXml 
+              "Encounter"  ->  EncounterDR  <$> Xmlbf.fromXml 
+              "Patient"    ->  PatientDR    <$> Xmlbf.fromXml 
+
+-- Bundle, Parameters are not DomainResources
+
+--  | AccountDR Account
+--  | ActivityDefinitionDR ActivityDefinition
+--  | AdverseEventDR AdverseEvent
+--  | AllergyIntoleranceDR AllergyIntolerance
+--  | AppointmentDR Appointment
+--  | AppointmentResponseDR AppointmentResponse
+--  | AuditEventDR AuditEvent
+--  | BasicDR Basic
+--  | BinaryDR Binary
+--  | BiologicallyDerivedProductDR BiologicallyDerivedProduct
+--  | BodyStructureDR BodyStructure
+--  | CapabilityStatementDR CapabilityStatement
+--  | CarePlanDR CarePlan
+--  | CareTeamDR CareTeam
+--  | CatalogEntryDR CatalogEntry
+--  | ChargeItemDR ChargeItem
+--  | ChargeItemDefinitionDR ChargeItemDefinition
+--  | ClaimDR Claim
+--  | ClaimResponseDR ClaimResponse
+--  | ClinicalImpressionDR ClinicalImpression
+--  | CodeSystemDR CodeSystem
+--  | CommunicationDR Communication
+--  | CommunicationRequestDR CommunicationRequest
+--  | CompartmentDefinitionDR CompartmentDefinition
+--  | CompositionDR Composition
+--  | ConceptMapDR ConceptMap
+--  | ConditionDR Condition
+--  | ConsentDR Consent
+--  | ContractDR Contract
+--  | CoverageDR Coverage
+--  | CoverageEligibilityRequestDR CoverageEligibilityRequest
+--  | CoverageEligibilityResponseDR CoverageEligibilityResponse
+--  | DetectedIssueDR DetectedIssue
+--  | DeviceDR Device
+--  | DeviceDefinitionDR DeviceDefinition
+--  | DeviceMetricDR DeviceMetric
+--  | DeviceRequestDR DeviceRequest
+--  | DeviceUseStatementDR DeviceUseStatement
+--  | DiagnosticReportDR DiagnosticReport
+--  | DocumentManifestDR DocumentManifest
+--  | DocumentReferenceDR DocumentReference
+--  | EffectEvidenceSynthesisDR EffectEvidenceSynthesis
+--  | EncounterDR Encounter
+--  | EndpointDR Endpoint
+--  | EnrollmentRequestDR EnrollmentRequest
+--  | EnrollmentResponseDR EnrollmentResponse
+--  | EpisodeOfCareDR EpisodeOfCare
+--  | EventDefinitionDR EventDefinition
+--  | EvidenceDR Evidence
+--  | EvidenceVariableDR EvidenceVariable
+--  | ExampleScenarioDR ExampleScenario
+--  | ExplanationOfBenefitDR ExplanationOfBenefit
+--  | FamilyMemberHistoryDR FamilyMemberHistory
+--  | FlagDR Flag
+--  | GoalDR Goal
+--  | GraphDefinitionDR GraphDefinition
+--  | GroupDR Group
+--  | GuidanceResponseDR GuidanceResponse
+--  | HealthcareServiceDR HealthcareService
+--  | ImagingStudyDR ImagingStudy
+--  | ImmunizationDR Immunization
+--  | ImmunizationEvaluationDR ImmunizationEvaluation
+--  | ImmunizationRecommendationDR ImmunizationRecommendation
+--  | ImplementationGuideDR ImplementationGuide
+--  | InsurancePlanDR InsurancePlan
+--  | InvoiceDR Invoice
+--  | LibraryDR Library
+--  | LinkageDR Linkage
+--  | ListDR List
+--  | LocationDR Location
+--  | MeasureDR Measure
+--  | MeasureReportDR MeasureReport
+--  | MediaDR Media
+--  | MedicationDR Medication
+--  | MedicationAdministrationDR MedicationAdministration
+--  | MedicationDispenseDR MedicationDispense
+--  | MedicationKnowledgeDR MedicationKnowledge
+--  | MedicationRequestDR MedicationRequest
+--  | MedicationStatementDR MedicationStatement
+--  | MedicinalProductDR MedicinalProduct
+--  | MedicinalProductAuthorizationDR MedicinalProductAuthorization
+--  | MedicinalProductContraindicationDR MedicinalProductContraindication
+--  | MedicinalProductIndicationDR MedicinalProductIndication
+--  | MedicinalProductIngredientDR MedicinalProductIngredient
+--  | MedicinalProductInteractionDR MedicinalProductInteraction
+--  | MedicinalProductManufacturedDR MedicinalProductManufactured
+--  | MedicinalProductPackagedDR MedicinalProductPackaged
+--  | MedicinalProductPharmaceuticalDR MedicinalProductPharmaceutical
+--  | MedicinalProductUndesirableEffectDR MedicinalProductUndesirableEffect
+--  | MessageDefinitionDR MessageDefinition
+--  | MessageHeaderDR MessageHeader
+--  | MolecularSequenceDR MolecularSequence
+--  | NamingSystemDR NamingSystem
+--  | NutritionOrderDR NutritionOrder
+--  | ObservationDR Observation
+--  | ObservationDefinitionDR ObservationDefinition
+--  | OperationDefinitionDR OperationDefinition
+--  | OperationOutcomeDR OperationOutcome
+--  | OrganizationDR Organization
+--  | OrganizationAffiliationDR OrganizationAffiliation
+--  | PatientDR Patient
+--  | PaymentNoticeDR PaymentNotice
+--  | PaymentReconciliationDR PaymentReconciliation
+--  | PersonDR Person
+--  | PlanDefinitionDR PlanDefinition
+--  | PractitionerDR Practitioner
+--  | PractitionerRoleDR PractitionerRole
+--  | ProcedureDR Procedure
+--  | ProvenanceDR Provenance
+--  | QuestionnaireDR Questionnaire
+--  | QuestionnaireResponseDR QuestionnaireResponse
+--  | RelatedPersonDR RelatedPerson
+--  | RequestGroupDR RequestGroup
+--  | ResearchDefinitionDR ResearchDefinition
+--  | ResearchElementDefinitionDR ResearchElementDefinition
+--  | ResearchStudyDR ResearchStudy
+--  | ResearchSubjectDR ResearchSubject
+--  | RiskAssessmentDR RiskAssessment
+--  | RiskEvidenceSynthesisDR RiskEvidenceSynthesis
+--  | ScheduleDR Schedule
+--  | SearchParameterDR SearchParameter
+--  | ServiceRequestDR ServiceRequest
+--  | SlotDR Slot
+--  | SpecimenDR Specimen
+--  | SpecimenDefinitionDR SpecimenDefinition
+--  | StructureDefinitionDR StructureDefinition
+--  | StructureMapDR StructureMap
+--  | SubscriptionDR Subscription
+--  | SubstanceDR Substance
+--  | SubstancePolymerDR SubstancePolymer
+--  | SubstanceProteinDR SubstanceProtein
+--  | SubstanceReferenceInformationDR SubstanceReferenceInformation
+--  | SubstanceSpecificationDR SubstanceSpecification
+--  | SubstanceSourceMaterialDR SubstanceSourceMaterial
+--  | SupplyDeliveryDR SupplyDelivery
+--  | SupplyRequestDR SupplyRequest
+--  | TaskDR Task
+--  | TerminologyCapabilitiesDR TerminologyCapabilities
+--  | TestReportDR TestReport
+--  | TestScriptDR TestScript
+--  | ValueSetDR ValueSet
+--  | VerificationResultDR VerificationResult

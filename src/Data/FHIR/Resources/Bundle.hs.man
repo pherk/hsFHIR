@@ -1,0 +1,567 @@
+{-# LANGUAGE NoImplicitPrelude #-}
+
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TemplateHaskell   #-}
+{-# LANGUAGE TypeOperators     #-}
+
+module Data.FHIR.Resources.Bundle where
+
+import Data.Aeson  
+import Data.Aeson.Types hiding (parseJSON)
+
+import GHC.TypeLits
+
+import RIO
+import qualified RIO.Text as T
+import qualified RIO.HashMap as HM
+import qualified RIO.Vector as V
+
+import Data.FHIR.Datatypes
+import Data.FHIR.Datatypes.XML
+import Data.FHIR.Datatypes.XmlUtils
+import Data.FHIR.Resources.OperationOutcome
+import Data.FHIR.Resources.ResourceContainer
+import qualified Xmlbf as Xmlbf
+
+ 
+data BundleLink = BundleLink
+  { bundleLinkSuper    :: BackboneElement
+  , bundleLinkRelation :: Text
+  , bundleLinkUrl      :: Uri
+  } deriving (Eq, Show)
+ 
+instance ToJSON BundleLink where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON ps
+       ++
+       [
+         "relation" .= toJSON (bundleLinkRelation p)
+       , "url"      .= toJSON (bundleLinkUrl p)
+       ]
+       where ps = bundleLinkSuper p
+instance FromJSON BundleLink where
+  parseJSON = withObject "BundleLink" $ \o -> do
+        s  <- parseBackboneElementJSON o
+        re <- o .:  "relation"
+        ur <- o .:  "url"
+        return BundleLink{
+                  bundleLinkSuper  = s
+                , bundleLinkRelation = re
+                , bundleLinkUrl = ur
+                }
+
+instance Xmlbf.ToXml BundleLink where
+  toXml p = concatMap toElement $
+             [
+               Val "relation"  (bundleLinkRelation p)
+             , Val "url"       (bundleLinkUrl p)
+             ]
+instance Xmlbf.FromXml BundleLink where
+  fromXml = do
+        super  <- Xmlbf.fromXml
+        re <- Xmlbf.pElement "relation" (Xmlbf.pAttr "value")
+        ur <- Xmlbf.pElement "url"      (Xmlbf.pAttr "value")
+        return BundleLink{
+                    bundleLinkSuper= super
+                  , bundleLinkRelation= re
+                  , bundleLinkUrl = ur
+                  }
+
+data BundleEntrySearchCode = 
+    BESMatch
+  | BESInclude
+  | BESOutcome
+  deriving (Eq, Show)
+
+instance ToJSON BundleEntrySearchCode where
+    toJSON (BESMatch  ) = String "match"
+    toJSON (BESInclude) = String "include"
+    toJSON (BESOutcome) = String "outcome"
+instance FromJSON BundleEntrySearchCode where
+    parseJSON (String s) = case T.unpack s of
+      "match"   -> return BESMatch
+      "include" -> return BESInclude
+      "outcome" -> return BESOutcome
+
+toBundleEntrySearchCode BESMatch   = "match"
+toBundleEntrySearchCode BESInclude = "include"
+toBundleEntrySearchCode BESOutcome = "outcome"
+fromBundleEntrySearchCode "match"   = BESMatch   
+fromBundleEntrySearchCode "include" = BESInclude 
+fromBundleEntrySearchCode "outcome" = BESOutcome 
+
+data BundleEntrySearch = BundleEntrySearch
+  { bundleEntrySearchSuper :: BackboneElement
+  , bundleEntrySearchMode  :: Maybe BundleEntrySearchCode
+  , bundleEntrySearchScore :: Maybe Decimal
+  } deriving (Eq, Show)
+
+instance ToJSON BundleEntrySearch where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON ps
+       ++
+       [
+         "mode"  .= toJSON (bundleEntrySearchMode p)
+       , "score" .= toJSON (bundleEntrySearchScore p)
+       ]
+       where ps = bundleEntrySearchSuper p
+instance FromJSON BundleEntrySearch where
+  parseJSON = withObject "BundleEntrySearch" $ \o -> do
+        s  <- parseBackboneElementJSON o
+        mo <- o .:? "mode"
+        sc <- o .:? "score"
+        return BundleEntrySearch{
+                  bundleEntrySearchSuper  = s
+                , bundleEntrySearchMode = mo
+                , bundleEntrySearchScore = sc
+                }
+
+
+instance Xmlbf.ToXml BundleEntrySearch where
+  toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               OptVal "mode"  (fmap toBundleEntrySearchCode $ bundleEntrySearchMode p)
+             , OptVal "score" (fmap toDecimal               $ bundleEntrySearchScore p)
+             ]
+instance Xmlbf.FromXml BundleEntrySearch where
+  fromXml = do
+        super  <- Xmlbf.fromXml
+        mo <- optional $ Xmlbf.pElement "mode"  (Xmlbf.pAttr "value")
+        sc <- optional $ Xmlbf.pElement "score" (Xmlbf.pAttr "value")
+        return BundleEntrySearch{
+                    bundleEntrySearchSuper= super
+                  , bundleEntrySearchMode = fmap fromBundleEntrySearchCode mo
+                  , bundleEntrySearchScore= fmap fromDecimal sc
+                  }
+
+
+data BundleEntryRequestMethod = 
+    BERMethodGET
+  | BERMethodHEAD
+  | BERMethodPOST
+  | BERMethodPUT
+  | BERMethodDELETE
+  | BERMethodPATCH
+  deriving (Eq, Show)
+
+instance ToJSON BundleEntryRequestMethod where
+    toJSON (BERMethodGET)  = String "GET"
+    toJSON (BERMethodHEAD) = String "HEAD"
+    toJSON (BERMethodPOST) = String "POST"
+    toJSON (BERMethodPUT)  = String "PUT"
+    toJSON (BERMethodDELETE) = String "DELETE"
+    toJSON (BERMethodPATCH)  = String "PATCH"
+instance FromJSON BundleEntryRequestMethod where
+    parseJSON (String s) = case T.unpack s of
+      "GET"    -> return BERMethodGET
+      "HEAD"   -> return BERMethodHEAD
+      "POST"   -> return BERMethodPOST
+      "PUT"    -> return BERMethodPUT
+      "DELETE" -> return BERMethodDELETE
+      "PATCH"  -> return BERMethodPATCH
+
+toBundleEntryRequestMethod BERMethodGET     = "GET"
+toBundleEntryRequestMethod BERMethodHEAD    = "HEAD"
+toBundleEntryRequestMethod BERMethodPOST    = "POST"
+toBundleEntryRequestMethod BERMethodPUT     = "PUT"
+toBundleEntryRequestMethod BERMethodDELETE  = "DELETE"
+toBundleEntryRequestMethod BERMethodPATCH   = "PATCH"
+fromBundleEntryRequestMethod "GET"     = BERMethodGET
+fromBundleEntryRequestMethod "HEAD"    = BERMethodHEAD 
+fromBundleEntryRequestMethod "POST"    = BERMethodPOST 
+fromBundleEntryRequestMethod "PUT"     = BERMethodPUT
+fromBundleEntryRequestMethod "DELETE"  = BERMethodDELETE
+fromBundleEntryRequestMethod "PATCH"   = BERMethodPATCH
+
+data BundleEntryRequest = BundleEntryRequest
+  { bundleEntryRequestSuper  :: BackboneElement
+  , bundleEntryRequestMethod :: BundleEntryRequestMethod
+  , bundleEntryRequestUrl    :: Uri
+  , bundleEntryRequestIfNoneMatch     :: Maybe Text
+  , bundleEntryRequestIfModifiedSince :: Maybe Instant
+  , bundleEntryRequestIfMatch         :: Maybe Text
+  , bundleEntryRequestIfNoneExist     :: Maybe Text
+  } deriving (Eq, Show)
+
+instance ToJSON BundleEntryRequest where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON ps
+       ++
+       [
+         "method"          .= toJSON (bundleEntryRequestMethod p)
+       , "url"             .= toJSON (bundleEntryRequestUrl p)
+       , "ifNoneMatch"     .= toJSON (bundleEntryRequestIfNoneMatch p)
+       , "ifModifiedSince" .= toJSON (bundleEntryRequestIfModifiedSince p)
+       , "ifMatch"         .= toJSON (bundleEntryRequestIfMatch p)
+       , "ifNoneExist"     .= toJSON (bundleEntryRequestIfNoneExist p)
+       ]
+       where ps = bundleEntryRequestSuper p
+instance FromJSON BundleEntryRequest where
+  parseJSON = withObject "BundleEntryRequest" $ \o -> do
+        s  <- parseBackboneElementJSON o
+        me <- o .:  "method"
+        ur <- o .:  "url"
+        nm <- o .:? "ifNoneMatch"
+        ms <- o .:? "ifModifiedSince"
+        im <- o .:? "ifMatch"
+        ne <- o .:? "ifNoneExist"
+        return BundleEntryRequest{
+                  bundleEntryRequestSuper= s
+                , bundleEntryRequestMethod      = me
+                , bundleEntryRequestUrl         = ur
+                , bundleEntryRequestIfNoneMatch = nm
+                , bundleEntryRequestIfModifiedSince= ms
+                , bundleEntryRequestIfMatch     = im
+                , bundleEntryRequestIfNoneExist = ne
+                }
+
+
+instance Xmlbf.ToXml BundleEntryRequest where
+  toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               Val "method"  (toBundleEntryRequestMethod $ bundleEntryRequestMethod p)
+             , Val "url"                (bundleEntryRequestUrl p)
+             , OptVal "ifNoneMatch"     (bundleEntryRequestIfModifiedSince p)
+             , OptVal "ifModifiedSince" (bundleEntryRequestIfModifiedSince p)
+             , OptVal "ifMatch"         (bundleEntryRequestIfMatch p)
+             , OptVal "ifNoneExist"     (bundleEntryRequestIfNoneExist p)
+             ]
+instance Xmlbf.FromXml BundleEntryRequest where
+  fromXml = do
+        super  <- Xmlbf.fromXml
+        mo <- Xmlbf.pElement "method"  (Xmlbf.pAttr "value")
+        ur <- Xmlbf.pElement "url"     (Xmlbf.pAttr "value")
+        nm <- optional $ Xmlbf.pElement "ifNoneMatch"     (Xmlbf.pAttr "value")
+        ms <- optional $ Xmlbf.pElement "ifModifiedSince" (Xmlbf.pAttr "value")
+        ma <- optional $ Xmlbf.pElement "IfMatch"         (Xmlbf.pAttr "value")
+        ne <- optional $ Xmlbf.pElement "ifNoneExist"     (Xmlbf.pAttr "value")
+        return BundleEntryRequest{
+                    bundleEntryRequestSuper= super
+                  , bundleEntryRequestMethod = fromBundleEntryRequestMethod mo
+                  , bundleEntryRequestUrl             = ur
+                  , bundleEntryRequestIfNoneMatch     = nm
+                  , bundleEntryRequestIfModifiedSince = ms
+                  , bundleEntryRequestIfMatch         = ma
+                  , bundleEntryRequestIfNoneExist     = ne
+                  }
+
+data BundleEntryResponse = BundleEntryResponse
+  { bundleEntryResponseSuper    :: BackboneElement
+  , bundleEntryResponseStatus   :: Text
+  , bundleEntryResponseLocation :: Maybe Uri
+  , bundleEntryResponseETag     :: Maybe Text
+  , bundleEntryResponseLastModified :: Maybe Instant
+  , bundleEntryResponseOutcome      :: Maybe OperationOutcome
+  } deriving (Eq, Show)
+
+instance ToJSON BundleEntryResponse where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON ps
+       ++
+       [
+         "status"        .= toJSON (bundleEntryResponseStatus p)
+       , "location"      .= toJSON (bundleEntryResponseLocation p)
+       , "etag"          .= toJSON (bundleEntryResponseETag p)
+       , "lastModifiedh" .= toJSON (bundleEntryResponseLastModified p)
+       , "outcome"       .= toJSON (bundleEntryResponseOutcome p)
+       ]
+       where ps = bundleEntryResponseSuper p
+instance FromJSON BundleEntryResponse where
+  parseJSON = withObject "BundleEntryResponse" $ \o -> do
+        s  <- parseBackboneElementJSON o
+        st <- o .:  "status"
+        lo <- o .:? "location"
+        et <- o .:? "etag"
+        lm <- o .:? "lastModified"
+        ou <- o .:? "outcome"
+        return BundleEntryResponse{
+                  bundleEntryResponseSuper  = s
+                , bundleEntryResponseStatus = st
+                , bundleEntryResponseLocation = lo
+                , bundleEntryResponseETag= et
+                , bundleEntryResponseLastModified= lm
+                , bundleEntryResponseOutcome= ou
+                }
+
+instance Xmlbf.ToXml BundleEntryResponse where
+  toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               Val     "status"       (bundleEntryResponseStatus p)
+             , OptVal  "location"     (bundleEntryResponseLocation p)
+             , OptVal  "eTag"         (bundleEntryResponseETag p)
+             , OptVal  "lastModified" (bundleEntryResponseLastModified p)
+             , OptProp "outcome"      (fmap Xmlbf.toXml $ bundleEntryResponseOutcome p)
+             ]
+instance Xmlbf.FromXml BundleEntryResponse where
+  fromXml = do
+        super  <- Xmlbf.fromXml
+        st <- Xmlbf.pElement "status"  (Xmlbf.pAttr "value")
+        lo <- optional $ Xmlbf.pElement "location"     (Xmlbf.pAttr "value")
+        et <- optional $ Xmlbf.pElement "eTag"         (Xmlbf.pAttr "value")
+        la <- optional $ Xmlbf.pElement "lastModified" (Xmlbf.pAttr "value")
+        ou <- optional $ Xmlbf.pElement "outcome"       Xmlbf.fromXml
+        return BundleEntryResponse{
+                    bundleEntryResponseSuper= super
+                  , bundleEntryResponseStatus   = st
+                  , bundleEntryResponseLocation = lo
+                  , bundleEntryResponseETag     = et 
+                  , bundleEntryResponseLastModified = la
+                  , bundleEntryResponseOutcome  = ou
+                  }
+
+
+data BundleEntry = BundleEntry
+  { bundleEntrySuper     :: BackboneElement
+  , bundleEntryLink      :: [BundleLink]
+  , bundleEntryFullUrl   :: Maybe Uri
+  , bundleEntryResource  :: Maybe DomainResourceC
+  , bundleEntrySearch    :: Maybe BundleEntrySearch
+  , bundleEntryRequest   :: Maybe BundleEntryRequest
+  , bundleEntryResponse  :: Maybe BundleEntryResponse
+  } deriving (Eq, Show)
+ 
+instance ToJSON BundleEntry where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON ps
+       ++
+       [
+         "link"     .= toJSON (bundleEntryLink p)
+       , "fullUrl"  .= toJSON (bundleEntryFullUrl p)
+       , "resource" .= toJSON (bundleEntryResource p)
+       , "search"   .= toJSON (bundleEntrySearch p)
+       , "request"  .= toJSON (bundleEntryRequest p)
+       , "response" .= toJSON (bundleEntryResponse p)
+       ]
+       where ps = bundleEntrySuper p
+instance FromJSON BundleEntry where
+  parseJSON = withObject "Bundle" $ \o -> do
+        s  <- parseBackboneElementJSON o
+        l  <- o .:? "link" .!= []
+        f  <- o .:? "fullUrl"
+        re <- o .:? "resource"
+        se <- o .:? "search"
+        rq <- o .:? "request"
+        rp <- o .:? "response"
+        return BundleEntry{
+                  bundleEntrySuper= s
+                , bundleEntryLink     = l
+                , bundleEntryFullUrl  = f
+                , bundleEntryResource = re
+                , bundleEntrySearch   = se
+                , bundleEntryRequest  = rq
+                , bundleEntryResponse = rp
+                }
+
+instance Xmlbf.ToXml BundleEntry where
+  toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               PropList "link"     (fmap Xmlbf.toXml $ bundleEntryLink p)
+             , OptVal   "fullUrl"  (                   bundleEntryFullUrl p)
+             , OptProp  "resource" (fmap Xmlbf.toXml $ bundleEntryResource p)
+             , OptProp  "search"   (fmap Xmlbf.toXml $ bundleEntrySearch p)
+             , OptProp  "request"  (fmap Xmlbf.toXml $ bundleEntryRequest p)
+             , OptProp  "response" (fmap Xmlbf.toXml $ bundleEntryResponse p)
+             ]
+instance Xmlbf.FromXml BundleEntry where
+  fromXml = do
+        super  <- Xmlbf.fromXml
+        li <- many     $ Xmlbf.pElement "link"     Xmlbf.fromXml
+        fu <- optional $ Xmlbf.pElement "fullUrl"  (Xmlbf.pAttr "value")
+        rs <- optional $ Xmlbf.pElement "resource" Xmlbf.fromXml
+        se <- optional $ Xmlbf.pElement "search"   Xmlbf.fromXml
+        rq <- optional $ Xmlbf.pElement "request"  Xmlbf.fromXml
+        rp <- optional $ Xmlbf.pElement "response" Xmlbf.fromXml
+        return BundleEntry{
+                    bundleEntrySuper= super
+                  , bundleEntryLink     = li
+                  , bundleEntryFullUrl  = fu
+                  , bundleEntryResource = rs 
+                  , bundleEntrySearch   = se 
+                  , bundleEntryRequest  = rq
+                  , bundleEntryResponse = rp
+                  }
+
+
+data BundleType
+  = BTDocument 
+  | BTMessage 
+  | BTTransaction | BTTransactionResponse 
+  | BTBatch | BTBatchResponse
+  | BTHistory
+  | BTSearchset
+  | BTCollection
+  deriving (Eq, Show)
+
+instance ToJSON BundleType where
+    toJSON (BTDocument)    = String "document"
+    toJSON (BTMessage)     = String "message"
+    toJSON (BTTransaction) = String "transaction"
+    toJSON (BTTransactionResponse)  = String "transactionResponse"
+    toJSON (BTBatch)       = String "batch"
+    toJSON (BTBatchResponse)  = String "batchResponse"
+    toJSON (BTHistory)     = String "history"
+    toJSON (BTSearchset)   = String "search-set"
+    toJSON (BTCollection)  = String "collection"
+instance FromJSON BundleType where
+    parseJSON (String s) = case T.unpack s of
+      "document"      -> return BTDocument
+      "message"       -> return BTMessage
+      "transaction"   -> return BTTransaction
+      "transactionResponse"   -> return BTTransactionResponse
+      "batch"         -> return BTBatch
+      "batchResponse" -> return BTBatchResponse
+      "history"       -> return BTHistory
+      "search-set"    -> return BTSearchset
+      "collection"    -> return BTCollection
+
+fromBundleType "document"    = BTDocument
+fromBundleType "message"     = BTMessage
+fromBundleType "transaction" = BTTransaction
+fromBundleType "transaction-response" = BTTransactionResponse
+fromBundleType "batch"       = BTBatch
+fromBundleType "batch-response" = BTBatchResponse
+fromBundleType "search-set"  = BTSearchset
+fromBundleType "collection"  = BTCollection
+toBundleType BTDocument    = "document"
+toBundleType BTMessage     = "message"
+toBundleType BTTransaction = "transaction"
+toBundleType BTTransactionResponse = "transaction-response"
+toBundleType BTBatch       = "batch"
+toBundleType BTBatchResponse = "batch-response"
+toBundleType BTSearchset   = "search-set"
+toBundleType BTCollection  = "collection"
+
+data Bundle = Bundle {
+    bundleAttribs    :: HM.HashMap Text Text
+  , bundleId         :: Maybe Id
+  , bundleMeta       :: Maybe Meta
+  , bundleImplicitRules :: Maybe Uri
+  , bundleLanguage   :: Maybe Code
+  , bundleIdentifier :: Maybe Identifier
+  , bundleType       :: BundleType
+  , bundleTimestamp  :: Maybe Instant
+  , bundleTotal      :: Maybe UnsignedInt
+  , bundleLink       :: [BundleLink]
+  , bundleEntry      :: [BundleEntry]
+  , bundleSignature  :: Maybe Signature
+  } deriving (Eq, Show)
+
+instance ToJSON Bundle where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       [
+        ("resourceType", "Bundle")
+--TODO Attribs
+       , "id"         .= toJSON (bundleId p)
+       , "meta"       .= toJSON (bundleMeta p)
+       , "implicitRules" .= toJSON (bundleImplicitRules p)
+       , "language"   .= toJSON (bundleMeta p)
+       , "identifier" .= toJSON (bundleIdentifier p)
+       , "type"       .= toJSON (bundleType p)
+       , "timestamp"  .= toJSON (bundleTimestamp p)
+       , "total"      .= toJSON (bundleTotal p)
+       , "link"       .= toJSON (bundleLink p)
+       , "entry"      .= toJSON (bundleEntry p)
+       , "signature"  .= toJSON (bundleSignature p)
+       ]
+instance FromJSON Bundle where
+  parseJSON = withObject "Bundle" $ \o -> do
+    rt     <- o .:  "resourceType"  :: Parser Text
+    case rt of
+      "Bundle" -> do
+--TODO Attribs
+        rid<- o .:? "id"
+        rm <- o .:? "meta"
+        rir<- o .:? "implicitRules"
+        rl <- o .:? "language"
+        i  <- o .:? "identifier"
+        ty <- o .:  "type"
+        ti <- o .:? "timestamp"
+        to <- o .:? "total"
+        l  <- o .:? "link" .!= []
+        e  <- o .:? "entry" .!= []
+        si <- o .:? "signature"
+        return Bundle{
+                  bundleAttribs= HM.empty
+                , bundleId = rid
+                , bundleMeta = rm
+                , bundleImplicitRules = rir
+                , bundleLanguage = rl
+                , bundleIdentifier= i
+                , bundleType= ty
+                , bundleTimestamp= ti
+                , bundleTotal= to
+                , bundleLink= l
+                , bundleEntry= e
+                , bundleSignature= si
+                }
+
+instance Xmlbf.ToXml Bundle where
+  toXml p = Xmlbf.element "Bundle" as cs
+     where as = HM.fromList $ catMaybes $ fmap toAttr [
+                 Val "xmlns" "http://hl7.org/fhir"
+               --[ OptVal "xml:id" (domainResourceAttribs ps) ]
+               ]
+           cs = concatMap toElement $
+             [
+               OptVal   "id"         (                   bundleId p)
+             , OptProp  "meta"       (fmap Xmlbf.toXml $ bundleMeta p)
+             , OptVal   "implicitRules"  (               bundleImplicitRules p)
+             , OptVal   "language"   (                   bundleLanguage p)
+             , OptProp  "identifier" (fmap Xmlbf.toXml $ bundleIdentifier p)
+             , Val      "type"       (toBundleType     $ bundleType p)
+             , OptVal   "timestamp"  (                   bundleTimestamp p)
+             , OptVal   "total"      (fmap toUnsignedInt $ bundleTotal p)
+             , PropList "link"       (fmap Xmlbf.toXml $ bundleLink p)
+             , PropList "entry"      (fmap Xmlbf.toXml $ bundleEntry p)
+             , OptProp  "signature"  (fmap Xmlbf.toXml $ bundleSignature p)
+             ]
+instance Xmlbf.FromXml Bundle where
+  fromXml = Xmlbf.pElement "bundle" $ do
+        attrs <-         Xmlbf.pAttrs
+        rid<- optional $ Xmlbf.pElement "id"         (Xmlbf.pAttr "value")
+        rm <- optional $ Xmlbf.pElement "meta"        Xmlbf.fromXml
+        rir<- optional $ Xmlbf.pElement "implicitRules" (Xmlbf.pAttr "value")
+        rl <- optional $ Xmlbf.pElement "language"   (Xmlbf.pAttr "value")
+        id <- optional $ Xmlbf.pElement "identifier"  Xmlbf.fromXml
+        ty <-            Xmlbf.pElement "type"       (Xmlbf.pAttr "value")
+        ti <- optional $ Xmlbf.pElement "timestamp"  (Xmlbf.pAttr "value")
+        to <- optional $ Xmlbf.pElement "total"      (Xmlbf.pAttr "value")
+        li <- many     $ Xmlbf.pElement "link"        Xmlbf.fromXml
+        en <- many     $ Xmlbf.pElement "entry"       Xmlbf.fromXml
+        si <- optional $ Xmlbf.pElement "signature"   Xmlbf.fromXml
+        return Bundle{
+                  bundleAttribs    = HM.empty
+                , bundleId = rid
+                , bundleMeta = rm
+                , bundleImplicitRules = rir
+                , bundleLanguage = rl
+                , bundleIdentifier = id
+                , bundleType       = fromBundleType ty
+                , bundleTimestamp  = ti 
+                , bundleTotal      = fmap fromUnsignedInt to
+                , bundleLink       = li
+                , bundleEntry      = en
+                , bundleSignature  = si
+                }

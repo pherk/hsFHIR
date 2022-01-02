@@ -1,0 +1,462 @@
+{-# LANGUAGE NoImplicitPrelude  #-}
+
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PolyKinds #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE TypeOperators     #-}
+
+module Data.FHIR.Resources.Patient where
+
+import Data.Aeson  
+import Data.Aeson.Types hiding (parseJSON)
+
+import qualified Data.HashMap.Strict as HM
+--import GHC.Generics
+import GHC.TypeLits
+
+import RIO
+import qualified RIO.Vector as V
+-- import Xmlbf
+import           Data.FHIR.Datatypes
+import           Data.FHIR.Datatypes.XML
+import           Data.FHIR.Datatypes.XmlUtils
+import           Data.FHIR.Resources.DomainResource
+import qualified Xmlbf  as Xmlbf
+ 
+
+data PatientCommunication
+    = PatientCommunication { 
+        patientCommunicationSuper :: BackboneElement,
+        patientCommunicationLanguage :: CodeableConcept,
+        patientCommunicationPreferred :: Maybe Boolean}
+    deriving (Eq, Show)
+
+instance ToJSON PatientCommunication where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON (patientCommunicationSuper p)
+       ++
+       [
+         "language"  .= toJSON (patientCommunicationLanguage p)
+       , "preferred" .= toJSON (patientCommunicationPreferred p)
+       ]
+instance FromJSON PatientCommunication where
+  parseJSON = withObject "PatientCommunication" $ \o -> do
+        id  <- o .:? "id" 
+        ext <- o .:? "extension" .!= []
+        mxt <- o .:? "modifierExtension" .!= []
+        l   <- o .:  "language"
+        p   <- o .:? "preferred"
+        return PatientCommunication{
+                    patientCommunicationSuper= mkBackboneElement id ext mxt
+                  , patientCommunicationLanguage= l
+                  , patientCommunicationPreferred= p
+                  }
+
+instance Xmlbf.ToXml PatientCommunication where
+  toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               Prop   "language"  (HM.empty, Xmlbf.toXml (patientCommunicationLanguage p))
+             , OptVal "preferred" (fmap toBoolean (patientCommunicationPreferred p))
+             ]
+instance Xmlbf.FromXml PatientCommunication where
+  fromXml = do
+        id <- optional $ Xmlbf.pAttr "id"
+        e  <- many     $ Xmlbf.pElement "extension" Xmlbf.fromXml
+        m  <- many     $ Xmlbf.pElement "modifierExtension" Xmlbf.fromXml
+        la <- Xmlbf.pElement "language" Xmlbf.fromXml
+        pr <- optional $ Xmlbf.pElement "preferred" (Xmlbf.pAttr "value")
+        return PatientCommunication{
+                    patientCommunicationSuper= mkBackboneElement id e m
+                  , patientCommunicationLanguage = la
+                  , patientCommunicationPreferred = fmap fromBoolean pr
+                  }
+
+data PatientContact
+    = PatientContact { 
+        patientContactSuper :: BackboneElement,
+        patientContactRelationship :: [CodeableConcept],
+        patientContactName :: Maybe HumanName,
+        patientContactTelecom :: [ContactPoint],
+        patientContactAddress :: Maybe Address,
+        patientContactGender :: Maybe AdministrativeGender,
+        patientContactOrganization :: Maybe Reference,
+        patientContactPeriod :: Maybe Period}
+    deriving (Eq, Show)
+
+instance ToJSON PatientContact where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON (patientContactSuper p)
+       ++
+       [
+         "relationship" .= toJSON (patientContactRelationship p)
+       , "name"     .= toJSON (patientContactName p)
+       , "telecom"  .= toJSON (patientContactTelecom p)
+       , "address"  .= toJSON (patientContactAddress p)
+       , "gender"   .= toJSON (patientContactGender p)
+       , "organization"  .= toJSON (patientContactOrganization p)
+       , "period"   .= toJSON (patientContactPeriod p)
+       ]
+instance FromJSON PatientContact where
+  parseJSON = withObject "PatientContact" $ \o -> do
+        id  <- o .:? "id" 
+        ext <- o .:? "extension" .!= []
+        mxt <- o .:? "modifierExtension" .!= []
+        r  <- o .:? "relationship" .!= []
+        n  <- o .:? "name" 
+        t  <- o .:? "telecom" .!= []
+        a  <- o .:? "address" 
+        g  <- o .:? "gender" 
+        or <- o .:? "organization"
+        pe <- o .:? "period" 
+        return PatientContact{
+                    patientContactSuper= mkBackboneElement id ext mxt
+                  , patientContactRelationship = r
+                  , patientContactName = n
+                  , patientContactTelecom = t
+                  , patientContactAddress = a
+                  , patientContactGender = g
+                  , patientContactOrganization= or
+                  , patientContactPeriod = pe
+                  }
+
+instance Xmlbf.ToXml PatientContact where
+   toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               PropList "relationship"  (fmap Xmlbf.toXml (patientContactRelationship p))
+             , OptProp  "name"          (fmap Xmlbf.toXml (patientContactName p))
+             , PropList "telecom"       (fmap Xmlbf.toXml (patientContactTelecom p))
+             , OptProp  "address"       (fmap Xmlbf.toXml (patientContactAddress p))
+             , OptVal   "gender"        (fmap toAdministrativeGender (patientContactGender p))
+             , OptProp  "organization"  (fmap Xmlbf.toXml (patientContactOrganization p))
+             , OptProp  "period"        (fmap Xmlbf.toXml (patientContactPeriod p))
+             ]
+instance Xmlbf.FromXml PatientContact where
+    fromXml = do
+        id <- optional $ Xmlbf.pAttr "id"
+        e  <- many     $ Xmlbf.pElement "extension" Xmlbf.fromXml
+        m  <- many     $ Xmlbf.pElement "modifierExtension" Xmlbf.fromXml
+        re <- many     $ Xmlbf.pElement "relationship" Xmlbf.fromXml
+        na <- optional $ Xmlbf.pElement "name" Xmlbf.fromXml
+        te <- many     $ Xmlbf.pElement "relationship" Xmlbf.fromXml
+        ad <- optional $ Xmlbf.pElement "address" Xmlbf.fromXml
+        ge <- optional $ Xmlbf.pElement "gender" (Xmlbf.pAttr "value")
+        or <- optional $ Xmlbf.pElement "organization" Xmlbf.fromXml
+        pe <- optional $ Xmlbf.pElement "period" Xmlbf.fromXml
+        return PatientContact{
+                    patientContactSuper= mkBackboneElement id e m
+                  , patientContactRelationship = re
+                  , patientContactName = na
+                  , patientContactTelecom = te
+                  , patientContactAddress = ad
+                  , patientContactGender = fmap fromAdministrativeGender ge
+                  , patientContactOrganization= or
+                  , patientContactPeriod = pe
+                  }
+
+data PatientLink
+    = PatientLink { 
+          patientLinkSuper :: BackboneElement
+        , patientLinkOther :: Reference
+        , patientLinkType  :: LinkType}
+    deriving (Eq, Show)
+
+instance ToJSON PatientLink where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       toBackboneElementJSON (patientLinkSuper p)
+       ++
+       [
+         "other" .= toJSON (patientLinkOther p)
+       , "type"  .= toJSON (patientLinkType p)
+       ]
+instance FromJSON PatientLink where
+  parseJSON = withObject "PatientLink" $ \o -> do
+        id  <- o .:? "id" 
+        ext <- o .:? "extension" .!= []
+        mxt <- o .:? "modifierExtension" .!= []
+        ot  <- o .:  "other"
+        ty  <- o .:  "type" 
+        return PatientLink{
+                    patientLinkSuper= mkBackboneElement id ext mxt
+                  , patientLinkOther = ot
+                  , patientLinkType = ty
+                  }
+
+instance Xmlbf.ToXml PatientLink where
+   toXml p = cs
+     where -- as = HM.fromList $ catMaybes $ fmap toAttr []--[ OptVal "xml:id" (domainResourceAttribs ps) ]
+           cs = concatMap toElement $
+             [
+               Prop "other"  (HM.empty, Xmlbf.toXml (patientLinkOther p))
+             , Val  "type"   (toLinkType (patientLinkType p))
+             ]
+instance Xmlbf.FromXml PatientLink where
+   fromXml = do
+        id <- optional $ Xmlbf.pAttr "id"
+        e  <- many     $ Xmlbf.pElement "extension" Xmlbf.fromXml
+        m  <- many     $ Xmlbf.pElement "modifierExtension" Xmlbf.fromXml
+        ot <- Xmlbf.pElement "other" Xmlbf.fromXml
+        ty <- Xmlbf.pElement "type"  (Xmlbf.pAttr "value")
+        return PatientLink{
+                    patientLinkSuper= mkBackboneElement id e m
+                  , patientLinkOther = ot
+                  , patientLinkType = fromLinkType ty
+                  }
+
+
+data PatientMultipleBirth
+    = PatientMultipleBirthBoolean Boolean
+    | PatientMultipleBirthInteger Integer
+    deriving (Eq, Show)
+
+toMultipleBirthXml (Just (PatientMultipleBirthBoolean  b)) = (Val "multipleBirthBoolean" (toBoolean b))
+toMultipleBirthXml (Just (PatientMultipleBirthInteger mb)) = (Val "multipleBirthInteger" (toInt mb))
+toMultipleBirthXml (Nothing                              ) = (OptVal "multipleBirth" Nothing)
+
+data PatientDeceased
+    = PatientDeceasedBoolean Boolean
+    | PatientDeceasedDateTime DateTime
+    deriving (Eq, Show)
+
+toDeceasedXml (Just (PatientDeceasedBoolean   b)) = (Val    "deceasedBoolean" (toBoolean b))
+toDeceasedXml (Just (PatientDeceasedDateTime dt)) = (Val    "deceasedDateTime" (toDateTime dt))
+toDeceasedXml (Nothing                          ) = (OptVal "deceased" Nothing)
+
+
+data Patient
+    = Patient {
+        patientSuper :: DomainResource,
+        patientIdentifier :: [Identifier],
+        patientActive :: Maybe Boolean,
+        patientName :: [HumanName],
+        patientTelecom :: [ContactPoint],
+        patientGender :: Maybe AdministrativeGender,
+        patientBirthDate :: Maybe Date,
+        patientDeceased :: Maybe PatientDeceased,
+        patientAddress :: [Address],
+        patientMaritalStatus :: Maybe CodeableConcept,
+        patientMultipleBirth :: Maybe PatientMultipleBirth,
+        patientPhoto :: [Attachment],
+        patientContact :: [PatientContact],
+        patientCommunication :: [PatientCommunication],
+        patientGeneralPractitioner :: [Reference],
+        patientManagingOrganization :: Maybe Reference,
+        patientLink :: [PatientLink]}
+    deriving (Eq, Show)
+
+instance ToJSON Patient where
+   toJSON p = object $
+       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+       ("resourceType", "Patient") : toDomainResourceJSON ps
+       ++
+       [
+         "identifier" .= toJSON (patientIdentifier p)
+       , "active"     .= toJSON (patientActive p)
+       , "name"       .= toJSON (patientName p)
+       , "telecom"    .= toJSON (patientTelecom p)
+       , "gender"     .= toJSON (patientGender p)
+       , "birthDate"  .= toJSON (patientBirthDate p)
+       , patientDeceasedToJSON p
+       , "address"    .= toJSON (patientAddress p)
+       , "maritalStatus" .= toJSON (patientMaritalStatus p)
+       , patientMultipleBirthToJSON p
+       , "photo"      .= toJSON (patientPhoto p)
+       , "contact"    .= toJSON (patientContact p)
+       , "communication"        .= toJSON (patientCommunication p)
+       , "generalPractitioner"  .= toJSON (patientGeneralPractitioner p)
+       , "managingOrganization" .= toJSON (patientManagingOrganization p)
+       , "link" .= toJSON (patientLink p)
+       ]
+       where ps = patientSuper p
+             patientDeceasedToJSON (Patient{patientDeceased= Just (PatientDeceasedBoolean   b)}) = ("deceasedBoolean", toJSON b)
+             patientDeceasedToJSON (Patient{patientDeceased= Just (PatientDeceasedDateTime dt)}) = ("deceasedDateTime", toJSON dt)
+             patientDeceasedToJSON (Patient{patientDeceased= Nothing                          }) = ("deceased", Null)
+             patientMultipleBirthToJSON (Patient{patientMultipleBirth= Just (PatientMultipleBirthBoolean  b)}) = ("multipleBirthBoolean", toJSON b)
+             patientMultipleBirthToJSON (Patient{patientMultipleBirth= Just (PatientMultipleBirthInteger mb)}) = ("multipleBirthInteger", toJSON mb)
+             patientMultipleBirthToJSON (Patient{patientMultipleBirth= Nothing                              }) = ("multipleBirth", Null)
+
+instance FromJSON Patient where
+  parseJSON = withObject "Patient" $ \o -> do
+    rt     <- o .:  "resourceType"  :: Parser Text
+    case rt of
+      "Patient" -> do
+        super   <- parseDomainResourceJSON o
+        identifier <- o .:? "identifier" .!= []
+        active  <- o .:? "active"
+        name    <- o .:? "name" .!= []
+        telecom <- o .:? "telecom" .!= []
+        gender  <- o .:? "gender"
+        bd      <- o .:? "birthDate"
+        dec     <- parseDeceasedA o <|> parseDeceasedB o <|> parseF
+        address <- o .:? "address" .!= []
+        maritalStatus <- o .:? "maritalStatus"
+        mb      <- parseMultipleBirthA o <|> parseMultipleBirthB o <|> parseF
+        photo   <- o .:? "photo" .!= []
+        contact <- o .:? "contact" .!= []
+        communication <- o .:? "communication" .!= []
+        gp      <- o .:? "generalPractitioner" .!= []
+        mo      <- o .:? "managingOrganization"
+        link    <- o .:? "link" .!= []
+        return Patient{
+                    patientSuper= super
+                  , patientIdentifier = identifier
+                  , patientActive= active
+                  , patientName = name
+                  , patientTelecom = telecom
+                  , patientGender = gender
+                  , patientBirthDate = bd
+                  , patientDeceased= dec
+                  , patientAddress = address
+                  , patientMaritalStatus = maritalStatus
+                  , patientMultipleBirth = mb
+                  , patientPhoto = photo
+                  , patientContact = contact
+                  , patientCommunication = communication
+                  , patientGeneralPractitioner = gp
+                  , patientManagingOrganization = mo
+                  , patientLink = link
+                  }
+    where parseDeceasedA o = do
+              hasBool <- o .: "deceasedBoolean" 
+              return $ Just (PatientDeceasedBoolean hasBool)
+          parseDeceasedB o = do
+              hasDT <- o .: "deceasedDateTime"
+              return $ Just (PatientDeceasedDateTime hasDT)
+          parseMultipleBirthA o = do
+              hasBool <- o .: "multipleBirthBoolean" 
+              return $ Just (PatientMultipleBirthBoolean hasBool)
+          parseMultipleBirthB o = do
+              hasInt <- o .: "multipleBirthInteger" 
+              return $ Just (PatientMultipleBirthInteger hasInt)
+          parseF = do pure Nothing
+
+
+instance Xmlbf.ToXml Patient where
+   toXml p = Xmlbf.element "Patient" as cs
+     where as = HM.fromList $ catMaybes $ 
+               fmap toAttr [
+                         Val "xmlns" "http://hl7.org/fhir"
+                     -- OptVal "xml:id" (domainResourceAttribs ps)
+                       ]
+           cs = concatMap toElement $
+             toDomainResourceXml (patientSuper p) ++
+             [
+               PropList "identifier"  (fmap Xmlbf.toXml (patientIdentifier p))
+             , OptVal   "active"      (fmap toBoolean (patientActive p))
+             , PropList "name"        (fmap Xmlbf.toXml (patientName p))
+             , PropList "telecom"     (fmap Xmlbf.toXml (patientTelecom p))
+             , OptVal   "gender"      (fmap toAdministrativeGender (patientGender p))
+             , OptVal   "birthDate"   (patientBirthDate p)
+             , toDeceasedXml (patientDeceased p)
+             , PropList "address"        (fmap Xmlbf.toXml (patientAddress p))
+             , OptProp  "maritalStatus" (fmap Xmlbf.toXml (patientMaritalStatus p))
+             , toMultipleBirthXml (patientMultipleBirth p)
+             , PropList "photo"       (fmap Xmlbf.toXml (patientPhoto p))
+             , PropList "contact"     (fmap Xmlbf.toXml (patientContact p))
+             , PropList "communication"         (fmap Xmlbf.toXml (patientCommunication p))
+             , PropList "generalPractitioner"   (fmap Xmlbf.toXml (patientGeneralPractitioner p))
+             , OptPropT "managingOrganization"  (fmap (\x -> (referenceAttribs x, Xmlbf.toXml x)) (patientManagingOrganization p))
+             , PropList "link"        (fmap Xmlbf.toXml (patientLink p))
+             ]
+
+instance Xmlbf.FromXml Patient where
+--   fromXml = Xmlbf.pElement "Patient" $ do -- already in Resource
+   fromXml = do
+        super   <- fromDomainResourceXml
+        identifier <- many $ Xmlbf.pElement "identifier" Xmlbf.fromXml
+        active  <- optional $ Xmlbf.pElement "active" (Xmlbf.pAttr "value")
+        name    <- many $ Xmlbf.pElement "name" Xmlbf.fromXml
+        telecom <- many $ Xmlbf.pElement "telecom" Xmlbf.fromXml
+        gender  <- optional $ Xmlbf.pElement "gender" (Xmlbf.pAttr "value")
+        bd      <- optional $ Xmlbf.pElement "birthDate" (Xmlbf.pAttr "value")
+        dec     <- parseDeceasedA <|> parseDeceasedB <|> parseF
+        address <- many $ Xmlbf.pElement "address" Xmlbf.fromXml
+        maritalStatus <- optional $ Xmlbf.pElement "maritalStatus" Xmlbf.fromXml
+        mb      <- parseMultipleBirthA <|> parseMultipleBirthB <|> parseF
+        photo   <- many $ Xmlbf.pElement "photo" Xmlbf.fromXml
+        contact <- many $ Xmlbf.pElement "contact" Xmlbf.fromXml
+        communication <- many $ Xmlbf.pElement "communication" Xmlbf.fromXml
+        gp      <- many $ Xmlbf.pElement "generalPractitioner" Xmlbf.fromXml
+        mo      <- optional $ Xmlbf.pElement "managingOrganization" Xmlbf.fromXml
+        link    <- many $ Xmlbf.pElement "link" Xmlbf.fromXml
+        return Patient{
+                    patientSuper= super
+                  , patientIdentifier = identifier
+                  , patientActive= fmap fromBoolean active
+                  , patientName = name
+                  , patientTelecom = telecom
+                  , patientGender = fmap fromAdministrativeGender gender
+                  , patientBirthDate = bd
+                  , patientDeceased= dec
+                  , patientAddress = address
+                  , patientMaritalStatus = maritalStatus
+                  , patientMultipleBirth = mb
+                  , patientPhoto = photo
+                  , patientContact = contact
+                  , patientCommunication = communication
+                  , patientGeneralPractitioner = gp
+                  , patientManagingOrganization = mo
+                  , patientLink = link
+                  }
+        where parseDeceasedA = do
+                  hasBool <- Xmlbf.pElement "deceasedBoolean"  (Xmlbf.pAttr "value")
+                  return $ Just (PatientDeceasedBoolean (fromBoolean hasBool))
+              parseDeceasedB = do
+                  hasDT <- Xmlbf.pElement "deceasedDateTime" (Xmlbf.pAttr "value")
+                  return $ Just (PatientDeceasedDateTime hasDT)
+              parseMultipleBirthA = do
+                  hasBool <- Xmlbf.pElement "multipleBirthBoolean"  (Xmlbf.pAttr "value")
+                  return $ Just (PatientMultipleBirthBoolean (fromBoolean hasBool))
+              parseMultipleBirthB = do
+                  hasInt <- Xmlbf.pElement "multipleBirthInteger"  (Xmlbf.pAttr "value")
+                  return $ Just (PatientMultipleBirthInteger (fromInt hasInt))
+              parseF = do pure Nothing
+
+
+parseList as os = mapM (parseAlt as) . toList
+--   parseJSON (Object (H.toList -> [(key, value)]))
+--        | key == left  = Left  <$> parseJSON value
+--        | key == right = Right <$> parseJSON value
+--        data Entry = Entry
+--   parseJSON _        = fail ""
+--
+--   data Entry = Entry
+--  { id :: String
+--  , name :: String
+--  , location :: String
+--  }
+--  deriving Show
+--
+--instance FromJSON [Entry] where
+--  parseJSON x =
+--    parseJSON x >>= mapM parseEntry . toList
+--
+--parseEntry :: (String, Value) -> Parser Entry
+--parseEntry (i, v) =
+--  withObject "entry body" (\ o ->
+--    Entry i <$> o .: "name" <*> o .: "location")
+--    v
+--
+-- instance ToJSON MyJSONObject where
+--   toJSON = genericToJSON defaultOptions
+--     { omitNothingFields = True }
+--
+-- instance FromJSON MyJSONObject where
+--   parseJSON = genericParseJSON defaultOptions
+--     { omitNothingFields = True }
+
+parseAlt as os = pure ()
+
+

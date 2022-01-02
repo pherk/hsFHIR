@@ -1,0 +1,84 @@
+/****************
+ *  n1ql dml    *
+ ****************/
+
+/*
+ *  dml
+ */
+dml-stmt ::= insert | upsert | delete | update | merge
+
+/*
+ *  insert
+ */
+insert ::= 'INSERT' 'INTO' keyspace-ref (insert-values | insert-select) returning-clause?
+
+keyspace-ref ::= (namespace ':')? keyspace ('AS'? alias)?
+
+keyspace ::= identifier
+
+insert-values ::= ( '(' 'PRIMARY'? 'KEY' ',' 'VALUE' ')' )? values-clause
+
+values-clause ::= 'VALUES' '(' expr ',' expr ')' (',' 'VALUES'? '(' expr ',' expr ')')*
+
+insert-select ::= '(' 'PRIMARY'? 'KEY' expr ( ',' 'VALUE' expr )? ')' select
+
+returning-clause ::= 'RETURNING' (result-expr (',' result-expr)* | ('RAW' | 'ELEMENT' | 'VALUE') expr)
+
+/*
+ *  upsert
+ */
+upsert ::= 'UPSERT' 'INTO' keyspace-ref (insert-values | insert-select) returning-clause?
+
+/*
+ *  delete
+ */
+delete ::= 'DELETE' 'FROM' keyspace-ref use-clause? where-clause? limit-clause? returning-clause?
+
+/*
+ *  update
+ */
+update ::= 'UPDATE' keyspace-ref use-clause? set-clause? unset-clause? where-clause? limit-clause? returning-clause?
+
+set-clause ::= 'SET' path '=' expr update-for? (',' path '=' expr update-for?)*
+
+update-for ::= ('FOR' (name-var ':')? var ('IN' | 'WITHIN') path (',' (name-var ':')? var ('IN' | 'WITHIN') path)*)+ ('WHEN' cond)? 'END'
+
+unset-clause ::= 'UNSET' path update-for? (',' path update-for?)*
+
+/*
+ *  merge
+ */
+merge ::= 'MERGE' 'INTO' keyspace-ref 'USING' merge-source 'ON' key-clause merge-actions limit-clause? returning-clause?
+
+merge-source ::= from-keyspace ('AS'? alias)? use-clause? | '(' select ')' 'AS'? alias | expr ('AS'? alias)?
+
+key-clause ::= PRIMARY? KEY expr
+
+merge-actions ::= merge-update? merge-delete? merge-insert?
+
+merge-update ::= 'WHEN' 'MATCHED' 'THEN' 'UPDATE' set-clause? unset-clause? where-clause?
+
+merge-delete ::= 'WHEN' 'MATCHED' 'THEN' 'DELETE' where-clause?
+
+merge-insert ::= 'WHEN' 'NOT' 'MATCHED' 'THEN' 'INSERT' expr where-clause?
+
+/*
+ *  truncate
+ */
+truncate ::= 'TRUNCATE' keyspace-ref
+
+/*
+ *  select-for
+ */
+select-for ::= select 'FOR' ('UPDATE' | 'SHARE') ('OF' keyspace-ref (',' keyspace-ref)*)?
+
+/*
+ *  transaction-stmt
+ */
+transaction-stmt ::= start | commit | rollback
+
+start ::= 'START' 'TRANSACTION'
+
+commit ::= 'COMMIT' 'WORK'?
+
+rollback ::= 'ROLLBACK' 'WORK'?

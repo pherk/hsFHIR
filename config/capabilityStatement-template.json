@@ -1,0 +1,69 @@
+{
+  "resourceType": "CapabilityStatement",
+  "id": "nabu-2.0",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Prototype Capability Statement for Nabu 2.0</p><p>The server offers read and search support on the following resource types:</p> <ul><li>Patient</li></ul></div>"
+  },
+  "name": "Nabu 2.0",
+  "status": "draft",
+  "date": "2019-08-18",
+  "publisher": "eNahar.org",
+  "contact": [
+    {
+      "telecom": [
+        {
+          "system": "url",
+          "value": "http://hl7.org/fhir"
+        }
+      ]
+    }
+  ],
+  "description": "Prototype Capability Statement for Nabu 2.0",
+  "kind": "capability",
+  "software": {
+    "name": "Nabu 2.0 Server"
+  },
+  "fhirVersion": "4.0.0",
+  "format": [
+    "json",
+    "xml"
+  ],
+  "rest": [
+    {
+      "mode": "server",
+      "documentation": "Protoype server Capability Statement for Nabu 2.0",
+      "security": {
+        "service": [
+          {
+            "text": "OAuth"
+          }
+        ],
+        "description": "coming soon OAuth authentication/authorization"
+      },
+      "resource": [
+        {
+          "type": "Patient",
+          "interaction": [
+            {
+              "code": "read"
+            },
+            {
+              "code": "search-type",
+              "documentation": "When a client searches patients with no search criteria, they get a list of all patients they have access too. Servers may elect to offer additional search parameters, but this is not required"
+            }
+          ],
+          "searchParam": [
+            {
+              "name": "_id",
+              "type": "token",
+              "documentation": "_id parameter always supported. For the connectathon, servers may elect which search parameters are supported"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+

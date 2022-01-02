@@ -1,0 +1,178 @@
+/****************
+ *  N1QL SELECT *
+ ****************/
+
+/*
+ *  select statement
+ */
+select ::= select-term (set-op 'ALL'? select-term)* order-by-clause? limit-clause? offset-clause?
+select-term ::= subselect | '(' select ')'
+subselect ::= select-from | from-select
+select-from ::= select-clause from-clause? let-clause? where-clause? group-by-clause?
+from-select ::= from-clause let-clause? where-clause? group-by-clause? select-clause
+set-op ::= 'UNION' | 'INTERSECT' | 'EXCEPT'
+
+/*
+ *  select clause
+ */
+select-clause ::= 'SELECT' ('ALL' | 'DISTINCT')? (result-expr (',' result-expr)* | ('RAW' | 'ELEMENT' | 'VALUE') expr ('AS'? alias)?)
+result-expr ::= (path '.')? '*' | expr ('AS'? alias)?
+path ::= identifier ('[' expr ']')* ('.' path)?
+alias ::= identifier
+
+/*
+ *  from clause
+ */
+from-clause ::= 'FROM' from-term
+from-term ::= from-keyspace ('AS'? alias)? use-clause? | '(' select ')' 'AS'? alias | expr ('AS' alias)? | from-term join-clause | from-term nest-clause | from-term unnest-clause
+from-keyspace ::= (namespace ':')? keyspace
+namespace ::= identifier
+keyspace ::= identifier
+use-clause ::= use-keys-clause | use-index-clause
+use-keys-clause ::= 'USE' 'PRIMARY'? 'KEYS' expr
+use-index-clause ::= 'USE' 'INDEX' '(' index-ref (',' index-ref)* ')'
+index-ref ::= index-name index-using?
+join-clause ::= join-type? 'JOIN' from-keyspace ('AS'? alias)? join-predicate
+join-type ::= 'INNER' | 'LEFT' 'OUTER'?
+join-predicate ::= lookup-join-predicate | index-join-predicate
+lookup-join-predicate ::= 'ON' 'PRIMARY'? 'KEYS' expr
+index-join-predicate ::= 'ON' 'PRIMARY'? 'KEY' expr 'FOR' alias
+nest-clause ::= join-type? 'NEST' from-keyspace ('AS'? alias)? join-predicate
+unnest-clause ::= join-type? ('UNNEST' | 'FLATTEN') expr ('AS'? alias)?
+
+/*
+ *  let clause
+ */
+let-clause ::= 'LET' alias '=' expr (',' alias '=' expr)*
+
+/*
+ *  where clause
+ */
+where-clause ::= 'WHERE' cond
+cond ::= expr
+
+/*
+ *  group-by clause
+ */
+group-by-clause ::= 'GROUP' 'BY' expr (',' expr)* letting-clause? having-clause? | letting-clause
+letting-clause ::= 'LETTING' alias '=' expr (',' alias '=' expr)*
+having-clause ::= 'HAVING' cond
+
+/*
+ *  order-by clause
+ */
+order-by-clause ::= 'ORDER' 'BY' ordering-term (',' ordering-term)*
+ordering-term ::= expr ('ASC' | 'DESC')? ( 'NULLS' ( 'FIRST' | 'LAST' ) )?
+
+/*
+ *  limit clause
+ */
+limit-clause ::= 'LIMIT' expr
+
+/*
+ *  offset clause
+ */
+offset-clause ::= 'OFFSET' expr
+
+/*
+ *  expressions
+ */
+expr ::= literal | identifier | nested-expr | case-expr | logical-term | comparison-term | arithmetic-term | concatenation-term | window-function | function-call | subquery-expr | collection-expr | construction-expr | '(' expr ')'
+logical-term ::= cond 'AND' cond | cond 'OR' cond | 'NOT' cond
+case-expr ::= simple-case-expr | searched-case-expr
+simple-case-expr ::= 'CASE' expr ('WHEN' expr 'THEN' expr)+ ('ELSE' expr)? 'END'
+searched-case-expr ::= 'CASE' ('WHEN' cond 'THEN' expr)+ ('ELSE' expr)? 'END'
+comparison-term ::= expr '=' expr | expr '==' expr | expr '!=' expr | expr '<>' expr | expr '>' expr | expr '>=' expr | expr '<' expr | expr '<=' expr | expr 'NOT'? 'BETWEEN' expr 'AND' expr | expr 'NOT'? 'LIKE' expr | expr 'IS' 'NOT'? 'NULL' | expr 'IS' 'NOT'? 'MISSING' | expr 'IS' 'NOT'? ( 'KNOWN' | 'VALUED' )
+arithmetic-term ::= expr '+' expr | expr '-' expr | expr '*' expr | expr '/' expr | expr '%' expr | '-' expr
+concatenation-term ::= expr '||' expr
+nested-expr ::= field-expr | element-expr | slice-expr
+field-expr ::= expr '.' (identifier | (escaped-identifier 'i'?))
+element-expr ::= expr '[' expr ']'
+slice-expr ::= expr '[' expr ':' expr? ']'
+subquery-expr ::= '(' select ')'
+
+/*
+ *  function calls
+ */
+function-call ::= function-name '(' ( expr ( ',' expr )* | 'DISTINCT' expr | '*' )? ')'
+function-name ::= identifier
+
+/*
+ *  collections
+ */
+collection-expr ::= exists-expr | in-expr | within-expr | range-cond | range-xform
+exists-expr ::= 'EXISTS' expr
+in-expr ::= expr 'NOT'? 'IN' expr
+within-expr ::= expr 'NOT'? 'WITHIN' expr
+name-expr ::= expr
+range-cond ::= ( ('ANY' | 'SOME') | 'EVERY' | ('ANY' | 'SOME') 'AND' 'EVERY') (var 'IN' expr (',' var 'IN' expr)* | name-var ':' var 'IN' expr | var 'WITHIN' expr | name-var ':' var 'WITHIN' expr) 'SATISFIES' cond 'END'
+var ::= identifier
+name-var ::= identifier
+range-xform ::= (('ARRAY' | 'FIRST') expr | 'OBJECT' name-expr ':' expr) 'FOR' (var 'IN' expr (',' var 'IN' expr)* | name-var ':' var 'IN' expr | var 'WITHIN' expr | name-var ':' var 'WITHIN' expr) ('WHEN' cond)? 'END'
+
+/*
+ *  construction
+ */
+construction-expr ::= object | array
+object ::= '{' members? '}'
+members ::= pair (',' members)?
+pair ::= name-expr ':' expr
+array ::= '[' elements? ']'
+elements ::= expr (',' elements)?
+
+/*
+ *  identifiers
+ */
+identifier ::= unescaped-identifier | escaped-identifier
+unescaped-identifier ::= [a-zA-Z_]  ( [0-9a-zA-Z_$] )*
+escaped-identifier ::= '`' chars '`'
+
+/*
+ *  literals
+ */
+literal ::= string | number | 'TRUE' | 'FALSE' | 'NULL' | 'MISSING'
+string ::= '"' chars? '"'
+chars ::= char chars?
+char ::= unicode-character | '\' ('\' | '/' | 'b' | 'f' | 'n' | 'r' | 't' | 'u' hex-digit hex-digit hex-digit hex-digit )
+number ::= int frac? exp?
+int ::= '-'? uint
+uint ::= digit | non-zero-digit digits
+frac ::= '.' digits
+exp ::= e digits
+digits ::= digit digits?
+non-zero-digit ::= [1-9]
+digit ::= [0-9]
+e ::= ('e' | 'E') ('-' | '+')?
+hex-digit ::= [0-9a-fA-F]
+
+/**
+ *  comments
+ **/
+block-comment ::= '/*' ((text)? newline?)+ '*/'
+line-comment ::=  '--' (text)? newline?
+
+
+
+/*
+ *  window functions
+ */
+
+window-function ::= window-function-type '(' window-function-arguments ')'  window-function-options?  'OVER' '(' window-clause ')'
+window-function-arguments ::= ( aggregate-quantifier? expr ( ',' expr ( ',' expr )? )? )?
+aggregate-quantifier ::= 'ALL' | 'DISTINCT'
+window-function-options ::= nthval-from? nulls-treatment?
+nthval-from ::=  'FROM' ( 'FIRST' | 'LAST' )
+nulls-treatment::= ('RESPECT' | 'IGNORE') 'NULLS'
+window-clause ::= window-partition-clause? ( window-order-clause ( window-frame-clause window-frame-exclusion? )? )?
+window-partition-clause ::= 'PARTITION' 'BY' expr ( ',' expr )*
+window-order-clause ::= 'ORDER' 'BY' ordering-term ( ',' ordering-term )*
+window-frame-clause ::= ( 'ROWS' | 'RANGE' | 'GROUPS' ) ( ('UNBOUNDED' 'PRECEDING' | 'CURRENT' 'ROW' | valexpr 'FOLLOWING') |
+                         'BETWEEN' ('UNBOUNDED' 'PRECEDING' | 'CURRENT' 'ROW' | valexpr ('PRECEDING' | 'FOLLOWING'))
+                         'AND' ('UNBOUNDED' 'FOLLOWING' | 'CURRENT' 'ROW' | valexpr ('PRECEDING' | 'FOLLOWING')) )
+window-frame-exclusion ::= 'EXCLUDE' ( 'CURRENT' 'ROW' | 'GROUP' | 'TIES' | 'NO' 'OTHERS' )
+window-function-type ::=  aggregate-functions | rank-functions | 'ROW_NUMBER' | 'RATIO_TO_REPORT' |
+                            'NTILE' | 'LAG' | 'LEAD' | 'FIRST_VALUE' | 'LAST_VALUE' | 'NTH_VALUE'
+aggregate-functions ::= 'ARRAY_AGG' | 'AVG' | 'COUNT' | 'COUNTN' | 'MAX' | 'MEAN' | 'MEDIAN' | 'MIN' | 'SUM' |
+                        'STDDEV' | 'STDDEV_SAMP' | 'STDDEV_POP' | 'VARIANCE' | 'VAR_SAMP' | 'VAR_POP'
+rank-functions ::= 'RANK' | 'DENSE_RANK' | 'PERCENT_RANK' | 'CUME_DIST'
+

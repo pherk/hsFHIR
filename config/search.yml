@@ -1,0 +1,458 @@
+scVersion : "v4.0.1"
+scStatus : "R4"
+scReservedKeys : 
+    "_id"            : {rkKeyType : Param,   rkDataType : Token,   rkStatus : full}
+    "_lastUpdated"   : {rkKeyType : Param,   rkDataType : Date,    rkStatus : full}
+    "_tag"           : {rkKeyType : Param,   rkDataType : Token,   rkStatus : full}
+    "_profile"       : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_source"        : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_security"      : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_text"          : {rkKeyType : Param,   rkDataType : String,  rkStatus : nyi}
+    "_content"       : {rkKeyType : Param,   rkDataType : Token,   rkStatus : nyi}
+    "_count"         : {rkKeyType : Result,  rkDataType : Number,  rkStatus : full}
+    "_format"        : {rkKeyType : Control, rkDataType : Token,   rkStatus : full}
+    "_include"       : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_revinclude"    : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_sort"          : {rkKeyType : Control, rkDataType : Token,   rkStatus : full}
+    "_summary"       : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_contained"     : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_containedType" : {rkKeyType : Control, rkDataType : Token,   rkStatus : nyi}
+    "_pretty"        : {rkKeyType : Result,  rkDataType : Boolean, rkStatus : nyi}
+    "_total"         : {rkKeyType : Result,  rkDataType : Token,   rkStatus : nyi} #-- none, estimate, accurate 
+    "page"           : {rkKeyType : Result,  rkDataType : Number,  rkStatus : full}
+    "_elements"      : {rkKeyType : Elements, rkDataType : Token,   rkStatus : full}
+    "_list"          : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi}
+    "_type"          : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi}
+    "_filter"        : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi}
+    "_query"         : {rkKeyType : Special, rkDataType : Token,   rkStatus : nyi} #-- ??
+scModifierRestrictions :
+    "missing"    : [Boolean,Date,Number,Quantity,Reference,String,Token,Uri]
+    "exact"      : [String]
+    "contains"   : [String]
+    "starts-with": [String]      # non-standard
+    "text"       : [Token]
+    "text"       : [Token]
+    "in"         : [Token]
+    "below"      : [Token, Reference, Uri]
+    "above"      : [Token, Reference, Uri]
+    "not-in"     : [Token]
+    "text"       : [Token]
+    "type"       : [Reference]   # Resource, Identifier
+scPrefixRestrictions :
+    "eq"         : [Date,Number,Quantity]
+    "ne"         : [Date,Number,Quantity]
+    "lt"         : [Date,Number,Quantity]
+    "gt"         : [Date,Number,Quantity]
+    "le"         : [Date,Number,Quantity]
+    "ge"         : [Date,Number,Quantity]
+    "eb"         : [Date,Number,Quantity]
+    "sa"         : [Date,Number,Quantity]
+    "ap"         : [Date,Number,Quantity]
+scExpandKeys :
+    - "filter"
+    - "date"
+    - "offset"
+    - "count"
+    - "includeDesignations"
+    - "designation"
+    - "includeDefinition"
+    - "activeOnly"
+    - "excludeNested"
+    - "excludeNotForUI"
+    - "excludePostCoordinated"
+    - "displayLanguage"
+    - "exclude-system"
+    - "system-version"
+    - "check-system-version"
+    - "force-system-version"
+scCountDefault : 25
+scCountMaximum : 1000
+scResources :
+  "Any" : 
+     riStatus : "N"
+     riSupport : true
+     riQuery :
+       "_id" :
+                spiResourceType : Id
+                spiParamType : String
+                spiPath : "id"
+                spiIndexType : "simple"
+       "_lastUpdated" :
+                spiResourceType : Date
+                spiParamType : Date
+                spiPath : "meta/lastUpdated"
+                spiIndexType : "simple"
+       "_profile" :
+                spiResourceType : Uri
+                spiParamType : String
+                spiPath : "meta/profile"
+                spiIndexType : "array"
+       "_source" :
+                spiResourceType : Uri
+                spiParamType : String
+                spiPath : "meta/source"
+                spiIndexType : "simple"
+       "_security" :
+                spiResourceType : Coding
+                spiParamType : Token
+                spiPath : "meta/security"
+                spiIndexType : "array"
+       "_tag" :
+                spiResourceType : Coding
+                spiParamType : Token
+                spiPath : "meta/tag"
+                spiIndexType : "array"
+       "_text" :
+                spiResourceType : String
+                spiParamType : String
+                spiPath : "text"
+                spiIndexType : "simple"
+       "_content" :
+                spiResourceType : String
+                spiParamType : String
+                spiIndexType : "simple"
+       "_query" :
+                spiResourceType : Token
+                spiParamType : String
+                spiIndexType : "simple"
+     riMandatory : [] 
+  Bundle :
+     riStatus : "n"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+     riMandatory : [] 
+  CapabilityStatement :
+     riStatus : "n"
+     riSupport : true
+     riQuery : {}
+     riMandatory : [] 
+  Encounter :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+        "date" :
+            spiResourceType : Period
+            spiParamType : Date
+            spiPath : "period"
+            spiIndexType : "simple"
+        "participant" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "participant/individual"
+            spiIndexType : "array"
+        "participant-type" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "participant/type"
+            spiIndexType : "array/array"
+        "class" :
+            spiResourceType : Coding
+            spiParamType : Token
+            spiPath : "class"
+            spiIndexType : "simple"
+        "location-period" :
+            spiResourceType : Period
+            spiParamType : Date
+            spiPath : "location/period"
+            spiIndexType : "array/simple"
+        "reason-code" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "reasonCode"
+            spiIndexType : "array/cc"
+        "service-type" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "serviceType"
+            spiIndexType : "cc"
+        "type" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "type"
+            spiIndexType : "array/cc"
+     riMandatory : [ status, class ] 
+  Patient :
+      riStatus : "n"
+      riSupport : true
+      riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "active" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "active"
+            spiIndexType : "simple"
+        "birthdate" :
+            spiResourceType : Date
+            spiParamType : Date
+            spiPath : "birthDate"
+            spiIndexType : "simple"
+        "family" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/family"
+            spiIndexType : "array/simple"
+        "given" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/given"
+            spiIndexType : "array/array"
+        "name-use" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "name/use"
+            spiIndexType : "array/simple"
+        "gender" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "gender"
+            spiIndexType : "simple"
+#       "marital-status" :
+#           spiResourceType : Code
+#           spiParamType : Token
+#           spiPath : "maritalStatus"
+#           spiIndexType : "cc"
+        "language" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "communication/language"
+            spiIndexType : "array/cc"
+        "address-city" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/city"
+            spiIndexType : "array/simple"
+        "address-postalcode" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/postalCode"
+            spiIndexType : "array/simple"
+        "address-use" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "address/use"
+            spiIndexType : "array/simple"
+        "email" :
+            spiResourceType : String
+            spiParamType : String 
+            spiPath : "telecom[system='email']/value"
+            spiIndexType : "array/simple"
+        "phone" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom[system='phone']/value"
+            spiIndexType : "array/simple"
+      riMandatory : []
+  Practitioner :
+     riStatus : "3"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "active" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "active"
+            spiIndexType : "simple"
+        "birthdate" :
+            spiResourceType : Date
+            spiParamType : Date
+            spiPath : "birthDate"
+            spiIndexType : "simple"
+        "family" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/family"
+            spiIndexType : "array/simple"
+        "given" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "name/given"
+            spiIndexType : "array/array"
+        "name-use" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "name/use"
+            spiIndexType : "array/simple"
+        "gender" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "gender"
+            spiIndexType : "simple"
+        "communication" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "communication/language"
+            spiIndexType : "array/cc"
+        "address-city" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/city"
+            spiIndexType : "array/simple"
+        "address-postalcode" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "address/postalCode"
+            spiIndexType : "array/simple"
+        "address-use" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "address/use"
+            spiIndexType : "array/simple"
+        "email" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "telecom[system='email']/value"
+            spiIndexType : "array/simple"
+        "phone" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom[system='phone']/value"
+            spiIndexType : "array/simple"
+     riMandatory : [] 
+  PractitionerRole :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "subject"
+            spiIndexType : "simple"
+        "active" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "active"
+            spiIndexType : "simple"
+        "date" :
+            spiResourceType : Date
+            spiParamType : Date
+            spiPath : "period/start|end"
+            spiIndexType : "simple"
+        "email" :
+            spiResourceType : String
+            spiParamType : String
+            spiPath : "telecom[system='email']/value"
+            spiIndexType : "array/simple"
+        "phone" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom[system='phone']/value"
+            spiIndexType : "array/simple"
+        "practitioner" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "practitioner"
+            spiIndexType : "simple"
+        "organization" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "organization"
+            spiIndexType : "simple"
+        "service" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "healthcareService"
+            spiIndexType : "simple"
+        "endpoint" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "endpoint"
+            spiIndexType : "simple"
+        "location" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "location"
+            spiIndexType : "simple"
+        "telecom" :
+            spiResourceType : String
+            spiParamType : Token
+            spiPath : "telecom/value"
+            spiIndexType : "array/simple"
+        "role" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "code"
+            spiIndexType : "array/cc"
+        "speciality" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "speciality"
+            spiIndexType : "array/cc"
+     riMandatory : [] 
+  Task :
+     riStatus : "2"
+     riSupport : true
+     riQuery :
+        "identifier" :
+            spiResourceType : Identifier
+            spiParamType : Token
+            spiPath : "identifier"
+            spiIndexType : "array"
+        "code" :
+            spiResourceType : CodeableConcept
+            spiParamType : Token
+            spiPath : "code"
+            spiIndexType : "cc"
+        "status" :
+            spiResourceType : Code
+            spiParamType : Token
+            spiPath : "status"
+            spiIndexType : "simple"
+        "subject" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "for"
+            spiIndexType : "simple"
+        "owner" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "owner"
+            spiIndexType : "simple"
+        "recipient" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "restriction/recipient"
+            spiIndexType : "array"
+        "recipient-date" :
+            spiResourceType : Period
+            spiParamType : Date
+            spiPath : "restriction/period"
+            spiIndexType : "array"
+        "requester" :
+            spiResourceType : Reference
+            spiParamType : Token
+            spiPath : "requester"
+            spiIndexType : "simple"
+     riMandatory : [status] 

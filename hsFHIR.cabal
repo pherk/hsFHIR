@@ -1,0 +1,164 @@
+cabal-version: 1.12
+
+name:           hsFHIR
+version:        0.2.5.3
+description:    Please see the README on GitHub at <https://github.com/pherk/hasntwo#readme>
+homepage:       https://github.com/pherk/hsFHIR#readme
+bug-reports:    https://github.com/pherk/hsFHIR/issues
+author:         Peter Herkenrath
+maintainer:     p.herkenrath@uni-koeln.de
+copyright:      MAAT
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+
+source-repository head
+  type: git
+  location: https://github.com/pherk/hsFHIR
+
+library
+  exposed-modules:
+      Data.FHIR.Datatypes
+    , Data.FHIR.Datatypes.Internal
+    , Data.FHIR.Datatypes.ElementDefinition
+    , Data.FHIR.Datatypes.ResourceTypes
+    , Data.FHIR.Datatypes.XhtmlDiv
+    , Data.FHIR.Datatypes.XML
+    , Data.FHIR.Datatypes.XmlUtils
+--  , Data.FHIR.Datatypes.ExtensionAlt
+--  , Data.FHIR.Datatypes.GeneralPurpose
+--  , Data.FHIR.Datatypes.Metadata
+--  , Data.FHIR.Datatypes.Primitive
+--  , Data.FHIR.Datatypes.SPBackbone
+--  , Data.FHIR.Datatypes.SPDosage
+--  , Data.FHIR.Datatypes.SPElementDefinition
+--  , Data.FHIR.Datatypes.SPExtension
+--  , Data.FHIR.Datatypes.SPMeta
+--  , Data.FHIR.Datatypes.SPNarrative
+--  , Data.FHIR.Datatypes.SPReference
+--  , Data.FHIR.Internal.Base
+    , Data.FHIR.Interface
+    , Data.FHIR.Date
+    , Data.FHIR.Model
+    , Data.FHIR.Search
+    , Data.FHIR.Resources
+    , Data.FHIR.Resources.ActivityDefinition
+    , Data.FHIR.Resources.AdverseEvent
+    , Data.FHIR.Resources.AllergyIntolerance
+    , Data.FHIR.Resources.Binary
+    , Data.FHIR.Resources.Bundle
+    , Data.FHIR.Resources.CapabilityStatement
+    , Data.FHIR.Resources.CarePlan
+    , Data.FHIR.Resources.CareTeam
+    , Data.FHIR.Resources.Claim
+    , Data.FHIR.Resources.ClinicalImpression
+    , Data.FHIR.Resources.CodeSystem
+    , Data.FHIR.Resources.Communication
+    , Data.FHIR.Resources.Composition
+    , Data.FHIR.Resources.Condition
+    , Data.FHIR.Resources.Consent
+    , Data.FHIR.Resources.Coverage
+    , Data.FHIR.Resources.Device
+    , Data.FHIR.Resources.DiagnosticReport
+    , Data.FHIR.Resources.DomainResource
+    , Data.FHIR.Resources.Encounter
+    , Data.FHIR.Resources.EpisodeOfCare
+    , Data.FHIR.Resources.ExplanationOfBenefit
+    , Data.FHIR.Resources.FamilyHistory
+    , Data.FHIR.Resources.Goal
+    , Data.FHIR.Resources.Group
+    , Data.FHIR.Resources.HealthcareService
+    , Data.FHIR.Resources.ICalendar
+    , Data.FHIR.Resources.ImagingStudy
+    , Data.FHIR.Resources.Immunization
+    , Data.FHIR.Resources.Leave
+    , Data.FHIR.Resources.Library
+    , Data.FHIR.Resources.Location
+    , Data.FHIR.Resources.MedicationRequest
+    , Data.FHIR.Resources.Observation
+    , Data.FHIR.Resources.OperationOutcome
+    , Data.FHIR.Resources.Organization
+--    , Data.FHIR.Resources.Parameters
+    , Data.FHIR.Resources.Patient
+    , Data.FHIR.Resources.PlanDefinition
+    , Data.FHIR.Resources.Practitioner
+    , Data.FHIR.Resources.PractitionerRole
+    , Data.FHIR.Resources.Procedure
+    , Data.FHIR.Resources.Provenance
+    , Data.FHIR.Resources.Questionnaire
+    , Data.FHIR.Resources.QuestionnaireResponse
+    , Data.FHIR.Resources.Resource
+    , Data.FHIR.Resources.ResourceContainer
+    , Data.FHIR.Resources.RequestGroup
+    , Data.FHIR.Resources.RiskAssessment
+    , Data.FHIR.Resources.SearchParameter
+    , Data.FHIR.Resources.ServiceRequest
+    , Data.FHIR.Resources.Task
+--    , Data.FHIR.Resources.XML
+    , Data.FHIR.RestApi
+  other-modules:
+        Paths_hsFHIR
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson
+    , attoparsec >= 0.13
+    , attoparsec-iso8601 >= 1.0.0
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , couchbase-simple
+    , data-default
+    , lens
+    , mtl
+    , prettyprinter >= 1.7.0
+    , refined
+    , rio
+    , scientific
+    , stringsearch
+    , text
+    , time
+    , time-compat
+    , unordered-containers
+    , uuid
+    , utf8-string
+    , xeno
+    , xmlbf
+    , xmlbf-xeno
+    , yaml
+  default-language: Haskell2010
+
+test-suite unit
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_hsFHIR
+    , Data.FHIR.DateSpec
+    , Data.FHIR.Datatypes.InternalSpec
+    , Data.FHIR.Datatypes.XmlSpec
+    , Data.FHIR.Resources.PatientSpec
+  hs-source-dirs:
+      test/unit
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , attoparsec >= 0.13
+    , attoparsec-iso8601 >= 1.0.0
+    , base
+    , bytestring
+    , containers                                                                                                                                 
+    , hsFHIR
+    , hspec
+    , hspec-discover
+    , refined >= 0.4.2.1                                                                                                                       
+    , rio >= 0.1.9.2
+    , text
+    , time-compat
+    , utf8-string
+    , xeno
+    , xmlbf
+    , xmlbf-xeno
+    , yaml
+  default-language: Haskell2010

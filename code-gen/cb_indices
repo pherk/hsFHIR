@@ -1,0 +1,53 @@
+%% Global
+CREATE INDEX `resourceType` ON `nabu`(`resourceType`)
+CREATE INDEX `id` ON `nabu`(`id`)
+CREATE INDEX `identifier_value` ON `nabu`((distinct (array (`i`.`value`) for `i` in `identifier` end)))
+CREATE INDEX `identifier_system` ON `nabu`((distinct (array (`i`.`system`) for `i` in `identifier` end)))
+CREATE INDEX `identifier_system_value` ON `nabu`((distinct (array {`i`.`system`, `i`.`value`} for `i` in `identifier` end)))
+CREATE INDEX `coding_code` ON `nabu`((distinct (array (`c`.`code`) for `c` in `coding` end)))
+CREATE INDEX `type_coding` ON `nabu`((distinct (array (`t`.`coding`) for `t` in `type` end)))
+CREATE INDEX `subject` ON `nabu`(subject.reference)
+CREATE INDEX `type_subject` ON `nabu`(`resourceType`,`subject`.reference)
+CREATE INDEX `type_status` ON `nabu`(`resourceType`,`status`)
+CREATE INDEX `typeid` ON `nabu`(resourceType,id);
+%% History
+CREATE INDEX `id` ON `history`(`id`)
+CREATE INDEX `typeid` ON `history`(`resourceType`,`id`)
+%% Patient
+CREATE INDEX `patient_text_id` ON `nabu`(`id`, `text`.`div`) WHERE (`resourceType` = "Patient" and active = true)
+CREATE INDEX `patient_active` ON `nabu`(active) WHERE`resourceType`='Patient';
+CREATE INDEX `patient_birthDate` ON `nabu`(`birthDate`) WHERE (`resourceType` = "Patient")
+CREATE INDEX `language_coding` ON `nabu`((distinct (array (`l`.`coding`) for `l` in `language` end)))
+CREATE INDEX `communication_language` ON `nabu`((distinct (array (`cc`.`language`) for `cc` in `communication` end)))
+CREATE INDEX `maritalStatus_coding` ON `nabu`((distinct (array (`m`.`coding`) for `m` in `maritalStatus` end)))
+CREATE INDEX patient_name ON `nabu`(name.family, name.given) where resourceType='Patient';
+CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY n.family, n.given FOR n IN name WHEN n.use='official' END) where resourceType='Patient';
+CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.use='official' END) where resourceType='Patient';
+CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.'use'='official' END) where resourceType='Patient';
+CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.family='official' END) where resourceType='Patient';
+CREATE INDEX patient_official_name ON `nabu`(ALL ARRAY [n.family, n.given] FOR n IN name WHEN n.`use`='official' END) where resourceType='Patient';
+CREATE INDEX patient_official_family ON `nabu`(ALL ARRAY [n.`use`, n.family] FOR n IN name END) where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(ALL ARRAY [n.given] FOR n IN name END) where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given END)) where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given END) WHEN name.`use`='official') where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official') END) where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official')) END where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official'END)) where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(ALL DISTINCT(ARRAY g FOR g IN name.given WHEN name.`use`='official'END)) where resourceType='Patient';
+CREATE INDEX patient_given ON `nabu`(ALL TOKENS(name.given)) where resourceType='Patient';
+CREATE INDEX `patient_family` ON `nabu`((ANY distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` when n.`use`='official' end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_family` ON `nabu`((distinct (array [n.`use`, `n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_family` ON `nabu`((distinct (array [n.`use`, `n`.`family`] for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_family` ON `nabu`((distinct (array [`n`.`family`] for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_family` ON `nabu`((distinct (array `n`.`family` for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_name` ON `nabu`(name) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_name` ON `nabu`(distinct (array `n` for `n` in `name` end)) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_name_given` ON `nabu`(distinct (array `n.given` for `n` in `name` end)) WHERE (`resourceType` = "Patient")
+CREATE INDEX `patient_name_use` ON `nabu`(distinct (array n.`use` for n in name end))
+CREATE INDEX `patient_name_family_use` ON `nabu`(distinct (array n.family for n in name when n.`use`= 'official' end)) where resourceType = 'Patient';
+CREATE INDEX `patient_name_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient")
+
+%% Task
+CREATE INDEX `task_for` ON `nabu`(`for.reference`) where resourceType = 'Task';

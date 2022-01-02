@@ -1,0 +1,190 @@
+version : "v4.0.0"
+status : "R4"
+resources :
+ "*" : 
+   - status : n
+   - support : true
+   - indexes :
+           - spname : id 
+             type : token
+             index : "typeid"
+             def   : "('resourceType', 'id')" 
+           - spname : identifier 
+             type : token
+             index : "identifier_value"
+             def   : "(distinct (array (`i`.`value`) for `i` in `identifier` end))" 
+           - spname : identifier 
+             type : token
+             index : "identifier_system"
+             def   : "(distinct (array (`i`.`system`) for `i` in `identifier` end))" 
+           - spname : identifier 
+             type : token
+             # CREATE INDEX `identifier_system_value` ON `nabu`((distinct (array {"system": (`i`.`system`), "value": (`i`.`value`)} for `i` in `identifier` end))) 
+             index : "identifier_system_value"
+             def   : "((distinct (array {\"system\": (`i`.`system`), \"value\": (`i`.`value`)} for `i` in `identifier` end)))"
+#      <<"Account">> => [{status, 2}, {support, false}]
+#    , <<"ActivityDefinition">> => [{status, 2}, {support, true}]
+#    , <<"AdverseEvent">> => [{status, 0}, {support, true}]
+#    , <<"AllergyIntolerance">> => [{status, 3}, {support, true}]
+#    , <<"Appointment">> => [{status, 3}, {support, false}]
+#    , <<"AppointmentResponse">> => [{status, 3}, {support, false}]
+#    , <<"AuditEvent">> => [{status, 3}, {support, true}]
+#    , <<"Basic">> => [{status, 1}, {support, true}]
+#    , <<"Binary">> => [{status, n}, {support, true}]
+#    , <<"BiologicallyDerivedProduct">> => [{status, 0}, {support, false}]
+#    , <<"BodyStructure">> => [{status, 1}, {support, false}]
+#    , <<"Bundle">> => [{status, n}, {support, true}]
+#    , <<"CapabilityStatement">> => [{status, n}, {support, true}]
+#    , <<"CarePlan">> => [{status, 2}, {support, true}]
+#    , <<"CareTeam">> => [{status, 2}, {support, true}]
+#    , <<"CatalogEntry">> => [{status, 0}, {support, false}]
+#    , <<"ChargeItem">> => [{status, 0}, {support, false}]
+#    , <<"ChargeItemDefinition">> => [{status, 0}, {support, false}]
+#    , <<"Claim">> => [{status, 2}, {support, true}]
+#    , <<"ClaimResponse">> => [{status, 2}, {support, false}]
+#    , <<"ClinicalImpression">> => [{status, 0}, {support, true}]
+#    , <<"CodeSystem">> => [{status, n}, {support, true}]
+#    , <<"Communication">> => [{status, 2}, {support, true}]
+#    , <<"CommunicationRequest">> => [{status, 2}, {support, false}]
+#    , <<"CompartmentDefinition">> => [{status, 1}, {support, false}]
+#    , <<"Composition">> => [{status, 2}, {support, true}]
+#    , <<"ConceptMap">> => [{status, 3}, {support, false}]
+#    , <<"Condition">> => [{status, 3}, {support, true}]
+#    , <<"Consent">> => [{status, 2}, {support, true}]
+#    , <<"Contract">> => [{status, 1}, {support, false}]
+#    , <<"Coverage">> => [{status, 2}, {support, true}]
+#    , <<"CoverageEligibilityRequest">> => [{status, 2}, {support, false}]
+#    , <<"CoverageEligibilityResponse">> => [{status, 2}, {support, false}]
+#    , <<"DetectedIssue">> => [{status, 1}, {support, false}]
+#    , <<"Device">> => [{status, 0}, {support, true}]
+#    , <<"DeviceDefinition">> => [{status, 0}, {support, false}]
+#    , <<"DeviceMetric">> => [{status, 1}, {support, false}]
+#    , <<"DeviceRequest">> => [{status, 0}, {support, false}]
+#    , <<"DeviceUseStatement">> => [{status, 0}, {support, false}]
+#    , <<"DiagnosticReport">> => [{status, 3}, {support, true}]
+#    , <<"DocumentManifest">> => [{status, 2}, {support, false}]
+#    , <<"DocumentReference">> => [{status, 3}, {support, false}]
+#    , <<"EffectEvidenceSynthesis">> => [{status, 0}, {support, false}]
+#    , <<"Encounter">> => [{status, 2}, {support, true}]
+#    , <<"Endpoint">> => [{status, 2}, {support, false}]
+#    , <<"EnrollmentRequest">> => [{status, 0}, {support, false}]
+#    , <<"EnrollmentResponse">> => [{status, 0}, {support, false}]
+#    , <<"EpisodeOfCare">> => [{status, 2}, {support, true}]
+#    , <<"EventDefinition">> => [{status, 0}, {support, false}]
+#    , <<"Evidence">> => [{status, 0}, {support, false}]
+#    , <<"EvidenceVariable">> => [{status, 0}, {support, false}]
+#    , <<"ExampleScenario">> => [{status, 0}, {support, false}]
+#    , <<"ExplanationOfBenefit">> => [{status, 2}, {support, true}]
+#    , <<"FamilyMemberHistory">> => [{status, 2}, {support, true}]
+#    , <<"Flag">> => [{status, 1}, {support, false}]
+#    , <<"Goal">> => [{status, 2}, {support, true}]
+#    , <<"GraphDefinition">> => [{status, 1}, {support, false}]
+#    , <<"Group">> => [{status, 1}, {support, true}]
+#    , <<"GuidanceResponse">> => [{status, 2}, {support, false}]
+#    , <<"HealthcareService">> => [{status, 2}, {support, true}]
+#    , <<"ImagingStudy">> => [{status, 3}, {support, true}]
+#    , <<"Immunization">> => [{status, 3}, {support, true}]
+#    , <<"ImmunizationEvaluation">> => [{status, 0}, {support, false}]
+#    , <<"ImmunizationRecommendation">> => [{status, 1}, {support, false}]
+#    , <<"ImplementationGuide">> => [{status, 1}, {support, false}]
+#    , <<"InsurancePlan">> => [{status, 0}, {support, false}]
+#    , <<"Invoice">> => [{status, 0}, {support, false}]
+#    , <<"Library">> => [{status, 2}, {support, true}]
+#    , <<"Linkage">> => [{status, 0}, {support, false}]
+#    , <<"List">> => [{status, 1}, {support, false}]
+#    , <<"Location">> => [{status, 3}, {support, true}]
+#    , <<"Measure">> => [{status, 2}, {support, false}]
+#    , <<"MeasureReport">> => [{status, 2}, {support, false}]
+#    , <<"Media">> => [{status, 1}, {support, false}]
+#    , <<"Medication">> => [{status, 3}, {support, false}]
+#    , <<"MedicationAdministration">> => [{status, 2}, {support, false}]
+#    , <<"MedicationDispense">> => [{status, 2}, {support, false}]
+#    , <<"MedicationKnowledge">> => [{status, 0}, {support, false}]
+#    , <<"MedicationRequest">> => [{status, 3}, {support, true}]
+#    , <<"MedicationStatement">> => [{status, 3}, {support, false}]
+#    , <<"MedicinalProduct">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductAuthorization">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductContraindication">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductIndication">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductIngredient">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductInteraction">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductManufactured">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductPackaged">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductPharmaceutical">> => [{status, 0}, {support, false}]
+#    , <<"MedicinalProductUndesirableEffect">> => [{status, 0}, {support, false}]
+#    , <<"MessageDefinition">> => [{status, 1}, {support, false}]
+#    , <<"MessageHeader">> => [{status, 4}, {support, false}]
+#    , <<"MolecularSequence">> => [{status, 1}, {support, false}]
+#    , <<"NamingSystem">> => [{status, 1}, {support, false}]
+#    , <<"NutritionOrder">> => [{status, 2}, {support, false}]
+#    , <<"Observation">> => [{status, n}, {support, true}]
+#    , <<"ObservationDefinition">> => [{status, 0}, {support, false}]
+#    , <<"OperationDefinition">> => [{status, n}, {support, false}]
+#    , <<"OperationOutcome">> => [{status, n}, {support, true}]
+#    , <<"Organization">> => [{status, 3}, {support, true}]
+#    , <<"OrganizationAffiliation">> => [{status, 0}, {support, false}]
+#    , <<"Parameters">> => [{status, n}, {support, false}]
+  Patient :
+          - status : n
+          - support : true
+          - indexes :
+              - spname :text 
+                type : token
+                # CREATE INDEX `patient_text_id` ON `nabu`(`id`,(`text`.`div`)) WHERE (`resourceType` = "Patient") 
+                index : "patient_type_id"
+                def   : "(`id`, ('text'.'div'))"
+                where : "((`resourceType` = \"Patient\") and (`active` = true))" 
+              - spname : family
+                type : token
+                # CREATE INDEX `patient_name_family` ON `nabu`((distinct (array (`n`.`family`) for `n` in `name` end))) WHERE (`resourceType` = "Patient") 
+                index : "patient_name_family"
+                def   : "((distinct (array `n.family` for `n` in `name` end)))"
+                where : "(`resourceType` = \"Patient\")" 
+#             {<<"family">>, {{type, token}, {index, {<<"patient_name_family_use">, <<"((distinct (array `n.family` for `n` in `name` when ((`n`. use`) = 'official') end)))">>,<<"(`resourceType` = "Patient")">>}}}} 
+#             {<<"given">>,  {{type, token}, {index, {<<"patient_name_given">, <<"((distinct (array `n.given` for `n` in `name` end)))">>,<<"((`resourceType` = "Patient") and (`active` = true))">>}}}} 
+              - spname : birthdate
+                type : token
+                index : "patient_birthdate"
+                def   : "(`birthDate`)"
+                where : "(`resourceType` = \"Patient\")" 
+#             {<<"active">>,  {{type, token}, {index, {<<"patient_active">, <<"(`active`)">>,<<"(`resourceType` = "Patient")">>}}}} 
+#    , <<"PaymentNotice">> => [{status, 2}, {support, false}]
+#    , <<"PaymentReconciliation">> => [{status, 2}, {support, false}]
+#    , <<"Person">> => [{status, 2}, {support, false}]
+#    , <<"PlanDefinition">> => [{status, 2}, {support, true}]
+#    , <<"Practitioner">> => [{status, 3}, {support, true}]
+#    , <<"PractitionerRole">> => [{status, 2}, {support, true}]
+#    , <<"Procedure">> => [{status, 3}, {support, true}]
+#    , <<"Provenance">> => [{status, 3}, {support, true}]
+#    , <<"Questionnaire">> => [{status, 3}, {support, true}]
+#    , <<"QuestionnaireResponse">> => [{status, 3}, {support, true}]
+#    , <<"RelatedPerson">> => [{status, 2}, {support, false}]
+#    , <<"RequestGroup">> => [{status, 2}, {support, true}]
+#    , <<"ResearchDefinition">> => [{status, 0}, {support, false}]
+#    , <<"ResearchElementDefinition">> => [{status, 0}, {support, false}]
+#    , <<"ResearchStudy">> => [{status, 0}, {support, false}]
+#    , <<"ResearchSubject">> => [{status, 0}, {support, false}]
+#    , <<"RiskAssessment">> => [{status, 1}, {support, true}]
+#    , <<"RiskEvidenceSynthesis">> => [{status, 0}, {support, false}]
+#    , <<"Schedule">> => [{status, 3}, {support, false}]
+#    , <<"SearchParameter">> => [{status, 3}, {support, true}]
+#    , <<"ServiceRequest">> => [{status, 2}, {support, false}]
+#    , <<"Slot">> => [{status, 3}, {support, false}]
+#    , <<"Specimen">> => [{status, 2}, {support, false}]
+#    , <<"SpecimenDefinition">> => [{status, 0}, {support, false}]
+#    , <<"StructureDefinition">> => [{status, n}, {support, false}]
+#    , <<"StructureMap">> => [{status, 2}, {support, false}]
+#    , <<"Subscription">> => [{status, 3}, {support, false}]
+#    , <<"Substance">> => [{status, 2}, {support, false}]
+#    , <<"SubstancePolymer">> => [{status, 0}, {support, false}]
+#    , <<"SubstanceReferenceInformation">> => [{status, 0}, {support, false}]
+#    , <<"SubstanceSpecification">> => [{status, 0}, {support, false}]
+#    , <<"SupplyDelivery">> => [{status, 1}, {support, false}]
+#    , <<"SupplyRequest">> => [{status, 1}, {support, false}]
+#    , <<"Task">> => [{status, 2}, {support, true}]
+#    , <<"TerminologyCapabilities">> => [{status, 0}, {support, false}]
+#    , <<"TestReport">> => [{status, 0}, {support, false}]
+#    , <<"TestScript">> => [{status, 2}, {support, false}]
+#    , <<"ValueSet">> => [{status, n}, {support, false}]
+#    , <<"VerificationResult">> => [{status, 0}, {support, false}]
+#    , <<"VisionPrescription">> => [{status, 2}, {support, false}]

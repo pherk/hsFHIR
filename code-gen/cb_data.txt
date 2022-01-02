@@ -1,0 +1,66 @@
+[
+  {
+    "$1": 1008,
+    "resourceType": "Patient"
+  },
+  {
+    "$1": 4279,
+    "resourceType": "MedicationRequest"
+  },
+  {
+    "$1": 27758,
+    "resourceType": "Claim"
+  },
+  {
+    "$1": 1796,
+    "resourceType": "CarePlan"
+  },
+  {
+    "$1": 23479,
+    "resourceType": "ExplanationOfBenefit"
+  },
+  {
+    "$1": 21072,
+    "resourceType": "Immunization"
+  },
+  {
+    "$1": 884,
+    "resourceType": "Organization"
+  },
+  {
+    "$1": 209,
+    "resourceType": "ImagingStudy"
+  },
+  {
+    "$1": 952,
+    "resourceType": "AllergyIntolerance"
+  },
+  {
+    "$1": 85928,
+    "resourceType": "Observation"
+  },
+  {
+    "$1": 23479,
+    "resourceType": "Encounter"
+  },
+  {
+    "$1": 4207,
+    "resourceType": "Condition"
+  },
+  {
+    "$1": 186,
+    "resourceType": "Goal"
+  },
+  {
+    "$1": 885,
+    "resourceType": "Practitioner"
+  },
+  {
+    "$1": 16323,
+    "resourceType": "Procedure"
+  },
+  {
+    "$1": 1670,
+    "resourceType": "DiagnosticReport"
+  }
+]

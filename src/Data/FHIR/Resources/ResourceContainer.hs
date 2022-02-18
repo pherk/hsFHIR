@@ -155,6 +155,9 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.TestScript
 --  module Data.FHIR.Resources.ValueSet
 --  module Data.FHIR.Resources.VerificationResult
+  , module Data.FHIR.Resources.UserConfig
+  , module Data.FHIR.Resources.Leave
+  , module Data.FHIR.Resources.ICalendar
   ) where
 
 import Data.Aeson  
@@ -311,6 +314,9 @@ import Data.FHIR.Resources.Patient
 --import Data.FHIR.Resources.TestScript
 --import Data.FHIR.Resources.ValueSet
 --import Data.FHIR.Resources.VerificationResult
+import Data.FHIR.Resources.UserConfig
+import Data.FHIR.Resources.Leave
+import Data.FHIR.Resources.ICalendar
 
 type ResourceContainer = DomainResourceC
 
@@ -458,6 +464,9 @@ data DomainResourceC
 --  | TestScriptDR TestScript
 --  | ValueSetDR ValueSet
 --  | VerificationResultDR VerificationResult
+  | UserConfigDR UserConfig
+  | LeaveDR Leave
+  | ICalendarDR ICalendar
   deriving (Eq, Show)
 
 instance ToJSON DomainResourceC where
@@ -603,6 +612,9 @@ instance ToJSON DomainResourceC where
 --  toJSON (TestScriptDR e) = toJSON e
 --  toJSON (ValueSetDR e) = toJSON e
 --  toJSON (VerificationResultDR e) = toJSON e
+  toJSON (UserConfigDR e) = toJSON e
+  toJSON (LeaveDR e) = toJSON e
+  toJSON (ICalendarDR e) = toJSON e
 instance FromJSON DomainResourceC where
    parseJSON (Object v) = do
        case rt of
@@ -748,6 +760,9 @@ instance FromJSON DomainResourceC where
 --         Just "TestScript" -> TestScriptDR <$> parseJSON (Object v)
 --         Just "ValueSet" -> ValueSetDR <$> parseJSON (Object v)
 --         Just "VerificationResult" -> VerificationResultDR <$> parseJSON (Object v)
+         Just "UserConfig" -> UserConfigDR <$> parseJSON (Object v)
+         Just "Leave" -> LeaveDR <$> parseJSON (Object v)
+         Just "ICalendar" -> ICalendarDR <$> parseJSON (Object v)
        where rt = HM.lookup "resourceType" v
 
 instance Xmlbf.ToXml DomainResourceC where
@@ -893,6 +908,9 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (TestScriptDR e) = Xmlbf.toXml e
 --  toXml (ValueSetDR e) = Xmlbf.toXml e
 --  toXml (VerificationResultDR e) = Xmlbf.toXml e
+  toXml (UserConfigDR e) = Xmlbf.toXml e
+  toXml (LeaveDR e) = Xmlbf.toXml e
+  toXml (ICalendarDR e) = Xmlbf.toXml e
 instance Xmlbf.FromXml DomainResourceC where
   fromXml = do
     r <- Xmlbf.pAnyElement fromAny 
@@ -1042,6 +1060,9 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "TestScript" -> TestScriptDR <$> Xmlbf.fromXml
 --            "ValueSet" -> ValueSetDR <$> Xmlbf.fromXml
 --            "VerificationResult" -> VerificationResultDR <$> Xmlbf.fromXml
+              "UserConfig" -> UserConfigDR <$> Xmlbf.fromXml
+              "Leave" -> LeaveDR <$> Xmlbf.fromXml
+              "ICalendar" -> ICalendarDR <$> Xmlbf.fromXml
 
 -- Bundle, Parameters are not DomainResources
 
@@ -1187,3 +1208,6 @@ instance Xmlbf.FromXml DomainResourceC where
 --  | TestScriptDR TestScript
 --  | ValueSetDR ValueSet
 --  | VerificationResultDR VerificationResult
+--  | UserConfigDR UserConfig
+--  | LeaveDR 
+--  | ICalendarDR ICalendar

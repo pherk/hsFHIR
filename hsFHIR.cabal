@@ -1,7 +1,7 @@
 cabal-version: 1.12
 
 name:           hsFHIR
-version:        0.2.5.3
+version:        0.2.6.0
 description:    Please see the README on GitHub at <https://github.com/pherk/hasntwo#readme>
 homepage:       https://github.com/pherk/hsFHIR#readme
 bug-reports:    https://github.com/pherk/hsFHIR/issues
@@ -70,10 +70,8 @@ library
     , Data.FHIR.Resources.Goal
     , Data.FHIR.Resources.Group
     , Data.FHIR.Resources.HealthcareService
-    , Data.FHIR.Resources.ICalendar
     , Data.FHIR.Resources.ImagingStudy
     , Data.FHIR.Resources.Immunization
-    , Data.FHIR.Resources.Leave
     , Data.FHIR.Resources.Library
     , Data.FHIR.Resources.Location
     , Data.FHIR.Resources.MedicationRequest
@@ -96,6 +94,9 @@ library
     , Data.FHIR.Resources.SearchParameter
     , Data.FHIR.Resources.ServiceRequest
     , Data.FHIR.Resources.Task
+    , Data.FHIR.Resources.UserConfig
+    , Data.FHIR.Resources.Leave
+    , Data.FHIR.Resources.ICalendar
 --    , Data.FHIR.Resources.XML
     , Data.FHIR.RestApi
   other-modules:

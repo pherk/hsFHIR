@@ -41,7 +41,6 @@ import RIO
 import qualified RIO.Text as T
 import qualified RIO.HashMap as HM
 
-import qualified Data.UUID as UUID
 import Data.FHIR.Datatypes
 import Data.FHIR.Datatypes.ResourceTypes
 import Data.FHIR.Resources
@@ -50,88 +49,6 @@ import Data.FHIR.Resources.Resource
 import Data.FHIR.Resources.ResourceContainer
 import Xmlbf
 
-{-
-instance FromHttpApiData RID where      
-  parseUrlPiece piece = do
-    s <- parseUrlPiece piece
-    case UUID.fromString s of
-      Nothing -> Left . T.pack $ "no valid UUID-piece: " ++ show piece
-      Just uid -> return $ RID uid
-
-instance ToHttpApiData RID where
-    toUrlPiece = T.pack . show
-
-instance FromHttpApiData FHIR_Type where
-  parseUrlPiece piece = do
-    s <- parseUrlPiece piece
-    case s :: Text of
-      "*"                    -> return $ FHIR_Any
-      "ActivityDefinition" -> return $ FHIR_ActivityDefinition
---      "AdverseEvent" -> return $ FHIR_AdverseEvent
---      "AllergyIntolerance" -> return $ FHIR_AllergyIntolerance
---      "Binary" -> return $ FHIR_Binary
-      "Bundle" -> return $ FHIR_Bundle
-      "CapabilityStatement" -> return $ FHIR_CapabilityStatement
---      "CarePlan" -> return $ FHIR_CarePlan
---      "CareTeam" -> return $ FHIR_CareTeam
---      "Claim" -> return $ FHIR_Claim
---      "ClinicalImpression" -> return $ FHIR_ClinicalImpression
---      "CodeSystem" -> return $ FHIR_CodeSystem
---      "Communication" -> return $ FHIR_Communication
---      "Composition" -> return $ FHIR_Composition
---      "Condition" -> return $ FHIR_Condition
---      "Consent" -> return $ FHIR_Consent
---      "Coverage" -> return $ FHIR_Coverage
---      "Device" -> return $ FHIR_Device
---      "DiagnosticReport" -> return $ FHIR_DiagnosticReport
-      "Encounter" -> return $ FHIR_Encounter
---      "EpisodeOfCare" -> return $ FHIR_EpisodeOfCare
---      "ExplanationOfBenefit" -> return $ FHIR_ExplanationOfBenefit
---      "FamilyHistory" -> return $ FHIR_FamilyHistory
---      "Goal" -> return $ FHIR_Goal
---      "Group" -> return $ FHIR_Group
---      "HealthcareService" -> return $ FHIR_HealthcareService
---      "ICalendar" -> return $ FHIR_ICalendar
---      "ImagingStudy" -> return $ FHIR_ImagingStudy
---      "Immunization" -> return $ FHIR_Immunization
---      "Leave" -> return $ FHIR_Leave
---      "Library" -> return $ FHIR_Library
---      "Location" -> return $ FHIR_Location
---      "MedicationRequest" -> return $ FHIR_MedicationRequest
---      "Observation" -> return $ FHIR_Observation
-      "OperationOutcome" -> return $ FHIR_OperationOutcome
---      "Organization" -> return $ FHIR_Organization
---      "Parameters" -> return $ FHIR_Parameters
-      "Patient" -> return $ FHIR_Patient
---      "PlanDefinition" -> return $ FHIR_PlanDefinition
---      "Practitioner" -> return $ FHIR_Practitioner
---      "PractitionerRole" -> return $ FHIR_PractitionerRole
---      "Procedure" -> return $ FHIR_Procedure
---      "Provenance" -> return $ FHIR_Provenance
---      "Questionnaire" -> return $ FHIR_Questionnaire
---      "QuestionnaireResponse" -> return $ FHIR_QuestionnaireResponse
---      "RequestGroup" -> return $ FHIR_RequestGroup
---      "RiskAssessment" -> return $ FHIR_RiskAssessment
---      "SearchParameter" -> return $ FHIR_SearchParameter
---      "ServiceRequest" -> return $ FHIR_ServiceRequest
---      "Task" -> return $ FHIR_Task
-      _ -> Left . T.pack $ "no valid FHIR type " ++ show piece
-
-
-instance FromHttpApiData Compartment where
-  parseUrlPiece piece = do
-    s <- parseUrlPiece piece
-    case s :: Text of
-      "Patient" -> return $ CompartmentPatient
-      "Encounter" -> return $ CompartmentEncounter
-      "RelatedPerson" -> return $ CompartmentRelatedPerson
-      "Practitioner" -> return $ CompartmentPractitioner
-      "Device" -> return $ CompartmentDevice
-      _ -> Left . T.pack $ "no valid compartment type: " ++ show piece
-
-instance ToHttpApiData Compartment where
-    toUrlPiece = T.pack . show
--}
 
 mkResource FHIR_Patient i = PatientR $ mkPatient i
 mkResource FHIR_Encounter i = EncounterR mkEncounter
@@ -290,3 +207,6 @@ toDomainResourceC (Just (PatientR o)) = Just ( PatientDR o)
 --  toDomainResourceC (Just (ValueSetR o)) = Just ( ValueSetDR o)
 --  toDomainResourceC (Just (VerificationResultR o)) = Just ( VerificationResultDR o)
 --  toDomainResourceC (Just (VisionPrescriptionR o)) = Just ( VisionPrescriptionDR o)
+toDomainResourceC (Just (UserConfigR o)) = Just ( UserConfigDR o)
+toDomainResourceC (Just (LeaveR o)) = Just ( LeaveDR o)
+toDomainResourceC (Just (ICalendarR o)) = Just ( ICalendarDR o)

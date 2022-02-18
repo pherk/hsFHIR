@@ -217,6 +217,9 @@ data Resource
 --  | TestScriptR TestScript
 --  | ValueSetR ValueSet
 --  | VerificationResultR VerificationResult
+    | UserConfigR UserConfig
+    | LeaveR Leave
+    | ICalendarR ICalendar
   deriving (Eq, Show)
  
 instance ToJSON Resource where
@@ -364,6 +367,10 @@ instance ToJSON Resource where
 --  toJSON (TestScriptR e) = toJSON e
 --  toJSON (ValueSetR e) = toJSON e
 --  toJSON (VerificationResultR e) = toJSON e
+  toJSON (UserConfigR e) = toJSON e
+  toJSON (LeaveR e) = toJSON e
+  toJSON (ICalendarR e) = toJSON e
+
 instance FromJSON Resource where
   parseJSON (Object v) = do
       case rt of
@@ -511,6 +518,9 @@ instance FromJSON Resource where
 --         Just "TestScript" -> TestScriptR <$> parseJSON (Object v)
 --         Just "ValueSet" -> ValueSetR <$> parseJSON (Object v)
 --         Just "VerificationResult" -> VerificationResultR <$> parseJSON (Object v)
+         Just "UserConfig" -> UserConfigR <$> parseJSON (Object v)
+         Just "Leave" -> LeaveR <$> parseJSON (Object v)
+         Just "ICalendar" -> ICalendarR <$> parseJSON (Object v)
          _         -> fail "not supported resource"
       where rt = HM.lookup "resourceType" v
 
@@ -659,6 +669,10 @@ instance Xmlbf.ToXml Resource where
 --  toXml (TestScriptR e) = Xmlbf.toXml e
 --  toXml (ValueSetR e) = Xmlbf.toXml e
 --  toXml (VerificationResultR e) = Xmlbf.toXml e
+  toXml (UserConfigR e) = Xmlbf.toXml e
+  toXml (LeaveR e) = Xmlbf.toXml e
+  toXml (ICalendarR e) = Xmlbf.toXml e
+
 instance Xmlbf.FromXml Resource where
   fromXml = do
     r <- Xmlbf.pAnyElement fromAny 
@@ -810,6 +824,9 @@ instance Xmlbf.FromXml Resource where
 --            "TestScript" -> TestScriptR <$> Xmlbf.fromXml
 --            "ValueSet" -> ValueSetR <$> Xmlbf.fromXml
 --            "VerificationResult" -> VerificationResultR <$> Xmlbf.fromXml
+              "UserConfig" -> UserConfigR <$> Xmlbf.fromXml
+              "Leave" -> LeaveR <$> Xmlbf.fromXml
+              "ICalendar" -> ICalendarR <$> Xmlbf.fromXml
 
 {-
 mkDomainResource = DomainResource{

@@ -55,6 +55,9 @@ data FHIR_Type =
   | FHIR_PractitionerRole
   | FHIR_Resource
   | FHIR_Task
+  | NonFHIR_UserConfig
+  | NonFHIR_Leave
+  | NonFHIR_ICalendar
   deriving (Generic, Eq, Hashable, Ord, Read)
 
 instance Show FHIR_Type where
@@ -71,6 +74,9 @@ instance Show FHIR_Type where
   show FHIR_PractitionerRole = "PractitionerRole"
   show FHIR_Resource         = "Resource"
   show FHIR_Task             = "Task"
+  show NonFHIR_UserConfig    = "UserConfig"
+  show NonFHIR_Leave         = "Leave"
+  show NonFHIR_ICalendar      = "Calendar"
 
 instance ToJSON FHIR_Type where
   toJSON FHIR_Any = String "*"
@@ -86,6 +92,9 @@ instance ToJSON FHIR_Type where
   toJSON FHIR_PractitionerRole = String "PractitionerRole"
   toJSON FHIR_Resource = String "Resource"
   toJSON FHIR_Task     = String "Task"
+  toJSON NonFHIR_UserConfig    = String "UserConfig"
+  toJSON NonFHIR_Leave         = String "Leave"
+  toJSON NonFHIR_ICalendar      = String "Calendar"
 instance FromJSON FHIR_Type where
   parseJSON "*"                = return FHIR_Any
   parseJSON "Any"              = return FHIR_Any
@@ -101,6 +110,9 @@ instance FromJSON FHIR_Type where
   parseJSON "PractitionerRole" = return FHIR_PractitionerRole
   parseJSON "Resource"         = return FHIR_Resource
   parseJSON "Task"             = return FHIR_Task
+  parseJSON "UserConfig"       = return NonFHIR_UserConfig
+  parseJSON "Leave"            = return NonFHIR_Leave
+  parseJSON "Calendar"         = return NonFHIR_ICalendar
 
 maybeFromFHIRType "*"                = Just FHIR_Any
 maybeFromFHIRType "Any"              = Just FHIR_Any
@@ -116,6 +128,9 @@ maybeFromFHIRType "Practitioner"     = Just FHIR_Practitioner
 maybeFromFHIRType "PractitionerRole" = Just FHIR_PractitionerRole
 maybeFromFHIRType "Resource"         = Just FHIR_Resource
 maybeFromFHIRType "Task"             = Just FHIR_Task
+maybeFromFHIRType "UserConfig"       = Just NonFHIR_UserConfig
+maybeFromFHIRType "Leave"            = Just NonFHIR_Leave
+maybeFromFHIRType "Calendar"         = Just NonFHIR_ICalendar
 maybeFromFHIRType _                  = Nothing
 
 instance ToJSONKey FHIR_Type where
@@ -273,6 +288,9 @@ data ResourceType
   | RtValueSet
   | RtVerificationResult
   | RtVisionPrescription
+  | RtUserConfig
+  | RtLeave
+  | RtICalendar
   deriving (Generic, Eq, Enum, Ord, Show)
 
 instance ToJSON ResourceType where
@@ -421,6 +439,9 @@ instance ToJSON ResourceType where
   toJSON RtValueSet     = String "ValueSet"
   toJSON RtVerificationResult     = String "VerificationResult"
   toJSON RtVisionPrescription     = String "VisionPrescription"
+  toJSON RtUserConfig     = String "UserConfig"
+  toJSON RtLeave          = String "Leave"
+  toJSON RtICalendar       = String "Calendar"
 instance FromJSON ResourceType where
   parseJSON "*" = return RtAny
   parseJSON "Account" = return RtAccount
@@ -568,6 +589,9 @@ instance FromJSON ResourceType where
   parseJSON "ValueSet" = return RtValueSet
   parseJSON "VerificationResult" = return RtVerificationResult
   parseJSON "VisionPrescription" = return RtVisionPrescription
+  parseJSON "UserConfig" = return RtUserConfig
+  parseJSON "Leave"      = return RtLeave
+  parseJSON "Calendar"   = return RtICalendar
 
 toResourceType RtAccount     = "Account"
 toResourceType RtActivityDefinition     = "ActivityDefinition"
@@ -714,6 +738,9 @@ toResourceType RtTestScript              = "TestScript"
 toResourceType RtValueSet                = "ValueSet"
 toResourceType RtVerificationResult      = "VerificationResult"
 toResourceType RtVisionPrescription      = "VisionPrescription"
+toResourceType RtUserConfig              = "UserConfig"
+toResourceType RtLeave                   = "Leave"
+toResourceType RtICalendar                = "Calendar"
 
 fromResourceType "Account"     = RtAccount
 fromResourceType "ActivityDefinition"     = RtActivityDefinition
@@ -860,6 +887,9 @@ fromResourceType "TestScript"     = RtTestScript
 fromResourceType "ValueSet"     = RtValueSet
 fromResourceType "VerificationResult"     = RtVerificationResult
 fromResourceType "VisionPrescription"     = RtVisionPrescription
+fromResourceType "UserConfig"     = RtUserConfig
+fromResourceType "Leave"          = RtLeave
+fromResourceType "Calendar"       = RtICalendar
 
 
 data Compartment

@@ -320,6 +320,11 @@ import Data.FHIR.Resources.ICalendar
 
 type ResourceContainer = DomainResourceC
 
+-- | DomainResourceC
+--   solving import cycles for extensions
+--   TODO
+--   not very elegant, is there a better solution on type level?
+
 data DomainResourceC
 --  = AccountR Account
   = ActivityDefinitionDR ActivityDefinition
@@ -464,6 +469,7 @@ data DomainResourceC
 --  | TestScriptDR TestScript
 --  | ValueSetDR ValueSet
 --  | VerificationResultDR VerificationResult
+-- TODO not needed!??
   | UserConfigDR UserConfig
   | LeaveDR Leave
   | ICalendarDR ICalendar

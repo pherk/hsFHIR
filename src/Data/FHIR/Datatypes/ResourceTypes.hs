@@ -38,8 +38,9 @@ newtype RID = RID UUID.UUID
 instance Show RID where
   show (RID u) = show u
 
+-- | configured FHIR and NonFHIR resources for server API
 --
---TODO collapse FHIR_Type and ResourceType
+-- TODO collapse FHIR_Type and ResourceType
 --
 data FHIR_Type = 
     FHIR_Bundle
@@ -76,7 +77,7 @@ instance Show FHIR_Type where
   show FHIR_Task             = "Task"
   show NonFHIR_UserConfig    = "UserConfig"
   show NonFHIR_Leave         = "Leave"
-  show NonFHIR_ICalendar      = "Calendar"
+  show NonFHIR_ICalendar     = "ICalendar"
 
 instance ToJSON FHIR_Type where
   toJSON FHIR_Any = String "*"
@@ -94,7 +95,7 @@ instance ToJSON FHIR_Type where
   toJSON FHIR_Task     = String "Task"
   toJSON NonFHIR_UserConfig    = String "UserConfig"
   toJSON NonFHIR_Leave         = String "Leave"
-  toJSON NonFHIR_ICalendar      = String "Calendar"
+  toJSON NonFHIR_ICalendar      = String "ICalendar"
 instance FromJSON FHIR_Type where
   parseJSON "*"                = return FHIR_Any
   parseJSON "Any"              = return FHIR_Any
@@ -112,7 +113,7 @@ instance FromJSON FHIR_Type where
   parseJSON "Task"             = return FHIR_Task
   parseJSON "UserConfig"       = return NonFHIR_UserConfig
   parseJSON "Leave"            = return NonFHIR_Leave
-  parseJSON "Calendar"         = return NonFHIR_ICalendar
+  parseJSON "ICalendar"        = return NonFHIR_ICalendar
 
 maybeFromFHIRType "*"                = Just FHIR_Any
 maybeFromFHIRType "Any"              = Just FHIR_Any
@@ -130,7 +131,7 @@ maybeFromFHIRType "Resource"         = Just FHIR_Resource
 maybeFromFHIRType "Task"             = Just FHIR_Task
 maybeFromFHIRType "UserConfig"       = Just NonFHIR_UserConfig
 maybeFromFHIRType "Leave"            = Just NonFHIR_Leave
-maybeFromFHIRType "Calendar"         = Just NonFHIR_ICalendar
+maybeFromFHIRType "ICalendar"        = Just NonFHIR_ICalendar
 maybeFromFHIRType _                  = Nothing
 
 instance ToJSONKey FHIR_Type where
@@ -140,7 +141,9 @@ instance FromJSONKey FHIR_Type where
     Just k -> pure k
     Nothing -> fail ("Invalid key: " ++ show t)
 
+--
 -- tag type is used in to/ from JSON to reduce the use of magic strings
+--
 data ResourceType
   = RtAny
   | RtAccount
@@ -441,7 +444,7 @@ instance ToJSON ResourceType where
   toJSON RtVisionPrescription     = String "VisionPrescription"
   toJSON RtUserConfig     = String "UserConfig"
   toJSON RtLeave          = String "Leave"
-  toJSON RtICalendar       = String "Calendar"
+  toJSON RtICalendar       = String "ICalendar"
 instance FromJSON ResourceType where
   parseJSON "*" = return RtAny
   parseJSON "Account" = return RtAccount
@@ -591,7 +594,7 @@ instance FromJSON ResourceType where
   parseJSON "VisionPrescription" = return RtVisionPrescription
   parseJSON "UserConfig" = return RtUserConfig
   parseJSON "Leave"      = return RtLeave
-  parseJSON "Calendar"   = return RtICalendar
+  parseJSON "ICalendar"  = return RtICalendar
 
 toResourceType RtAccount     = "Account"
 toResourceType RtActivityDefinition     = "ActivityDefinition"

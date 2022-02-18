@@ -63,6 +63,11 @@ resourceToBundle :: Resource -> Bundle
 resourceToBundle (BundleR b) = b
 resourceToBundle _ = error "nyi"
 
+-- | toDomainResourceC
+--
+--   maps from ResourceR to ResourceDR
+--   needed in Bundle construction
+--
 --  toDomainResourceC (Just (AccountR o)) = Just ( AccountDR o)
 toDomainResourceC (Just (ActivityDefinitionR o)) = Just ( ActivityDefinitionDR o)
 --  toDomainResourceC (Just (AdverseEventR o)) = Just ( AdverseEventDR o)

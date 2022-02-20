@@ -51,11 +51,11 @@ import Xmlbf
 
 -- TODO remove stubs
 --
-mkResource :: FHIR_Type -> BS.ByteString -> Resource
+mkResource :: FHIR_Type -> T.Text -> Resource
 mkResource FHIR_Patient i = PatientR $ mkPatient i
 mkResource FHIR_Encounter i = EncounterR mkEncounter
 mkResource FHIR_OperationOutcome i = OperationOutcomeR mkOperationOutcome
-mkResource t i = error "mkResource: type nyi: " (show t)
+mkResource t i = error "mkResource: type nyi" 
 
 
 -- mkBundleR:: BundleType -> [Maybe DomainResourceC] -> Resource

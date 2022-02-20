@@ -55,7 +55,7 @@ mkResource :: FHIR_Type -> T.Text -> Resource
 mkResource FHIR_Patient i = PatientR $ mkPatient i
 mkResource FHIR_Encounter i = EncounterR mkEncounter
 mkResource FHIR_OperationOutcome i = OperationOutcomeR mkOperationOutcome
-mkResource t i = error "mkResource: type nyi" 
+mkResource _ i = error "mkResource: type nyi" 
 
 
 -- mkBundleR:: BundleType -> [Maybe DomainResourceC] -> Resource
@@ -219,3 +219,4 @@ toDomainResourceC (Just (PatientR o)) = Just ( PatientDR o)
 toDomainResourceC (Just (UserConfigR o)) = Just ( UserConfigDR o)
 toDomainResourceC (Just (LeaveR o)) = Just ( LeaveDR o)
 toDomainResourceC (Just (ICalendarR o)) = Just ( ICalendarDR o)
+toDomainResourceC _ = error "toDomainResourceC: type nyi"

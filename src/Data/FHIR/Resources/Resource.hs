@@ -66,12 +66,5 @@ instance FromJSON Resource where
                 , resourceMeta=meta, resourceImplicitRules=ir
                 , resourceLanguage=l}
 
-mkResource = Resource{
-          resourceAttribs=[]
-        , resourceId=Just "123456"
-        , resourceMeta=Just mkMeta
-        , resourceImplicitRules=Nothing
-        , resourceLanguage=Nothing}
-
 -}
 

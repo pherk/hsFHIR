@@ -52,10 +52,10 @@ import Xmlbf
 -- TODO remove stubs
 --
 mkResource :: FHIR_Type -> T.Text -> Resource
-mkResource FHIR_Patient i = PatientR $ mkPatient i
-mkResource FHIR_Encounter i = EncounterR mkEncounter
-mkResource FHIR_OperationOutcome i = OperationOutcomeR mkOperationOutcome
-mkResource _ i = error "mkResource: type nyi" 
+mkResource FHIR_Patient i          = PatientR          $ mkPatient i
+mkResource FHIR_Encounter _        = EncounterR        $ mkEncounter
+mkResource FHIR_OperationOutcome _ = OperationOutcomeR $ mkOperationOutcome
+mkResource _ _                     = error "mkResource: type nyi" 
 
 
 -- mkBundleR:: BundleType -> [Maybe DomainResourceC] -> Resource
@@ -72,6 +72,8 @@ resourceToBundle _ = error "nyi"
 --   maps from ResourceR to ResourceDR
 --   needed in Bundle construction
 --
+toDomainResourceC :: Maybe Resource -> Maybe DomainResourceC
+toDomainResourceC Nothing = Nothing
 --  toDomainResourceC (Just (AccountR o)) = Just ( AccountDR o)
 toDomainResourceC (Just (ActivityDefinitionR o)) = Just ( ActivityDefinitionDR o)
 --  toDomainResourceC (Just (AdverseEventR o)) = Just ( AdverseEventDR o)

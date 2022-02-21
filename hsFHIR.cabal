@@ -1,7 +1,7 @@
 cabal-version: 1.12
 
 name:           hsFHIR
-version:        0.2.6.0
+version:        0.2.6.2
 description:    Please see the README on GitHub at <https://github.com/pherk/hasntwo#readme>
 homepage:       https://github.com/pherk/hsFHIR#readme
 bug-reports:    https://github.com/pherk/hsFHIR/issues
@@ -39,6 +39,7 @@ library
 --  , Data.FHIR.Datatypes.SPNarrative
 --  , Data.FHIR.Datatypes.SPReference
 --  , Data.FHIR.Internal.Base
+    , Data.FHIR.IdMeta
     , Data.FHIR.Interface
     , Data.FHIR.Date
     , Data.FHIR.Model

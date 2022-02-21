@@ -32,6 +32,7 @@ module Data.FHIR.Interface (
   , mkSearchsetBundle
   , module Data.FHIR.Datatypes
   , module Data.FHIR.Datatypes.ResourceTypes 
+  , module Data.FHIR.IdMeta
   , module Data.FHIR.Resources.OperationOutcome
   ) where
 
@@ -43,6 +44,7 @@ import qualified RIO.HashMap as HM
 
 import Data.FHIR.Datatypes
 import Data.FHIR.Datatypes.ResourceTypes
+import Data.FHIR.IdMeta
 import Data.FHIR.Resources
 import Data.FHIR.Resources.OperationOutcome
 import Data.FHIR.Resources.Resource

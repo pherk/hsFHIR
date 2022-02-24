@@ -14,6 +14,46 @@
 --
 -- FHIR 4.0.0 Bundle
 --
+{- 2.36.4 Resource URL & Uniqueness rules in a bundle
+
+Except for transactions and batches, each entry in a Bundle must have a fullUrl which is the identity of the resource in the entry. Note that this is not a versioned reference to the resource, but its identity. Where a resource is not assigned a persistent identity that can be used in the Bundle, a UUID should be used (urn:uuid:...).
+
+For transactions and batches, entries MAY not have fullURLs when the entry.request.method = POST, and the resource has no identity. Note that even in this case, there may still be a fullURL in a transaction on a POST so that relationships between resources can be represented (see Transactions).
+
+A given version of a resource SHALL only appear once in each Bundle. There might, however, be multiple versions of a single resource present in a single bundle. This would be expected in Bundles of type history, and also might be necessitated by closely tracking Provenance.
+
+Note that the meaning of an unversioned reference to a resource that appears multiple times is potentially ambiguous, though processors may have additional informaton to help resolve this (e.g. change order in a history bundle).
+
+When processing batches and transactions, it is at server discretion how to behave if multiple versions of a single resource are present.
+2.36.4.1 Resolving references in Bundles
+
+The Bundle resource is a packaging construct that has one of more entries that are other kinds of resources. Those resources themselves have references to other resources - e.g. an Observation that refers to a Patient. The referenced resources may also be found in the Bundle. For example, the system that constructed the Bundle may have included both the Observation and the Patient. The content of the references between resources doesn't change because of the bundle.
+
+This section documents a method that resolves references correctly within a bundle. Note that this method does not define any new semantics; resolution is based on the way resource identity and resource references work.
+
+Applications reading a Bundle should always look for a resource by its identity in the bundle first before trying to access it by its URL externally.
+
+How to resolve a reference in a Bundle:
+
+    If the reference is not an absolute reference, convert it to an absolute URL:
+        if the reference has the format [type]/[id], and
+        if the fullUrl for the bundle entry containing the resource is a RESTful one (see the RESTful URL regex)
+            extract the [root] from the fullUrl, and append the reference (type/id) to it
+            then try to resolve within the bundle as for a RESTful URL reference.
+            If no resolution is possible, then the reference has no defined meaning within this specification
+        else no resolution is possible and the reference has no defined meaning within this specification
+    else
+        Look for an entry with a fullUrl that matches the URI in the reference
+        if no match is found, and the URI is a URL that can be resolved (e.g. if an http: URL), try accessing it directly)
+
+Note, in addition, that a reference may be by identifier, and if it is, and there is no URL, it may be resolved by scanning the ids in the bundle. Note also that transactions may contain conditional references that must be resolved by the server before processing the matches.
+
+If the reference is version specific (either relative or absolute), then remove the version from the URL before matching fullUrl, and then match the version based on Resource.meta.versionId. Note that the rules for resolving references in contained resources are the same as those for resolving resources in the resource that contains the contained resource.
+
+If multiple matches are found, it is ambiguous which is correct. Applications MAY return an error or take some other action as they deem appropriate.
+
+There is an example Bundle that demonstrates these rules.
+-}
 
 module Data.FHIR.Resources.Bundle where
 

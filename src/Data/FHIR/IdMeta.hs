@@ -485,8 +485,8 @@ getMeta r = case r of
 --    ValueSetR o -> valueSetMeta o
 --    VerificationResultR o -> verificationResultMeta o
 --    VisionPrescriptionR o -> visionPrescriptionMeta o
---    UserConfigR o -> userConfigMeta o
---    LeaveR o -> leaveMeta o
+    UserConfigR o -> userConfigMeta o
+    LeaveR o -> leaveMeta o
     ICalendarR o -> iCalendarMeta o
     _ -> error "getMeta: type nyi"
 

@@ -191,7 +191,7 @@ instance Xmlbf.FromXml Practitioner where
           }
 
 
-
+{-
 data PractitionerRole = PractitionerRole {
     practitionerRoleId :: Maybe Id
   , practitionerRoleMeta :: Maybe Meta
@@ -494,7 +494,7 @@ instance Xmlbf.FromXml PractitionerRoleAvailableTime where
           , practitionerRoleAvailableTimeAvailableStartTime = fmap fromTime availableStartTime
           , practitionerRoleAvailableTimeAvailableEndTime = fmap fromTime availableEndTime
           }
-
+-}
 
 
 data PractitionerQualification = PractitionerQualification {
@@ -569,7 +569,7 @@ instance Xmlbf.FromXml PractitionerQualification where
           }
 
 
-
+{-
 data PractitionerRoleNotAvailable = PractitionerRoleNotAvailable {
     practitionerRoleNotAvailableAttrId :: Maybe Text
   , practitionerRoleNotAvailableExtension :: [Extension]
@@ -629,4 +629,4 @@ instance Xmlbf.FromXml PractitionerRoleNotAvailable where
 
 
 
-
+-}

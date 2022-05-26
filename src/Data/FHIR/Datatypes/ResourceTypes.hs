@@ -56,9 +56,9 @@ data FHIR_Type =
   | FHIR_PractitionerRole
   | FHIR_Resource
   | FHIR_Task
-  | NonFHIR_UserConfig
-  | NonFHIR_Leave
-  | NonFHIR_ICalendar
+  | FHIR_UserConfig
+  | FHIR_Leave
+  | FHIR_ICalendar
   deriving (Generic, Eq, Hashable, Ord, Read)
 
 instance Show FHIR_Type where
@@ -75,9 +75,9 @@ instance Show FHIR_Type where
   show FHIR_PractitionerRole = "PractitionerRole"
   show FHIR_Resource         = "Resource"
   show FHIR_Task             = "Task"
-  show NonFHIR_UserConfig    = "UserConfig"
-  show NonFHIR_Leave         = "Leave"
-  show NonFHIR_ICalendar     = "ICalendar"
+  show FHIR_UserConfig    = "UserConfig"
+  show FHIR_Leave         = "Leave"
+  show FHIR_ICalendar     = "ICalendar"
 
 instance ToJSON FHIR_Type where
   toJSON FHIR_Any = String "*"
@@ -93,9 +93,9 @@ instance ToJSON FHIR_Type where
   toJSON FHIR_PractitionerRole = String "PractitionerRole"
   toJSON FHIR_Resource = String "Resource"
   toJSON FHIR_Task     = String "Task"
-  toJSON NonFHIR_UserConfig    = String "UserConfig"
-  toJSON NonFHIR_Leave         = String "Leave"
-  toJSON NonFHIR_ICalendar      = String "ICalendar"
+  toJSON FHIR_UserConfig    = String "UserConfig"
+  toJSON FHIR_Leave         = String "Leave"
+  toJSON FHIR_ICalendar      = String "ICalendar"
 instance FromJSON FHIR_Type where
   parseJSON "*"                = return FHIR_Any
   parseJSON "Any"              = return FHIR_Any
@@ -111,9 +111,9 @@ instance FromJSON FHIR_Type where
   parseJSON "PractitionerRole" = return FHIR_PractitionerRole
   parseJSON "Resource"         = return FHIR_Resource
   parseJSON "Task"             = return FHIR_Task
-  parseJSON "UserConfig"       = return NonFHIR_UserConfig
-  parseJSON "Leave"            = return NonFHIR_Leave
-  parseJSON "ICalendar"        = return NonFHIR_ICalendar
+  parseJSON "UserConfig"       = return FHIR_UserConfig
+  parseJSON "Leave"            = return FHIR_Leave
+  parseJSON "ICalendar"        = return FHIR_ICalendar
 
 maybeFromFHIRType "*"                = Just FHIR_Any
 maybeFromFHIRType "Any"              = Just FHIR_Any
@@ -129,9 +129,9 @@ maybeFromFHIRType "Practitioner"     = Just FHIR_Practitioner
 maybeFromFHIRType "PractitionerRole" = Just FHIR_PractitionerRole
 maybeFromFHIRType "Resource"         = Just FHIR_Resource
 maybeFromFHIRType "Task"             = Just FHIR_Task
-maybeFromFHIRType "UserConfig"       = Just NonFHIR_UserConfig
-maybeFromFHIRType "Leave"            = Just NonFHIR_Leave
-maybeFromFHIRType "ICalendar"        = Just NonFHIR_ICalendar
+maybeFromFHIRType "UserConfig"       = Just FHIR_UserConfig
+maybeFromFHIRType "Leave"            = Just FHIR_Leave
+maybeFromFHIRType "ICalendar"        = Just FHIR_ICalendar
 maybeFromFHIRType _                  = Nothing
 
 instance ToJSONKey FHIR_Type where

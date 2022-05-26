@@ -168,6 +168,17 @@ data UserConfig = UserConfig {
   , userConfigWelcome :: Maybe Text
   , userConfigWelcomeSub :: Maybe Text
   , userConfigAvatar :: Maybe Text
+  , userConfigEmail       :: Maybe Text
+  , userConfigDisplayName :: Maybe Text
+  , userConfigTitle       :: Maybe Text
+  , userConfigGender      :: Maybe AdministrativeGender
+  , userConfigLocation    :: Maybe Reference
+  , userConfigEducation   :: [Text]
+  , userConfigProfession  :: Maybe Text
+  , userConfigRegistered  :: Maybe Date
+  , userConfigLastLogin   :: Maybe DateTime
+  , userConfigVerified    :: Maybe Text
+  , userConfigRooms       :: [Text]
   , userConfigCard :: [UserConfigCard]
   }
   deriving (Eq, Show)
@@ -178,17 +189,28 @@ instance ToJSON UserConfig where
     filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
     [
      ("resourceType" , String "UserConfig")
-    ,  "id" .= toJSON (userConfigId p)
-    ,  "meta" .= toJSON (userConfigMeta p)
-    ,  "implicitRules" .= toJSON (userConfigImplicitRules p)
-    ,  "language" .= toJSON (userConfigLanguage p)
-    ,  "identifier" .= toJSON (userConfigIdentifier p)
-    ,  "active" .= toJSON (userConfigActive p)
-    ,  "subject" .= toJSON (userConfigSubject p)
-    ,  "welcome" .= toJSON (userConfigWelcome p)
-    ,  "welcome_sub" .= toJSON (userConfigWelcomeSub p)
-    ,  "avatar" .= toJSON (userConfigAvatar p)
-    ,  "card" .= toJSON (userConfigCard p)
+    , "id" .= toJSON (userConfigId p)
+    , "meta" .= toJSON (userConfigMeta p)
+    , "implicitRules" .= toJSON (userConfigImplicitRules p)
+    , "language" .= toJSON (userConfigLanguage p)
+    , "identifier" .= toJSON (userConfigIdentifier p)
+    , "active" .= toJSON (userConfigActive p)
+    , "subject" .= toJSON (userConfigSubject p)
+    , "welcome" .= toJSON (userConfigWelcome p)
+    , "welcome_sub" .= toJSON (userConfigWelcomeSub p)
+    , "avatar" .= toJSON (userConfigAvatar p)
+    , "email" .= toJSON (userConfigEmail p)
+    , "displayName" .= toJSON (userConfigDisplayName p)
+    , "title" .= toJSON (userConfigTitle p)
+    , "gender" .= toJSON (userConfigGender p)
+    , "location" .= toJSON (userConfigLocation p)
+    , "education" .= toJSON (userConfigEducation  p)
+    , "profession" .= toJSON (userConfigProfession p)
+    , "registered" .= toJSON (userConfigRegistered p)
+    , "lastLogin" .= toJSON (userConfigLastLogin  p)
+    , "verified" .= toJSON (userConfigVerified p)
+    , "rooms" .= toJSON (userConfigRooms   p)
+    , "card" .= toJSON (userConfigCard p)
     ]
 instance FromJSON UserConfig where
   parseJSON = withObject "UserConfig" $ \o -> do
@@ -205,6 +227,17 @@ instance FromJSON UserConfig where
         welcome    <- o .:? "welcome"
         welcomeSub <- o .:? "welcome_sub"
         avatar     <- o .:? "avatar"
+        email      <- o .:? "email"
+        displayName <- o .:? "displayName"
+        title      <- o .:? "title"
+        gender     <- o .:? "gender"
+        location   <- o .:? "location"
+        education  <- o .:  "education" .!= []
+        profession <- o .:? "profession"
+        registered <- o .:? "registered"
+        lastLogin  <- o .:? "lastLogin"
+        verified   <- o .:? "verified"
+        rooms      <- o .:  "rooms" .!= []
         card       <- o .:  "card" .!= []
         return UserConfig{
             userConfigId = id
@@ -217,6 +250,17 @@ instance FromJSON UserConfig where
           , userConfigWelcome  = welcome
           , userConfigWelcomeSub = welcomeSub
           , userConfigAvatar   = avatar
+          , userConfigEmail = email
+          , userConfigDisplayName = displayName
+          , userConfigTitle = title
+          , userConfigGender = gender
+          , userConfigLocation = location
+          , userConfigEducation  = education
+          , userConfigProfession = profession
+          , userConfigRegistered = registered
+          , userConfigLastLogin  = lastLogin
+          , userConfigVerified = verified
+          , userConfigRooms   = rooms
           , userConfigCard     = card
           }
       _ -> fail "not a UserConfig"
@@ -239,6 +283,17 @@ instance Xmlbf.ToXml UserConfig where
              , OptVal   "welcome"     (fmap toString (userConfigWelcome p))
              , OptVal   "welcome_sub" (fmap toString (userConfigWelcomeSub p))
              , OptVal   "avatar"      (fmap toString (userConfigAvatar p))
+             , OptVal   "email"       (fmap toString (userConfigEmail p))
+             , OptVal   "displayName" (fmap toString (userConfigDisplayName p))
+             , OptVal   "title"       (fmap toString (userConfigTitle p))
+             , OptVal   "gender"      (fmap toAdministrativeGender (userConfigGender p))
+             , OptProp  "location"    (fmap Xmlbf.toXml (userConfigLocation p))
+             , ValList  "education"   (fmap toString (userConfigEducation  p))
+             , OptVal   "profession"  (fmap toString (userConfigProfession p))
+             , OptVal   "registered"  (fmap toDate (userConfigRegistered p))
+             , OptVal   "lastLogin"   (fmap toDateTime (userConfigLastLogin p))
+             , OptVal   "verified"    (fmap toString (userConfigVerified p))
+             , ValList  "rooms"       (fmap toString (userConfigRooms   p))
              , PropList "card"        (fmap Xmlbf.toXml (userConfigCard p))
              ]
 instance Xmlbf.FromXml UserConfig where
@@ -253,6 +308,17 @@ instance Xmlbf.FromXml UserConfig where
     welcome    <- optional $ Xmlbf.pElement "welcome" (Xmlbf.pAttr "value")
     welcomeSub <- optional $ Xmlbf.pElement "welcome_sub" (Xmlbf.pAttr "value")
     avatar     <- optional $ Xmlbf.pElement "avatar" (Xmlbf.pAttr "value")
+    email      <- optional $ Xmlbf.pElement "email" (Xmlbf.pAttr "value")
+    dispName   <- optional $ Xmlbf.pElement "displayName" (Xmlbf.pAttr "value")
+    title      <- optional $ Xmlbf.pElement "title" (Xmlbf.pAttr "value")
+    gender     <- optional $ Xmlbf.pElement "gender" (Xmlbf.pAttr "value")
+    location   <- optional $ Xmlbf.pElement "location" Xmlbf.fromXml
+    education  <- many     $ Xmlbf.pElement "education" (Xmlbf.pAttr "value")
+    profession <- optional $ Xmlbf.pElement "profession" (Xmlbf.pAttr "value")
+    registered <- optional $ Xmlbf.pElement "registered" (Xmlbf.pAttr "value")
+    lastLogin  <- optional $ Xmlbf.pElement "lastLogin" (Xmlbf.pAttr "value")
+    verified   <- optional $ Xmlbf.pElement "verified" (Xmlbf.pAttr "value")
+    rooms      <- many     $ Xmlbf.pElement "rooms" (Xmlbf.pAttr "value")
     card       <- many     $ Xmlbf.pElement "card"  Xmlbf.fromXml
     return UserConfig {
             userConfigId = fmap fromId id
@@ -265,6 +331,17 @@ instance Xmlbf.FromXml UserConfig where
           , userConfigWelcome  = welcome
           , userConfigWelcomeSub = welcomeSub
           , userConfigAvatar   = avatar
+          , userConfigEmail = email
+          , userConfigDisplayName = dispName
+          , userConfigTitle = title
+          , userConfigGender = fmap fromAdministrativeGender gender
+          , userConfigLocation = location
+          , userConfigEducation  = education
+          , userConfigProfession = profession
+          , userConfigRegistered = fmap fromDate registered
+          , userConfigLastLogin  = fmap fromDateTime lastLogin
+          , userConfigVerified = verified
+          , userConfigRooms   = rooms
           , userConfigCard     = card
           }
 

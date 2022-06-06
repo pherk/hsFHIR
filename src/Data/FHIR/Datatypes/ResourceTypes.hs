@@ -901,7 +901,35 @@ data Compartment
   | CompartmentRelatedPerson
   | CompartmentPractitioner
   | CompartmentDevice
-  deriving (Generic, Eq, Show)
+  deriving (Generic, Eq, Hashable, Ord, Read)
+
+instance Show Compartment where
+  show CompartmentPatient   = "Patient"
+  show CompartmentEncounter = "Encounter"
+  show CompartmentPractitioner   = "Practitioner"
+  show CompartmentRelatedPerson = "RelatedPerson"
+  show CompartmentDevice    = "Device"
+
+instance ToJSON Compartment where
+  toJSON CompartmentPatient = String "Patient"
+  toJSON CompartmentEncounter = String "Encounter"
+  toJSON CompartmentPractitioner   = String "Practitioner"
+  toJSON CompartmentRelatedPerson = String "RelatedPerson"
+  toJSON CompartmentDevice    = String "Device"
+
+instance FromJSON Compartment where
+  parseJSON "Patient"         = return CompartmentPatient
+  parseJSON "Encounter"       = return CompartmentEncounter
+  parseJSON "Practitioner"    = return CompartmentPractitioner
+  parseJSON "RelatedPerson"   = return CompartmentRelatedPerson
+  parseJSON "Device"          = return CompartmentDevice
+
+instance ToJSONKey Compartment where
+  toJSONKey = toJSONKeyText (T.pack . drop 11 .show)
+instance FromJSONKey Compartment where
+  fromJSONKey = FromJSONKeyTextParser $ \t -> case readMaybe ("Compartment" ++ T.unpack t) of
+    Just k -> pure k
+    Nothing -> fail ("Invalid key: " ++ show t)
 
 data FhirStatus =
     FsNormative

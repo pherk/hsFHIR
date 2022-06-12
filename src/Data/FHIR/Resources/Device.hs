@@ -95,6 +95,7 @@ data Device = Device {
   , deviceSafety :: [CodeableConcept]
   , deviceParent :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Device where
@@ -340,6 +341,7 @@ data DeviceDefinitionUdiDeviceIdentifier = DeviceDefinitionUdiDeviceIdentifier {
   , deviceDefinitionUdiDeviceIdentifierIssuer :: Uri
   , deviceDefinitionUdiDeviceIdentifierJurisdiction :: Uri
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinitionUdiDeviceIdentifier where
@@ -406,6 +408,7 @@ data DeviceVersion = DeviceVersion {
   , deviceVersionComponent :: Maybe Identifier
   , deviceVersionValue :: Text
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceVersion where
@@ -513,6 +516,7 @@ data DeviceUdiCarrier = DeviceUdiCarrier {
   , deviceUdiCarrierCarrierHRF :: Maybe Text
   , deviceUdiCarrierEntryType :: Maybe DeviceUdiCarrierEntryType
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceUdiCarrier where
@@ -597,6 +601,7 @@ data DeviceProperty = DeviceProperty {
   , devicePropertyValueQuantity :: [Quantity]
   , devicePropertyValueCode :: [CodeableConcept]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceProperty where
@@ -719,6 +724,7 @@ data DeviceMetricCalibration = DeviceMetricCalibration {
   , deviceMetricCalibrationState :: Maybe DeviceMetricCalibrationState
   , deviceMetricCalibrationTime :: Maybe Instant
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceMetricCalibration where
@@ -784,6 +790,7 @@ data DeviceDefinitionCapability = DeviceDefinitionCapability {
   , deviceDefinitionCapabilityType :: CodeableConcept
   , deviceDefinitionCapabilityDescription :: [CodeableConcept]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinitionCapability where
@@ -1118,6 +1125,7 @@ data DeviceRequestParameter = DeviceRequestParameter {
   , deviceRequestParameterValueRange :: Maybe Range
   , deviceRequestParameterValueBoolean :: Maybe Boolean
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceRequestParameter where
@@ -1360,6 +1368,7 @@ data DeviceRequest = DeviceRequest {
   , deviceRequestNote :: [Annotation]
   , deviceRequestRelevantHistory :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceRequest where
@@ -1611,6 +1620,7 @@ data DeviceDefinitionMaterial = DeviceDefinitionMaterial {
   , deviceDefinitionMaterialAlternate :: Maybe Boolean
   , deviceDefinitionMaterialAllergenicIndicator :: Maybe Boolean
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinitionMaterial where
@@ -1714,6 +1724,7 @@ data DeviceDeviceName = DeviceDeviceName {
   , deviceDeviceNameName :: Text
   , deviceDeviceNameType :: DeviceDeviceNameType
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDeviceName where
@@ -1811,6 +1822,7 @@ data DeviceDefinitionDeviceName = DeviceDefinitionDeviceName {
   , deviceDefinitionDeviceNameName :: Text
   , deviceDefinitionDeviceNameType :: DeviceDefinitionDeviceNameType
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinitionDeviceName where
@@ -1870,6 +1882,7 @@ data DeviceSpecialization = DeviceSpecialization {
   , deviceSpecializationSystemType :: CodeableConcept
   , deviceSpecializationVersion :: Maybe Text
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceSpecialization where
@@ -1929,6 +1942,7 @@ data DeviceDefinitionSpecialization = DeviceDefinitionSpecialization {
   , deviceDefinitionSpecializationSystemType :: Text
   , deviceDefinitionSpecializationVersion :: Maybe Text
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinitionSpecialization where
@@ -2050,6 +2064,7 @@ data DeviceUseStatement = DeviceUseStatement {
   , deviceUseStatementBodySite :: Maybe CodeableConcept
   , deviceUseStatementNote :: [Annotation]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceUseStatement where
@@ -2229,6 +2244,7 @@ data DeviceDefinitionProperty = DeviceDefinitionProperty {
   , deviceDefinitionPropertyValueQuantity :: [Quantity]
   , deviceDefinitionPropertyValueCode :: [CodeableConcept]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinitionProperty where
@@ -2325,6 +2341,7 @@ data DeviceDefinition = DeviceDefinition {
   , deviceDefinitionParentDevice :: Maybe Reference
   , deviceDefinitionMaterial :: [DeviceDefinitionMaterial]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DeviceDefinition where

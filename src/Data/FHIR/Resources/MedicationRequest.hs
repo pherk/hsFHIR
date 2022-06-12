@@ -207,6 +207,7 @@ data MedicationRequest = MedicationRequest {
   , medicationRequestDetectedIssue :: [Reference]
   , medicationRequestEventHistory :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON MedicationRequest where
@@ -528,6 +529,7 @@ data MedicationRequestInitialFill = MedicationRequestInitialFill {
   , medicationRequestInitialFillQuantity :: Maybe Quantity
   , medicationRequestInitialFillDuration :: Maybe Duration
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON MedicationRequestInitialFill where
@@ -593,6 +595,7 @@ data MedicationRequestSubstitution = MedicationRequestSubstitution {
   , medicationRequestSubstitutionAllowedCodeableConcept :: CodeableConcept
   , medicationRequestSubstitutionReason :: Maybe CodeableConcept
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON MedicationRequestSubstitution where
@@ -663,6 +666,7 @@ data MedicationRequestDispenseRequest = MedicationRequestDispenseRequest {
   , medicationRequestDispenseRequestExpectedSupplyDuration :: Maybe Duration
   , medicationRequestDispenseRequestPerformer :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON MedicationRequestDispenseRequest where

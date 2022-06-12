@@ -48,12 +48,25 @@ data FHIR_Type =
   | FHIR_ActivityDefinition
   | FHIR_Binary
   | FHIR_CapabilityStatement
+  | FHIR_CarePlan
+  | FHIR_CareTeam
+  | FHIR_Communication
+  | FHIR_Composition
+  | FHIR_Condition
+  | FHIR_Device
+  | FHIR_DiagnosticReport
   | FHIR_DomainResource
   | FHIR_Encounter 
+  | FHIR_EpisodeOfCare
+  | FHIR_Goal
+  | FHIR_Location
+  | FHIR_MedicationRequest
+  | FHIR_Observation
   | FHIR_OperationOutcome
   | FHIR_Patient
   | FHIR_Practitioner
   | FHIR_PractitionerRole
+  | FHIR_Procedure
   | FHIR_Resource
   | FHIR_Task
   | FHIR_UserConfig
@@ -67,12 +80,25 @@ instance Show FHIR_Type where
   show FHIR_ActivityDefinition = "ActivityDefinition"
   show FHIR_Binary           = "Binary"
   show FHIR_CapabilityStatement = "CapabilityStatement"
+  show FHIR_CarePlan         = "CarePlan"
+  show FHIR_CareTeam         = "CareTeam"
+  show FHIR_Communication    = "Communication"
+  show FHIR_Composition      = "Composition"
+  show FHIR_Condition        = "Condition"
+  show FHIR_Device           = "Device"
+  show FHIR_DiagnosticReport = "DagnosticReport"
   show FHIR_DomainResource   = "DomainResource"
   show FHIR_Encounter        = "Encounter"
+  show FHIR_EpisodeOfCare    = "EpisodeOfCare"
+  show FHIR_Goal             = "Goal"
+  show FHIR_Location         = "Location"
+  show FHIR_MedicationRequest = "MedicationRequest"
+  show FHIR_Observation      = "Observation"
   show FHIR_OperationOutcome = "OperationOutcome"
   show FHIR_Patient          = "Patient"
   show FHIR_Practitioner     = "Practitioner"
   show FHIR_PractitionerRole = "PractitionerRole"
+  show FHIR_Procedure        = "Procedure"
   show FHIR_Resource         = "Resource"
   show FHIR_Task             = "Task"
   show FHIR_UserConfig    = "UserConfig"
@@ -85,17 +111,30 @@ instance ToJSON FHIR_Type where
   toJSON FHIR_ActivityDefinition = String "ActivityDefinition"
   toJSON FHIR_Binary = String "Binary"
   toJSON FHIR_CapabilityStatement = String "CapabilityStatement"
-  toJSON FHIR_DomainResource = String "DomainResource"
-  toJSON FHIR_Encounter = String "Encounter" 
+  toJSON FHIR_CarePlan = String "CarePlan"
+  toJSON FHIR_CareTeam = String "CareTeam"
+  toJSON FHIR_Communication = String "Communication"
+  toJSON FHIR_Composition   = String "Composition"
+  toJSON FHIR_Condition     = String "Condition"
+  toJSON FHIR_Device        = String "Device"
+  toJSON FHIR_DiagnosticReport = String "DiagnosticReport"
+  toJSON FHIR_DomainResource   = String "DomainResource"
+  toJSON FHIR_Encounter     = String "Encounter" 
+  toJSON FHIR_EpisodeOfCare = String "EpisodeOfCare" 
+  toJSON FHIR_Goal          = String "Goal" 
+  toJSON FHIR_Location      = String "Location" 
+  toJSON FHIR_MedicationRequest = String "MedicationRequest" 
+  toJSON FHIR_Observation   = String "Observation" 
   toJSON FHIR_OperationOutcome = String "OperationOutcome"
-  toJSON FHIR_Patient = String "Patient"
-  toJSON FHIR_Practitioner = String "Practitioner"
+  toJSON FHIR_Patient       = String "Patient"
+  toJSON FHIR_Practitioner  = String "Practitioner"
   toJSON FHIR_PractitionerRole = String "PractitionerRole"
-  toJSON FHIR_Resource = String "Resource"
-  toJSON FHIR_Task     = String "Task"
+  toJSON FHIR_Procedure     = String "Procedure"
+  toJSON FHIR_Resource      = String "Resource"
+  toJSON FHIR_Task          = String "Task"
   toJSON FHIR_UserConfig    = String "UserConfig"
   toJSON FHIR_Leave         = String "Leave"
-  toJSON FHIR_ICalendar      = String "ICalendar"
+  toJSON FHIR_ICalendar     = String "ICalendar"
 instance FromJSON FHIR_Type where
   parseJSON "*"                = return FHIR_Any
   parseJSON "Any"              = return FHIR_Any
@@ -103,12 +142,25 @@ instance FromJSON FHIR_Type where
   parseJSON "ActivityDefinition"  = return FHIR_ActivityDefinition
   parseJSON "Binary"              = return FHIR_Binary
   parseJSON "CapabilityStatement" = return FHIR_CapabilityStatement
+  parseJSON "CarePlan"         = return FHIR_CarePlan
+  parseJSON "CareTeam"         = return FHIR_CareTeam
+  parseJSON "Communication"    = return FHIR_Communication
+  parseJSON "Composition"      = return FHIR_Composition
+  parseJSON "Condition"        = return FHIR_Condition
+  parseJSON "Device"           = return FHIR_Device
+  parseJSON "DiagnosticReport" = return FHIR_DiagnosticReport
   parseJSON "DomainResource"      = return FHIR_DomainResource
   parseJSON "Encounter"        = return FHIR_Encounter 
+  parseJSON "EpisodeOfCare"    = return FHIR_EpisodeOfCare
+  parseJSON "Goal"             = return FHIR_Goal
+  parseJSON "Location"         = return FHIR_Location
+  parseJSON "MedicationRequest"= return FHIR_MedicationRequest
+  parseJSON "Observation"      = return FHIR_Observation
   parseJSON "OperationOutcome" = return FHIR_OperationOutcome
   parseJSON "Patient"          = return FHIR_Patient
   parseJSON "Practitioner"     = return FHIR_Practitioner
   parseJSON "PractitionerRole" = return FHIR_PractitionerRole
+  parseJSON "Procedure"        = return FHIR_Procedure
   parseJSON "Resource"         = return FHIR_Resource
   parseJSON "Task"             = return FHIR_Task
   parseJSON "UserConfig"       = return FHIR_UserConfig
@@ -121,12 +173,25 @@ maybeFromFHIRType "Bundle"           = Just FHIR_Bundle
 maybeFromFHIRType "ActivityDefinition"  = Just FHIR_ActivityDefinition
 maybeFromFHIRType "Binary"              = Just FHIR_Binary
 maybeFromFHIRType "CapabilityStatement" = Just FHIR_CapabilityStatement
-maybeFromFHIRType "DomainResource"      = Just FHIR_DomainResource
+maybeFromFHIRType "CarePlan"         = Just FHIR_CarePlan
+maybeFromFHIRType "CareTeam"         = Just FHIR_CareTeam
+maybeFromFHIRType "Communication"    = Just FHIR_Communication
+maybeFromFHIRType "Composition"      = Just FHIR_Composition
+maybeFromFHIRType "Condition"        = Just FHIR_Condition
+maybeFromFHIRType "Device"           = Just FHIR_Device
+maybeFromFHIRType "DiagnosticReport" = Just FHIR_DiagnosticReport
+maybeFromFHIRType "DomainResource"   = Just FHIR_DomainResource
 maybeFromFHIRType "Encounter"        = Just FHIR_Encounter 
+maybeFromFHIRType "EpisodeOfCare"    = Just FHIR_EpisodeOfCare
+maybeFromFHIRType "Goal"             = Just FHIR_Goal
+maybeFromFHIRType "Location"         = Just FHIR_Location
+maybeFromFHIRType "MedicationRequest"= Just FHIR_MedicationRequest
+maybeFromFHIRType "Observation"      = Just FHIR_Observation
 maybeFromFHIRType "OperationOutcome" = Just FHIR_OperationOutcome
 maybeFromFHIRType "Patient"          = Just FHIR_Patient
 maybeFromFHIRType "Practitioner"     = Just FHIR_Practitioner
 maybeFromFHIRType "PractitionerRole" = Just FHIR_PractitionerRole
+maybeFromFHIRType "Procedure"        = Just FHIR_Procedure
 maybeFromFHIRType "Resource"         = Just FHIR_Resource
 maybeFromFHIRType "Task"             = Just FHIR_Task
 maybeFromFHIRType "UserConfig"       = Just FHIR_UserConfig

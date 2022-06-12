@@ -74,6 +74,7 @@ data Condition = Condition {
   , conditionEvidence :: [ConditionEvidence]
   , conditionNote :: [Annotation]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Condition where
@@ -356,6 +357,7 @@ data ConditionStage = ConditionStage {
   , conditionStageAssessment :: [Reference]
   , conditionStageType :: Maybe CodeableConcept
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConditionStage where
@@ -421,6 +423,7 @@ data ConditionEvidence = ConditionEvidence {
   , conditionEvidenceCode :: [CodeableConcept]
   , conditionEvidenceDetail :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConditionEvidence where

@@ -87,6 +87,7 @@ data CareTeam = CareTeam {
   , careTeamTelecom :: [ContactPoint]
   , careTeamNote :: [Annotation]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CareTeam where
@@ -255,6 +256,7 @@ data CareTeamParticipant = CareTeamParticipant {
   , careTeamParticipantOnBehalfOf :: Maybe Reference
   , careTeamParticipantPeriod :: Maybe Period
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CareTeamParticipant where

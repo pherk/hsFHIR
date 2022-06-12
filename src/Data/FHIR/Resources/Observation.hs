@@ -134,6 +134,7 @@ data Observation = Observation {
   , observationDerivedFrom :: [Reference]
   , observationComponent :: [ObservationComponent]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Observation where
@@ -526,6 +527,7 @@ data ObservationDefinitionQualifiedInterval = ObservationDefinitionQualifiedInte
   , observationDefinitionQualifiedIntervalGestationalAge :: Maybe Range
   , observationDefinitionQualifiedIntervalCondition :: Maybe Text
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ObservationDefinitionQualifiedInterval where
@@ -638,6 +640,7 @@ data ObservationComponent = ObservationComponent {
   , observationComponentInterpretation :: [CodeableConcept]
   , observationComponentReferenceRange :: [ObservationReferenceRange]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ObservationComponent where
@@ -890,6 +893,7 @@ data ObservationDefinition = ObservationDefinition {
   , observationDefinitionAbnormalCodedValueSet :: Maybe Reference
   , observationDefinitionCriticalCodedValueSet :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ObservationDefinition where
@@ -1058,6 +1062,7 @@ data ObservationDefinitionQuantitativeDetails = ObservationDefinitionQuantitativ
   , observationDefinitionQuantitativeDetailsConversionFactor :: Maybe Decimal
   , observationDefinitionQuantitativeDetailsDecimalPrecision :: Maybe Integer
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ObservationDefinitionQuantitativeDetails where
@@ -1133,6 +1138,7 @@ data ObservationReferenceRange = ObservationReferenceRange {
   , observationReferenceRangeAge :: Maybe Range
   , observationReferenceRangeText :: Maybe Text
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ObservationReferenceRange where

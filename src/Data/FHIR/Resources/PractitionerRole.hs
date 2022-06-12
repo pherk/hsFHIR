@@ -55,6 +55,7 @@ data PractitionerRole = PractitionerRole {
   , practitionerRoleAvailabilityExceptions :: Maybe Text
   , practitionerRoleEndpoint :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PractitionerRole where
@@ -272,6 +273,7 @@ data PractitionerRoleAvailableTime = PractitionerRoleAvailableTime {
   , practitionerRoleAvailableTimeAvailableStartTime :: Maybe Time
   , practitionerRoleAvailableTimeAvailableEndTime :: Maybe Time
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PractitionerRoleAvailableTime where
@@ -343,6 +345,7 @@ data PractitionerRoleNotAvailable = PractitionerRoleNotAvailable {
   , practitionerRoleNotAvailableDescription :: Text
   , practitionerRoleNotAvailableDuring :: Maybe Period
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PractitionerRoleNotAvailable where

@@ -40,8 +40,8 @@ data DiagnosticReportStatus
     | DRSCorrected
     | DRSAppended
     | DRSCancelled
-    | DRSEnteredInError
-    | DRSUnknown
+    | DRepSEnteredInError
+    | DRepSUnknown
   deriving (Eq, Show)
 
 instance ToJSON DiagnosticReportStatus where
@@ -53,8 +53,8 @@ instance ToJSON DiagnosticReportStatus where
     toJSON DRSCorrected = String "corrected"
     toJSON DRSAppended = String "appended"
     toJSON DRSCancelled = String "cancelled"
-    toJSON DRSEnteredInError = String "entered-in-error"
-    toJSON DRSUnknown = String "unknown"
+    toJSON DRepSEnteredInError = String "entered-in-error"
+    toJSON DRepSUnknown = String "unknown"
 instance FromJSON DiagnosticReportStatus where
     parseJSON "registered" = return DRSRegistered
     parseJSON "partial" = return DRSPartial
@@ -64,8 +64,8 @@ instance FromJSON DiagnosticReportStatus where
     parseJSON "corrected" = return DRSCorrected
     parseJSON "appended" = return DRSAppended
     parseJSON "cancelled" = return DRSCancelled
-    parseJSON "entered-in-error" = return DRSEnteredInError
-    parseJSON "unknown" = return DRSUnknown
+    parseJSON "entered-in-error" = return DRepSEnteredInError
+    parseJSON "unknown" = return DRepSUnknown
 
 toDiagnosticReportStatus DRSRegistered = "registered"
 toDiagnosticReportStatus DRSPartial = "partial"
@@ -75,8 +75,8 @@ toDiagnosticReportStatus DRSAmended = "amended"
 toDiagnosticReportStatus DRSCorrected = "corrected"
 toDiagnosticReportStatus DRSAppended = "appended"
 toDiagnosticReportStatus DRSCancelled = "cancelled"
-toDiagnosticReportStatus DRSEnteredInError = "entered-in-error"
-toDiagnosticReportStatus DRSUnknown = "unknown"
+toDiagnosticReportStatus DRepSEnteredInError = "entered-in-error"
+toDiagnosticReportStatus DRepSUnknown = "unknown"
 fromDiagnosticReportStatus "registered" = DRSRegistered
 fromDiagnosticReportStatus "partial" = DRSPartial
 fromDiagnosticReportStatus "preliminary" = DRSPreliminary
@@ -85,8 +85,8 @@ fromDiagnosticReportStatus "amended" = DRSAmended
 fromDiagnosticReportStatus "corrected" = DRSCorrected
 fromDiagnosticReportStatus "appended" = DRSAppended
 fromDiagnosticReportStatus "cancelled" = DRSCancelled
-fromDiagnosticReportStatus "entered-in-error" = DRSEnteredInError
-fromDiagnosticReportStatus "unknown" = DRSUnknown
+fromDiagnosticReportStatus "entered-in-error" = DRepSEnteredInError
+fromDiagnosticReportStatus "unknown" = DRepSUnknown
 
 
 data DiagnosticReportEffective
@@ -122,6 +122,7 @@ data DiagnosticReport = DiagnosticReport {
   , diagnosticReportConclusionCode :: [CodeableConcept]
   , diagnosticReportPresentedForm :: [Attachment]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DiagnosticReport where
@@ -341,6 +342,7 @@ data DiagnosticReportMedia = DiagnosticReportMedia {
   , diagnosticReportMediaComment :: Maybe Text
   , diagnosticReportMediaLink :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON DiagnosticReportMedia where

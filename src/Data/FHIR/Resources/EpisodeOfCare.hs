@@ -96,6 +96,7 @@ data EpisodeOfCare = EpisodeOfCare {
   , episodeOfCareTeam :: [Reference]
   , episodeOfCareAccount :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON EpisodeOfCare where
@@ -299,6 +300,7 @@ data EpisodeOfCareStatusHistory = EpisodeOfCareStatusHistory {
   , episodeOfCareStatusHistoryStatus :: EpisodeOfCareStatusHistoryStatus
   , episodeOfCareStatusHistoryPeriod :: Period
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON EpisodeOfCareStatusHistory where
@@ -359,6 +361,7 @@ data EpisodeOfCareDiagnosis = EpisodeOfCareDiagnosis {
   , episodeOfCareDiagnosisRole :: Maybe CodeableConcept
   , episodeOfCareDiagnosisRank :: Maybe PositiveInt
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON EpisodeOfCareDiagnosis where

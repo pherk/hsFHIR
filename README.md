@@ -12,6 +12,7 @@
     - src/Data/FHIR/Resources.hs
     - src/Data/FHIR/Resources/ResourceContainer.hs
 3. add resource in cabal  
+4. resolve possible export conflicts from new modules
 
 # Excerpts from www.hl7.org/fhir/http.html
 

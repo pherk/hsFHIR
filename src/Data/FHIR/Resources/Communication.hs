@@ -140,6 +140,7 @@ data Communication = Communication {
   , communicationPayload :: [CommunicationPayload]
   , communicationNote :: [Annotation]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Communication where
@@ -373,6 +374,7 @@ data CommunicationPayload = CommunicationPayload {
   , communicationPayloadContentAttachment :: Attachment
   , communicationPayloadContentReference :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CommunicationPayload where
@@ -540,6 +542,7 @@ data CommunicationRequest = CommunicationRequest {
   , communicationRequestReasonReference :: [Reference]
   , communicationRequestNote :: [Annotation]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CommunicationRequest where
@@ -773,6 +776,7 @@ data CommunicationRequestPayload = CommunicationRequestPayload {
   , communicationRequestPayloadContentAttachment :: Attachment
   , communicationRequestPayloadContentReference :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CommunicationRequestPayload where

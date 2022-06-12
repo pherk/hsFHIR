@@ -115,6 +115,7 @@ data Goal = Goal {
   , goalOutcomeCode :: [CodeableConcept]
   , goalOutcomeReference :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Goal where
@@ -338,6 +339,7 @@ data GoalTarget = GoalTarget {
   , goalTargetDetail :: Maybe GoalTargetDetail
   , goalTargetDue :: Maybe GoalTargetDue
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON GoalTarget where

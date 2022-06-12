@@ -99,6 +99,7 @@ data Location = Location {
   , locationAvailabilityExceptions :: Maybe Text
   , locationEndpoint :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Location where
@@ -334,6 +335,7 @@ data LocationHoursOfOperation = LocationHoursOfOperation {
   , locationHoursOfOperationOpeningTime :: Maybe Time
   , locationHoursOfOperationClosingTime :: Maybe Time
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON LocationHoursOfOperation where
@@ -406,6 +408,7 @@ data LocationPosition = LocationPosition {
   , locationPositionLatitude :: Decimal
   , locationPositionAltitude :: Maybe Decimal
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON LocationPosition where

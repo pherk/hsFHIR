@@ -125,6 +125,7 @@ data Procedure = Procedure {
   , procedureUsedReference :: [Reference]
   , procedureUsedCode :: [CodeableConcept]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Procedure where
@@ -429,6 +430,7 @@ data ProcedurePerformer = ProcedurePerformer {
   , procedurePerformerActor :: Reference
   , procedurePerformerOnBehalfOf :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ProcedurePerformer where
@@ -494,6 +496,7 @@ data ProcedureFocalDevice = ProcedureFocalDevice {
   , procedureFocalDeviceAction :: Maybe CodeableConcept
   , procedureFocalDeviceManipulated :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ProcedureFocalDevice where

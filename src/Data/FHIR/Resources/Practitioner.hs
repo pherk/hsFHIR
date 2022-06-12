@@ -51,6 +51,7 @@ data Practitioner = Practitioner {
   , practitionerQualification :: [PractitionerQualification]
   , practitionerCommunication :: [CodeableConcept]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Practitioner where
@@ -506,6 +507,7 @@ data PractitionerQualification = PractitionerQualification {
   , practitionerQualificationPeriod :: Maybe Period
   , practitionerQualificationIssuer :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PractitionerQualification where

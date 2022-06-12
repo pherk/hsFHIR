@@ -49,8 +49,8 @@ getId r = case r of
 --    BodyStructureR o -> bodyStructureId o
     BundleR o -> bundleId o
     CapabilityStatementR o -> capabilityStatementId o
---    CarePlanR o -> carePlanId o
---    CareTeamR o -> careTeamId o
+    CarePlanR o -> carePlanId o
+    CareTeamR o -> careTeamId o
 --    CatalogEntryR o -> catalogEntryId o
 --    ChargeItemR o -> chargeItemId o
 --    ChargeItemDefinitionR o -> chargeItemDefinitionId o
@@ -58,19 +58,19 @@ getId r = case r of
 ----    ClaimResponseR o -> claimResponseId o
 --    ClinicalImpressionR o -> clinicalImpressionId o
 --    CodeSystemR o -> codeSystemId o
---    CommunicationR o -> communicationId o
+    CommunicationR o -> communicationId o
 --    CommunicationRequestR o -> communicationRequestId o
 --    CompartmentDefinitionR o -> compartmentDefinitionId o
---    CompositionR o -> compositionId o
+    CompositionR o -> compositionId o
 --    ConceptMapR o -> conceptMapId o
---    ConditionR o -> conditionId o
+    ConditionR o -> conditionId o
 --    ConsentR o -> consentId o
 --    ContractR o -> contractId o
 --    CoverageR o -> coverageId o
 --    CoverageEligibilityRequestR o -> coverageEligibilityRequestId o
 --    CoverageEligibilityResponseR o -> coverageEligibilityResponseId o
 --    DetectedIssueR o -> detectedIssueId o
---    DeviceR o -> deviceId o
+    DeviceR o -> deviceId o
 --    DeviceDefinitionR o -> deviceDefinitionId o
 --    DeviceMetricR o -> deviceMetricId o
 --    DeviceRequestR o -> deviceRequestId o
@@ -83,7 +83,7 @@ getId r = case r of
 --    EndpointR o -> endpointId o
 --    EnrollmentRequestR o -> enrollmentRequestId o
 --    EnrollmentResponseR o -> enrollmentResponseId o
---    EpisodeOfCareR o -> episodeOfCareId o
+    EpisodeOfCareR o -> episodeOfCareId o
 --    EventDefinitionR o -> eventDefinitionId o
 --    EvidenceR o -> evidenceId o
 --    EvidenceVariableR o -> evidenceVariableId o
@@ -91,7 +91,7 @@ getId r = case r of
 --    ExplanationOfBenefitR o -> explanationOfBenefitId o
 --    FamilyMemberHistoryR o -> familyMemberHistoryId o
 --    FlagR o -> flagId o
---    GoalR o -> goalId o
+    GoalR o -> goalId o
 --    GraphDefinitionR o -> graphDefinitionId o
 --    GroupR o -> groupId o
 --    GuidanceResponseR o -> guidanceResponseId o
@@ -106,7 +106,7 @@ getId r = case r of
 --    LibraryR o -> libraryId o
 --    LinkageR o -> linkageId o
 --    ListR o -> listId o
---    LocationR o -> locationId o
+    LocationR o -> locationId o
 --    MeasureR o -> MeasureId o
 --    MeasureReportR o -> measureReportId o
 --    MediaR o -> mediaId o
@@ -114,7 +114,7 @@ getId r = case r of
 --    MedicationAdministrationR o -> medicationAdministrationId o
 --    MedicationDispenseR o -> medicationDispenseId o
 --    MedicationKnowledgeR o -> medicationKnowledgeId o
---    MedicationRequestR o -> medicationRequestId o
+    MedicationRequestR o -> medicationRequestId o
 --    MedicationStatementR o -> medicationStatementId o
 --    MedicinalProductR o -> medicinalProductId o
 --    MedicinalProductAuthorizationR o -> medicinalProductAuthorizationId o
@@ -131,7 +131,7 @@ getId r = case r of
 --    MolecularSequenceR o -> molecularSequenceId o
 --    NamingSystemR o -> namingSystemId o
 --    NutritionOrderR o -> NutritionOrderId o
---    ObservationR o -> observationId o
+    ObservationR o -> observationId o
 --    ObservationDefinitionR o -> observationDefinitionId o
 --    OperationDefinitionR o -> operationDefinitionId o
     OperationOutcomeR o -> operationOutcomeId o
@@ -143,9 +143,9 @@ getId r = case r of
 --    PaymentReconciliationR o -> paymentReconciliationId o
 --    PersonR o -> personId o
 --    PlanDefinitionR o -> planDefinitionId o
---    PractitionerR o -> practitionerId o
---    PractitionerRoleR o -> practitionerRoleId o
---    ProcedureR o -> procedureId o
+    PractitionerR o -> practitionerId o
+    PractitionerRoleR o -> practitionerRoleId o
+    ProcedureR o -> procedureId o
 --    ProvenanceR o -> provenanceId o
 --    QuestionnaireR o -> questionnaireId o
 --    QuestionnaireResponseR o -> questionnaireResponseId o
@@ -174,7 +174,7 @@ getId r = case r of
 --    SubstanceSourceMaterialR o -> substanceSourceMaterialId o
 --    SupplyDeliveryR o -> supplyDeliveryId o
 --    SupplyRequestR o -> supplyRequestId o
---    TaskR o -> taskId o
+    TaskR o -> taskId o
 --    TerminologyCapabilitiesR o -> terminologyCapabilitiesId o
 --    TestReportR o -> testReportId o
 --    TestScriptR o -> testScriptId o
@@ -201,8 +201,8 @@ setId id r = case r of
 --    BodyStructureR o -> BodyStructureR $ o{bodyStructureId= id}
     BundleR o -> BundleR $ o{bundleId= id}
     CapabilityStatementR o -> CapabilityStatementR $ o{capabilityStatementId= id}
---    CarePlanR o -> CarePlanR $ o{carePlanId= id}
---    CareTeamR o -> CareTeamR $ o{careTeamId= id}
+    CarePlanR o -> CarePlanR $ o{carePlanId= id}
+    CareTeamR o -> CareTeamR $ o{careTeamId= id}
 --    CatalogEntryR o -> CatalogEntryR $ o{catalogEntryId= id}
 --    ChargeItemR o -> ChargeItemR $ o{chargeItemId= id}
 --    ChargeItemDefinitionR o -> ChargeItemDefinitionR $ o{chargeItemDefinitionId= id}
@@ -210,19 +210,19 @@ setId id r = case r of
 --    ClaimResponseR o -> ClaimResponseR $ o{claimResponseId= id}
 --    ClinicalImpressionR o -> ClinicalImpressionR $ o{clinicalImpressionId= id}
 --    CodeSystemR o -> CodeSystemR $ o{codeSystemId= id}
---    CommunicationR o -> CommunicationR $ o{communicationId= id}
+    CommunicationR o -> CommunicationR $ o{communicationId= id}
 --    CommunicationRequestR o -> CommunicationRequestR $ o{communicationRequestId= id}
 --    CompartmentDefinitionR o -> CompartmentDefinitionR $ o{compartmentDefinitionId= id}
---    CompositionR o -> CompositionR $ o{compositionId= id}
+    CompositionR o -> CompositionR $ o{compositionId= id}
 --    ConceptMapR o -> ConceptMapR $ o{conceptMapId= id}
---    ConditionR o -> ConditionR $ o{conditionId= id}
+    ConditionR o -> ConditionR $ o{conditionId= id}
 --    ConsentR o -> ConsentR $ o{consentId= id}
 --    ContractR o -> ContractR $ o{contractId= id}
 --    CoverageR o -> CoverageR $ o{coverageId= id}
 --    CoverageEligibilityRequestR o -> CoverageEligibilityRequestR $ o{coverageEligibilityRequestId= id}
 --    CoverageEligibilityResponseR o -> CoverageEligibilityResponseR $ o{coverageEligibilityResponseId= id}
 --    DetectedIssueR o -> DetectedIssueR $ o{detectedIssueId= id}
---    DeviceR o -> DeviceR $ o{deviceId= id}
+    DeviceR o -> DeviceR $ o{deviceId= id}
 --    DeviceDefinitionR o -> DeviceDefinitionR $ o{deviceDefinitionId= id}
 --    DeviceMetricR o -> DeviceMetricR $ o{deviceMetricId= id}
 --    DeviceRequestR o -> DeviceRequestR $ o{deviceRequestId= id}
@@ -243,7 +243,7 @@ setId id r = case r of
 --    ExplanationOfBenefitR o -> ExplanationOfBenefitR $ o{explanationOfBenefitId= id}
 --    FamilyMemberHistoryR o -> FamilyMemberHistoryR $ o{familyMemberHistoryId= id}
 --    FlagR o -> FlagR $ o{flagId= id}
---    GoalR o -> GoalR $ o{goalId= id}
+    GoalR o -> GoalR $ o{goalId= id}
 --    GraphDefinitionR o -> GraphDefinitionR $ o{graphDefinitionId= id}
 --    GroupR o -> GroupR $ o{groupId= id}
 --    GuidanceResponseR o -> GuidanceResponseR $ o{guidanceResponseId= id}
@@ -258,7 +258,7 @@ setId id r = case r of
 --    LibraryR o -> LibraryR $ o{libraryId= id}
 --    LinkageR o -> LinkageR $ o{linkageId= id}
 --    ListR o -> ListR $ o{listId= id}
---    LocationR o -> LocationR $ o{locationId= id}
+    LocationR o -> LocationR $ o{locationId= id}
 --    MeasureR o -> MeasureR $ o{measureId= id}
 --    MeasureReportR o -> MeasureReportR $ o{measureReportId= id}
 --    MediaR o -> MediaR $ o{mediaId= id}
@@ -266,7 +266,7 @@ setId id r = case r of
 --    MedicationAdministrationR o -> MedicationAdministrationR $ o{medicationAdministrationId= id}
 --    MedicationDispenseR o -> MedicationDispenseR $ o{medicationDispenseId= id}
 --    MedicationKnowledgeR o -> MedicationKnowledgeR $ o{medicationKnowledgeId= id}
---    MedicationRequestR o -> MedicationRequestR $ o{medicationRequestId= id}
+    MedicationRequestR o -> MedicationRequestR $ o{medicationRequestId= id}
 --    MedicationStatementR o -> MedicationStatementR $ o{medicationStatementId= id}
 --    MedicinalProductR o -> MedicinalProductR $ o{medicinalProductId= id}
 --    MedicinalProductAuthorizationR o -> MedicinalProductAuthorizationR $ o{medicinalProductAuthorizationId= id}
@@ -283,7 +283,7 @@ setId id r = case r of
 --    MolecularSequenceR o -> MolecularSequenceR $ o{molecularSequenceId= id}
 --    NamingSystemR o -> NamingSystemR $ o{namingSystemId= id}
 --    NutritionOrderR o -> NutritionOrderR $ o{nutritionOrderId= id}
---    ObservationR o -> ObservationR $ o{observationId= id}
+    ObservationR o -> ObservationR $ o{observationId= id}
 --    ObservationDefinitionR o -> ObservationDefinitionR $ o{observationDefinitionId= id}
 --    OperationDefinitionR o -> OperationDefinitionR $ o{operationDefinitionId= id}
     OperationOutcomeR o -> OperationOutcomeR $ o{operationOutcomeId= id}
@@ -295,9 +295,9 @@ setId id r = case r of
 --    PaymentReconciliationR o -> PaymentReconciliationR $ o{paymentReconciliationId= id}
 --    PersonR o -> PersonR $ o{personId= id}
 --    PlanDefinitionR o -> PlanDefinitionR $ o{planDefinitionId= id}
---    PractitionerR o -> PractitionerR $ o{practitionerId= id}
---    PractitionerRoleR o -> PractitionerRoleR $ o{practitionerRoleId= id}
---    ProcedureR o -> ProcedureR $ o{procedureId= id}
+    PractitionerR o -> PractitionerR $ o{practitionerId= id}
+    PractitionerRoleR o -> PractitionerRoleR $ o{practitionerRoleId= id}
+    ProcedureR o -> ProcedureR $ o{procedureId= id}
 --    ProvenanceR o -> ProvenanceR $ o{provenanceId= id}
 --    QuestionnaireR o -> QuestionnaireR $ o{questionnaireId= id}
 --    QuestionnaireResponseR o -> QuestionnaireResponseR $ o{questionnaireResponseId= id}
@@ -326,7 +326,7 @@ setId id r = case r of
 --    SubstanceSourceMaterialR o -> SubstanceSourceMaterialR $ o{substanceSourceMaterialId= id}
 --    SupplyDeliveryR o -> SupplyDeliveryR $ o{supplyDeliveryId= id}
 --    SupplyRequestR o -> SupplyRequestR $ o{supplyRequestId= id}
---    TaskR o -> TaskR $ o{taskId= id}
+    TaskR o -> TaskR $ o{taskId= id}
 --    TerminologyCapabilitiesR o -> TerminologyCapabilitiesR $ o{terminologyCapabilitiesId= id}
 --    TestReportR o -> TestReportR $ o{testReportId= id}
 --    TestScriptR o -> TestScriptR $ o{testScriptId= id}
@@ -353,8 +353,8 @@ getMeta r = case r of
 --    BodyStructureR o -> bodyStructureMeta o
     BundleR o -> bundleMeta o
     CapabilityStatementR o -> capabilityStatementMeta o
---    CarePlanR o -> carePlanMeta o
---    CareTeamR o -> careTeamMeta o
+    CarePlanR o -> carePlanMeta o
+    CareTeamR o -> careTeamMeta o
 --    CatalogEntryR o -> catalogEntryMeta o
 --    ChargeItemR o -> chargeItemMeta o
 --    ChargeItemDefinitionR o -> chargeItemDefinitionMeta o
@@ -362,19 +362,19 @@ getMeta r = case r of
 --    ClaimResponseR o -> claimResponseMeta o
 --    ClinicalImpressionR o -> clinicalImpressionMeta o
 --    CodeSystemR o -> codeSystemMeta o
---    CommunicationR o -> communicationMeta o
+    CommunicationR o -> communicationMeta o
 --    CommunicationRequestR o -> communicationRequestMeta o
 --    CompartmentDefinitionR o -> compartmentDefinitionMeta o
---    CompositionR o -> compositionMeta o
+    CompositionR o -> compositionMeta o
 --    ConceptMapR o -> conceptMapMeta o
---    ConditionR o -> conditionMeta o
+    ConditionR o -> conditionMeta o
 --    ConsentR o -> consentMeta o
 --    ContractR o -> contractMeta o
 --    CoverageR o -> coverageMeta o
 --    CoverageEligibilityRequestR o -> coverageEligibilityRequestMeta o
 --    CoverageEligibilityResponseR o -> coverageEligibilityResponseMeta o
 --    DetectedIssueR o -> detectedIssueMeta o
---    DeviceR o -> deviceMeta o
+    DeviceR o -> deviceMeta o
 --    DeviceDefinitionR o -> deviceDefinitionMeta o
 --    DeviceMetricR o -> deviceMetricMeta o
 --    DeviceRequestR o -> deviceRequestMeta o
@@ -387,7 +387,7 @@ getMeta r = case r of
 --    EndpointR o -> endpointMeta o
 --    EnrollmentRequestR o -> enrollmentRequestMeta o
 --    EnrollmentResponseR o -> enrollmentResponseMeta o
---    EpisodeOfCareR o -> episodeOfCareMeta o
+    EpisodeOfCareR o -> episodeOfCareMeta o
 --    EventDefinitionR o -> eventDefinitionMeta o
 --    EvidenceR o -> evidenceMeta o
 --    EvidenceVariableR o -> evidenceVariableMeta o
@@ -410,7 +410,7 @@ getMeta r = case r of
 --    LibraryR o -> libraryMeta o
 --    LinkageR o -> linkageMeta o
 --    ListR o -> listMeta o
---    LocationR o -> locationMeta o
+    LocationR o -> locationMeta o
 --    MeasureR o -> MeasureMeta o
 --    MeasureReportR o -> measureReportMeta o
 --    MediaR o -> mediaMeta o
@@ -418,7 +418,7 @@ getMeta r = case r of
 --    MedicationAdministrationR o -> medicationAdministrationMeta o
 --    MedicationDispenseR o -> medicationDispenseMeta o
 --    MedicationKnowledgeR o -> medicationKnowledgeMeta o
---    MedicationRequestR o -> medicationRequestMeta o
+    MedicationRequestR o -> medicationRequestMeta o
 --    MedicationStatementR o -> medicationStatementMeta o
 --    MedicinalProductR o -> medicinalProductMeta o
 --    MedicinalProductAuthorizationR o -> medicinalProductAuthorizationMeta o
@@ -435,7 +435,7 @@ getMeta r = case r of
 --    MolecularSequenceR o -> molecularSequenceMeta o
 --    NamingSystemR o -> namingSystemMeta o
 --    NutritionOrderR o -> NutritionOrderMeta o
---    ObservationR o -> observationMeta o
+    ObservationR o -> observationMeta o
 --    ObservationDefinitionR o -> observationDefinitionMeta o
 --    OperationDefinitionR o -> operationDefinitionMeta o
     OperationOutcomeR o -> operationOutcomeMeta o
@@ -447,9 +447,9 @@ getMeta r = case r of
 --    PaymentReconciliationR o -> paymentReconciliationMeta o
 --    PersonR o -> personMeta o
 --    PlanDefinitionR o -> planDefinitionMeta o
---    PractitionerR o -> practitionerMeta o
---    PractitionerRoleR o -> practitionerRoleMeta o
---    ProcedureR o -> procedureMeta o
+    PractitionerR o -> practitionerMeta o
+    PractitionerRoleR o -> practitionerRoleMeta o
+    ProcedureR o -> procedureMeta o
 --    ProvenanceR o -> provenanceMeta o
 --    QuestionnaireR o -> questionnaireMeta o
 --    QuestionnaireResponseR o -> questionnaireResponseMeta o
@@ -478,7 +478,7 @@ getMeta r = case r of
 --    SubstanceSourceMaterialR o -> substanceSourceMaterialMeta o
 --    SupplyDeliveryR o -> supplyDeliveryMeta o
 --    SupplyRequestR o -> supplyRequestMeta o
---    TaskR o -> taskMeta o
+    TaskR o -> taskMeta o
 --    TerminologyCapabilitiesR o -> terminologyCapabilitiesMeta o
 --    TestReportR o -> testReportMeta o
 --    TestScriptR o -> testScriptMeta o
@@ -505,8 +505,8 @@ setMeta meta r = case r of
 --    BodyStructureR o -> BodyStructureR $ o{bodyStructureMeta= meta}
     BundleR o -> BundleR $ o{bundleMeta= meta}
     CapabilityStatementR o -> CapabilityStatementR $ o{capabilityStatementMeta= meta}
---    CarePlanR o -> CarePlanR $ o{carePlanMeta= meta}
---    CareTeamR o -> CareTeamR $ o{careTeamMeta= meta}
+    CarePlanR o -> CarePlanR $ o{carePlanMeta= meta}
+    CareTeamR o -> CareTeamR $ o{careTeamMeta= meta}
 --    CatalogEntryR o -> CatalogEntryR $ o{catalogEntryMeta= meta}
 --    ChargeItemR o -> ChargeItemR $ o{chargeItemMeta= meta}
 --    ChargeItemDefinitionR o -> ChargeItemDefinitionR $ o{chargeItemDefinitionMeta= meta}
@@ -514,19 +514,19 @@ setMeta meta r = case r of
 --    ClaimResponseR o -> ClaimResponseR $ o{claimResponseMeta= meta}
 --    ClinicalImpressionR o -> ClinicalImpressionR $ o{clinicalImpressionMeta= meta}
 --    CodeSystemR o -> CodeSystemR $ o{codeSystemMeta= meta}
---    CommunicationR o -> CommunicationR $ o{communicationMeta= meta}
+    CommunicationR o -> CommunicationR $ o{communicationMeta= meta}
 --    CommunicationRequestR o -> CommunicationRequestR $ o{communicationRequestMeta= meta}
 --    CompartmentDefinitionR o -> CompartmentDefinitionR $ o{compartmentDefinitionMeta= meta}
---    CompositionR o -> CompositionR $ o{compositionMeta= meta}
+    CompositionR o -> CompositionR $ o{compositionMeta= meta}
 --    ConceptMapR o -> ConceptMapR $ o{conceptMapMeta= meta}
---    ConditionR o -> ConditionR $ o{conditionMeta= meta}
+    ConditionR o -> ConditionR $ o{conditionMeta= meta}
 --    ConsentR o -> ConsentR $ o{consentMeta= meta}
 --    ContractR o -> ContractR $ o{contractMeta= meta}
 --    CoverageR o -> CoverageR $ o{coverageMeta= meta}
 --    CoverageEligibilityRequestR o -> CoverageEligibilityRequestR $ o{coverageEligibilityRequestMeta= meta}
 --    CoverageEligibilityResponseR o -> CoverageEligibilityResponseR $ o{coverageEligibilityResponseMeta= meta}
 --    DetectedIssueR o -> DetectedIssueR $ o{detectedIssueMeta= meta}
---    DeviceR o -> DeviceR $ o{deviceMeta= meta}
+    DeviceR o -> DeviceR $ o{deviceMeta= meta}
 --    DeviceDefinitionR o -> DeviceDefinitionR $ o{deviceDefinitionMeta= meta}
 --    DeviceMetricR o -> DeviceMetricR $ o{deviceMetricMeta= meta}
 --    DeviceRequestR o -> DeviceRequestR $ o{deviceRequestMeta= meta}
@@ -539,7 +539,7 @@ setMeta meta r = case r of
 --    EndpointR o -> EndpointR $ o{endpointMeta= meta}
 --    EnrollmentRequestR o -> EnrollmentRequestR $ o{enrollmentRequestMeta= meta}
 --    EnrollmentResponseR o -> EnrollmentResponseR $ o{enrollmentResponseMeta= meta}
---    EpisodeOfCareR o -> EpisodeOfCareR $ o{episodeOfCareMeta= meta}
+    EpisodeOfCareR o -> EpisodeOfCareR $ o{episodeOfCareMeta= meta}
 --    EventDefinitionR o -> EventDefinitionR $ o{eventDefinitionMeta= meta}
 --    EvmetaenceR o -> EvidenceR $ o{evidenceMeta= id}
 --    EvmetaenceVariableR o -> EvidenceVariableR $ o{evidenceVariableMeta= id}
@@ -547,7 +547,7 @@ setMeta meta r = case r of
 --    ExplanationOfBenefitR o -> ExplanationOfBenefitR $ o{explanationOfBenefitMeta= meta}
 --    FamilyMemberHistoryR o -> FamilyMemberHistoryR $ o{familyMemberHistoryMeta= meta}
 --    FlagR o -> FlagR $ o{flagMeta= meta}
---    GoalR o -> GoalR $ o{goalMeta= meta}
+    GoalR o -> GoalR $ o{goalMeta= meta}
 --    GraphDefinitionR o -> GraphDefinitionR $ o{graphDefinitionMeta= meta}
 --    GroupR o -> GroupR $ o{groupMeta= meta}
 --    GumetaanceResponseR o -> GuidanceResponseR $ o{guidanceResponseMeta= id}
@@ -562,7 +562,7 @@ setMeta meta r = case r of
 --    LibraryR o -> LibraryR $ o{libraryMeta= meta}
 --    LinkageR o -> LinkageR $ o{linkageMeta= meta}
 --    ListR o -> ListR $ o{listMeta= meta}
---    LocationR o -> LocationR $ o{locationMeta= meta}
+    LocationR o -> LocationR $ o{locationMeta= meta}
 --    MeasureR o -> MeasureR $ o{measureMeta= meta}
 --    MeasureReportR o -> MeasureReportR $ o{measureReportMeta= meta}
 --    MediaR o -> MediaR $ o{mediaMeta= meta}
@@ -570,7 +570,7 @@ setMeta meta r = case r of
 --    MedicationAdministrationR o -> MedicationAdministrationR $ o{medicationAdministrationMeta= meta}
 --    MedicationDispenseR o -> MedicationDispenseR $ o{medicationDispenseMeta= meta}
 --    MedicationKnowledgeR o -> MedicationKnowledgeR $ o{medicationKnowledgeMeta= meta}
---    MedicationRequestR o -> MedicationRequestR $ o{medicationRequestMeta= meta}
+    MedicationRequestR o -> MedicationRequestR $ o{medicationRequestMeta= meta}
 --    MedicationStatementR o -> MedicationStatementR $ o{medicationStatementMeta= meta}
 --    MedicinalProductR o -> MedicinalProductR $ o{medicinalProductMeta= meta}
 --    MedicinalProductAuthorizationR o -> MedicinalProductAuthorizationR $ o{medicinalProductAuthorizationMeta= meta}
@@ -587,7 +587,7 @@ setMeta meta r = case r of
 --    MolecularSequenceR o -> MolecularSequenceR $ o{molecularSequenceMeta= meta}
 --    NamingSystemR o -> NamingSystemR $ o{namingSystemMeta= meta}
 --    NutritionOrderR o -> NutritionOrderR $ o{nutritionOrderMeta= meta}
---    ObservationR o -> ObservationR $ o{observationMeta= meta}
+    ObservationR o -> ObservationR $ o{observationMeta= meta}
 --    ObservationDefinitionR o -> ObservationDefinitionR $ o{observationDefinitionMeta= meta}
 --    OperationDefinitionR o -> OperationDefinitionR $ o{operationDefinitionMeta= meta}
     OperationOutcomeR o -> OperationOutcomeR $ o{operationOutcomeMeta= meta}
@@ -599,9 +599,9 @@ setMeta meta r = case r of
 --    PaymentReconciliationR o -> PaymentReconciliationR $ o{paymentReconciliationMeta= meta}
 --    PersonR o -> PersonR $ o{personMeta= meta}
 --    PlanDefinitionR o -> PlanDefinitionR $ o{planDefinitionMeta= meta}
---    PractitionerR o -> PractitionerR $ o{practitionerMeta= meta}
---    PractitionerRoleR o -> PractitionerRoleR $ o{practitionerRoleMeta= meta}
---    ProcedureR o -> ProcedureR $ o{procedureMeta= meta}
+    PractitionerR o -> PractitionerR $ o{practitionerMeta= meta}
+    PractitionerRoleR o -> PractitionerRoleR $ o{practitionerRoleMeta= meta}
+    ProcedureR o -> ProcedureR $ o{procedureMeta= meta}
 --    ProvenanceR o -> ProvenanceR $ o{provenanceMeta= meta}
 --    QuestionnaireR o -> QuestionnaireR $ o{questionnaireMeta= meta}
 --    QuestionnaireResponseR o -> QuestionnaireResponseR $ o{questionnaireResponseMeta= meta}
@@ -630,7 +630,7 @@ setMeta meta r = case r of
 --    SubstanceSourceMaterialR o -> SubstanceSourceMaterialR $ o{substanceSourceMaterialMeta= meta}
 --    SupplyDeliveryR o -> SupplyDeliveryR $ o{supplyDeliveryMeta= meta}
 --    SupplyRequestR o -> SupplyRequestR $ o{supplyRequestMeta= meta}
---    TaskR o -> TaskR $ o{taskMeta= meta}
+    TaskR o -> TaskR $ o{taskMeta= meta}
 --    TerminologyCapabilitiesR o -> TerminologyCapabilitiesR $ o{terminologyCapabilitiesMeta= meta}
 --    TestReportR o -> TestReportR $ o{testReportMeta= meta}
 --    TestScriptR o -> TestScriptR $ o{testScriptMeta= meta}

@@ -10,7 +10,18 @@
 {-# LANGUAGE PolyKinds #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TypeOperators     #-}
-
+{-
+ - needed for FHIR test data
+ - CarePlan
+ - Condition
+ - DiagnosticReport
+ - Encounter
+ - Goal
+ - MedicationRequest
+ - Observation
+ - Patient
+ - Procedure
+ -}
 module Data.FHIR.Resources.ResourceContainer (
     DomainResourceC(..)
 --  module Data.FHIR.Resources.Account
@@ -25,8 +36,8 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.BiologicallyDerivedProduct
 --  module Data.FHIR.Resources.BodyStructure
   , module Data.FHIR.Resources.CapabilityStatement
---  module Data.FHIR.Resources.CarePlan
---  module Data.FHIR.Resources.CareTeam
+  , module Data.FHIR.Resources.CarePlan
+  , module Data.FHIR.Resources.CareTeam
 --  module Data.FHIR.Resources.CatalogEntry
 --  module Data.FHIR.Resources.ChargeItem
 --  module Data.FHIR.Resources.ChargeItemDefinition
@@ -34,24 +45,24 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.ClaimResponse
 --  module Data.FHIR.Resources.ClinicalImpression
 --  module Data.FHIR.Resources.CodeSystem
---  module Data.FHIR.Resources.Communication
+  , module Data.FHIR.Resources.Communication
 --  module Data.FHIR.Resources.CommunicationRequest
 --  module Data.FHIR.Resources.CompartmentDefinition
---  module Data.FHIR.Resources.Composition
+  , module Data.FHIR.Resources.Composition
 --  module Data.FHIR.Resources.ConceptMap
---  module Data.FHIR.Resources.Condition
+  , module Data.FHIR.Resources.Condition
 --  module Data.FHIR.Resources.Consent
 --  module Data.FHIR.Resources.Contract
 --  module Data.FHIR.Resources.Coverage
 --  module Data.FHIR.Resources.CoverageEligibilityRequest
 --  module Data.FHIR.Resources.CoverageEligibilityResponse
 --  module Data.FHIR.Resources.DetectedIssue
---  module Data.FHIR.Resources.Device
+  , module Data.FHIR.Resources.Device
 --  module Data.FHIR.Resources.DeviceDefinition
 --  module Data.FHIR.Resources.DeviceMetric
 --  module Data.FHIR.Resources.DeviceRequest
 --  module Data.FHIR.Resources.DeviceUseStatement
---  module Data.FHIR.Resources.DiagnosticReport
+  , module Data.FHIR.Resources.DiagnosticReport
 --  module Data.FHIR.Resources.DocumentManifest
 --  module Data.FHIR.Resources.DocumentReference
 --  module Data.FHIR.Resources.EffectEvidenceSynthesis
@@ -59,7 +70,7 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.Endpoint
 --  module Data.FHIR.Resources.EnrollmentRequest
 --  module Data.FHIR.Resources.EnrollmentResponse
---  module Data.FHIR.Resources.EpisodeOfCare
+  , module Data.FHIR.Resources.EpisodeOfCare
 --  module Data.FHIR.Resources.EventDefinition
 --  module Data.FHIR.Resources.Evidence
 --  module Data.FHIR.Resources.EvidenceVariable
@@ -67,7 +78,7 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.ExplanationOfBenefit
 --  module Data.FHIR.Resources.FamilyMemberHistory
 --  module Data.FHIR.Resources.Flag
---  module Data.FHIR.Resources.Goal
+  , module Data.FHIR.Resources.Goal
 --  module Data.FHIR.Resources.GraphDefinition
 --  module Data.FHIR.Resources.Group
 --  module Data.FHIR.Resources.GuidanceResponse
@@ -82,7 +93,7 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.Library
 --  module Data.FHIR.Resources.Linkage
 --  module Data.FHIR.Resources.List
---  module Data.FHIR.Resources.Location
+  , module Data.FHIR.Resources.Location
 --  module Data.FHIR.Resources.Measure
 --  module Data.FHIR.Resources.MeasureReport
 --  module Data.FHIR.Resources.Media
@@ -90,7 +101,7 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.MedicationAdministration
 --  module Data.FHIR.Resources.MedicationDispense
 --  module Data.FHIR.Resources.MedicationKnowledge
---  module Data.FHIR.Resources.MedicationRequest
+  , module Data.FHIR.Resources.MedicationRequest
 --  module Data.FHIR.Resources.MedicationStatement
 --  module Data.FHIR.Resources.MedicinalProduct
 --  module Data.FHIR.Resources.MedicinalProductAuthorization
@@ -107,7 +118,7 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.MolecularSequence
 --  module Data.FHIR.Resources.NamingSystem
 --  module Data.FHIR.Resources.NutritionOrder
---  module Data.FHIR.Resources.Observation
+  , module Data.FHIR.Resources.Observation
 --  module Data.FHIR.Resources.ObservationDefinition
 --  module Data.FHIR.Resources.OperationDefinition
   , module Data.FHIR.Resources.OperationOutcome
@@ -118,9 +129,9 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.PaymentReconciliation
 --  module Data.FHIR.Resources.Person
 --  module Data.FHIR.Resources.PlanDefinition
---  module Data.FHIR.Resources.Practitioner
---  module Data.FHIR.Resources.PractitionerRole
---  module Data.FHIR.Resources.Procedure
+  , module Data.FHIR.Resources.Practitioner
+  , module Data.FHIR.Resources.PractitionerRole
+  , module Data.FHIR.Resources.Procedure
 --  module Data.FHIR.Resources.Provenance
 --  module Data.FHIR.Resources.Questionnaire
 --  module Data.FHIR.Resources.QuestionnaireResponse
@@ -149,7 +160,7 @@ module Data.FHIR.Resources.ResourceContainer (
 --  module Data.FHIR.Resources.SubstanceSourceMaterial
 --  module Data.FHIR.Resources.SupplyDelivery
 --  module Data.FHIR.Resources.SupplyRequest
---  module Data.FHIR.Resources.Task
+  , module Data.FHIR.Resources.Task
 --  module Data.FHIR.Resources.TerminologyCapabilities
 --  module Data.FHIR.Resources.TestReport
 --  module Data.FHIR.Resources.TestScript
@@ -184,8 +195,8 @@ import Data.FHIR.Resources.Binary
 --import Data.FHIR.Resources.BiologicallyDerivedProduct
 --import Data.FHIR.Resources.BodyStructure
 import Data.FHIR.Resources.CapabilityStatement
---import Data.FHIR.Resources.CarePlan
---import Data.FHIR.Resources.CareTeam
+import Data.FHIR.Resources.CarePlan
+import Data.FHIR.Resources.CareTeam
 --import Data.FHIR.Resources.CatalogEntry
 --import Data.FHIR.Resources.ChargeItem
 --import Data.FHIR.Resources.ChargeItemDefinition
@@ -193,24 +204,24 @@ import Data.FHIR.Resources.CapabilityStatement
 --import Data.FHIR.Resources.ClaimResponse
 --import Data.FHIR.Resources.ClinicalImpression
 --import Data.FHIR.Resources.CodeSystem
---import Data.FHIR.Resources.Communication
+import Data.FHIR.Resources.Communication
 --import Data.FHIR.Resources.CommunicationRequest
 --import Data.FHIR.Resources.CompartmentDefinition
---import Data.FHIR.Resources.Composition
+import Data.FHIR.Resources.Composition
 --import Data.FHIR.Resources.ConceptMap
---import Data.FHIR.Resources.Condition
+import Data.FHIR.Resources.Condition
 --import Data.FHIR.Resources.Consent
 --import Data.FHIR.Resources.Contract
 --import Data.FHIR.Resources.Coverage
 --import Data.FHIR.Resources.CoverageEligibilityRequest
 --import Data.FHIR.Resources.CoverageEligibilityResponse
 --import Data.FHIR.Resources.DetectedIssue
---import Data.FHIR.Resources.Device
+import Data.FHIR.Resources.Device
 --import Data.FHIR.Resources.DeviceDefinition
 --import Data.FHIR.Resources.DeviceMetric
 --import Data.FHIR.Resources.DeviceRequest
 --import Data.FHIR.Resources.DeviceUseStatement
---import Data.FHIR.Resources.DiagnosticReport
+import Data.FHIR.Resources.DiagnosticReport
 --import Data.FHIR.Resources.DocumentManifest
 --import Data.FHIR.Resources.DocumentReference
 --import Data.FHIR.Resources.EffectEvidenceSynthesis
@@ -218,7 +229,7 @@ import Data.FHIR.Resources.Encounter
 --import Data.FHIR.Resources.Endpoint
 --import Data.FHIR.Resources.EnrollmentRequest
 --import Data.FHIR.Resources.EnrollmentResponse
---import Data.FHIR.Resources.EpisodeOfCare
+import Data.FHIR.Resources.EpisodeOfCare
 --import Data.FHIR.Resources.EventDefinition
 --import Data.FHIR.Resources.Evidence
 --import Data.FHIR.Resources.EvidenceVariable
@@ -226,7 +237,7 @@ import Data.FHIR.Resources.Encounter
 --import Data.FHIR.Resources.ExplanationOfBenefit
 --import Data.FHIR.Resources.FamilyMemberHistory
 --import Data.FHIR.Resources.Flag
---import Data.FHIR.Resources.Goal
+import Data.FHIR.Resources.Goal
 --import Data.FHIR.Resources.GraphDefinition
 --import Data.FHIR.Resources.Group
 --import Data.FHIR.Resources.GuidanceResponse
@@ -241,7 +252,7 @@ import Data.FHIR.Resources.Encounter
 --import Data.FHIR.Resources.Library
 --import Data.FHIR.Resources.Linkage
 --import Data.FHIR.Resources.List
---import Data.FHIR.Resources.Location
+import Data.FHIR.Resources.Location
 --import Data.FHIR.Resources.Measure
 --import Data.FHIR.Resources.MeasureReport
 --import Data.FHIR.Resources.Media
@@ -249,7 +260,7 @@ import Data.FHIR.Resources.Encounter
 --import Data.FHIR.Resources.MedicationAdministration
 --import Data.FHIR.Resources.MedicationDispense
 --import Data.FHIR.Resources.MedicationKnowledge
---import Data.FHIR.Resources.MedicationRequest
+import Data.FHIR.Resources.MedicationRequest
 --import Data.FHIR.Resources.MedicationStatement
 --import Data.FHIR.Resources.MedicinalProduct
 --import Data.FHIR.Resources.MedicinalProductAuthorization
@@ -266,7 +277,7 @@ import Data.FHIR.Resources.Encounter
 --import Data.FHIR.Resources.MolecularSequence
 --import Data.FHIR.Resources.NamingSystem
 --import Data.FHIR.Resources.NutritionOrder
---import Data.FHIR.Resources.Observation
+import Data.FHIR.Resources.Observation
 --import Data.FHIR.Resources.ObservationDefinition
 --import Data.FHIR.Resources.OperationDefinition
 import Data.FHIR.Resources.OperationOutcome
@@ -277,9 +288,9 @@ import Data.FHIR.Resources.Patient
 --import Data.FHIR.Resources.PaymentReconciliation
 --import Data.FHIR.Resources.Person
 --import Data.FHIR.Resources.PlanDefinition
---import Data.FHIR.Resources.Practitioner
---import Data.FHIR.Resources.PractitionerRole
---import Data.FHIR.Resources.Procedure
+import Data.FHIR.Resources.Practitioner
+import Data.FHIR.Resources.PractitionerRole
+import Data.FHIR.Resources.Procedure
 --import Data.FHIR.Resources.Provenance
 --import Data.FHIR.Resources.Questionnaire
 --import Data.FHIR.Resources.QuestionnaireResponse
@@ -308,7 +319,7 @@ import Data.FHIR.Resources.Patient
 --import Data.FHIR.Resources.SubstanceSourceMaterial
 --import Data.FHIR.Resources.SupplyDelivery
 --import Data.FHIR.Resources.SupplyRequest
---import Data.FHIR.Resources.Task
+import Data.FHIR.Resources.Task
 --import Data.FHIR.Resources.TerminologyCapabilities
 --import Data.FHIR.Resources.TestReport
 --import Data.FHIR.Resources.TestScript
@@ -338,8 +349,8 @@ data DomainResourceC
 --  | BiologicallyDerivedProductDR BiologicallyDerivedProduct
 --  | BodyStructureDR BodyStructure
   | CapabilityStatementDR CapabilityStatement
---  | CarePlanDR CarePlan
---  | CareTeamDR CareTeam
+  | CarePlanDR CarePlan
+  | CareTeamDR CareTeam
 --  | CatalogEntryDR CatalogEntry
 --  | ChargeItemDR ChargeItem
 --  | ChargeItemDefinitionDR ChargeItemDefinition
@@ -347,24 +358,24 @@ data DomainResourceC
 --  | ClaimResponseDR ClaimResponse
 --  | ClinicalImpressionDR ClinicalImpression
 --  | CodeSystemDR CodeSystem
---  | CommunicationDR Communication
+  | CommunicationDR Communication
 --  | CommunicationRequestDR CommunicationRequest
 --  | CompartmentDefinitionDR CompartmentDefinition
---  | CompositionDR Composition
+  | CompositionDR Composition
 --  | ConceptMapDR ConceptMap
---  | ConditionDR Condition
+  | ConditionDR Condition
 --  | ConsentDR Consent
 --  | ContractDR Contract
 --  | CoverageDR Coverage
 --  | CoverageEligibilityRequestDR CoverageEligibilityRequest
 --  | CoverageEligibilityResponseDR CoverageEligibilityResponse
 --  | DetectedIssueDR DetectedIssue
---  | DeviceDR Device
+  | DeviceDR Device
 --  | DeviceDefinitionDR DeviceDefinition
 --  | DeviceMetricDR DeviceMetric
 --  | DeviceRequestDR DeviceRequest
 --  | DeviceUseStatementDR DeviceUseStatement
---  | DiagnosticReportDR DiagnosticReport
+  | DiagnosticReportDR DiagnosticReport
 --  | DocumentManifestDR DocumentManifest
 --  | DocumentReferenceDR DocumentReference
 --  | EffectEvidenceSynthesisDR EffectEvidenceSynthesis
@@ -372,7 +383,7 @@ data DomainResourceC
 --  | EndpointDR Endpoint
 --  | EnrollmentRequestDR EnrollmentRequest
 --  | EnrollmentResponseDR EnrollmentResponse
---  | EpisodeOfCareDR EpisodeOfCare
+  | EpisodeOfCareDR EpisodeOfCare
 --  | EventDefinitionDR EventDefinition
 --  | EvidenceDR Evidence
 --  | EvidenceVariableDR EvidenceVariable
@@ -380,7 +391,7 @@ data DomainResourceC
 --  | ExplanationOfBenefitDR ExplanationOfBenefit
 --  | FamilyMemberHistoryDR FamilyMemberHistory
 --  | FlagDR Flag
---  | GoalDR Goal
+  | GoalDR Goal
 --  | GraphDefinitionDR GraphDefinition
 --  | GroupDR Group
 --  | GuidanceResponseDR GuidanceResponse
@@ -395,7 +406,7 @@ data DomainResourceC
 --  | LibraryDR Library
 --  | LinkageDR Linkage
 --  | ListDR List
---  | LocationDR Location
+  | LocationDR Location
 --  | MeasureDR Measure
 --  | MeasureReportDR MeasureReport
 --  | MediaDR Media
@@ -403,7 +414,7 @@ data DomainResourceC
 --  | MedicationAdministrationDR MedicationAdministration
 --  | MedicationDispenseDR MedicationDispense
 --  | MedicationKnowledgeDR MedicationKnowledge
---  | MedicationRequestDR MedicationRequest
+  | MedicationRequestDR MedicationRequest
 --  | MedicationStatementDR MedicationStatement
 --  | MedicinalProductDR MedicinalProduct
 --  | MedicinalProductAuthorizationDR MedicinalProductAuthorization
@@ -420,7 +431,7 @@ data DomainResourceC
 --  | MolecularSequenceDR MolecularSequence
 --  | NamingSystemDR NamingSystem
 --  | NutritionOrderDR NutritionOrder
---  | ObservationDR Observation
+  | ObservationDR Observation
 --  | ObservationDefinitionDR ObservationDefinition
 --  | OperationDefinitionDR OperationDefinition
   | OperationOutcomeDR OperationOutcome
@@ -432,9 +443,9 @@ data DomainResourceC
 --  | PaymentReconciliationDR PaymentReconciliation
 --  | PersonDR Person
 --  | PlanDefinitionDR PlanDefinition
---  | PractitionerDR Practitioner
---  | PractitionerRoleDR PractitionerRole
---  | ProcedureDR Procedure
+  | PractitionerDR Practitioner
+  | PractitionerRoleDR PractitionerRole
+  | ProcedureDR Procedure
 --  | ProvenanceDR Provenance
 --  | QuestionnaireDR Questionnaire
 --  | QuestionnaireResponseDR QuestionnaireResponse
@@ -463,7 +474,7 @@ data DomainResourceC
 --  | SubstanceSourceMaterialDR SubstanceSourceMaterial
 --  | SupplyDeliveryDR SupplyDelivery
 --  | SupplyRequestDR SupplyRequest
---  | TaskDR Task
+  | TaskDR Task
 --  | TerminologyCapabilitiesDR TerminologyCapabilities
 --  | TestReportDR TestReport
 --  | TestScriptDR TestScript
@@ -488,8 +499,8 @@ instance ToJSON DomainResourceC where
 --  toJSON (BiologicallyDerivedProductDR e) = toJSON e
 --  toJSON (BodyStructureDR e) = toJSON e
 --  toJSON (CapabilityStatementDR e) = toJSON e
---  toJSON (CarePlanDR e) = toJSON e
---  toJSON (CareTeamDR e) = toJSON e
+  toJSON (CarePlanDR e) = toJSON e
+  toJSON (CareTeamDR e) = toJSON e
 --  toJSON (CatalogEntryDR e) = toJSON e
 --  toJSON (ChargeItemDR e) = toJSON e
 --  toJSON (ChargeItemDefinitionDR e) = toJSON e
@@ -497,24 +508,24 @@ instance ToJSON DomainResourceC where
 --  toJSON (ClaimResponseDR e) = toJSON e
 --  toJSON (ClinicalImpressionDR e) = toJSON e
 --  toJSON (CodeSystemDR e) = toJSON e
---  toJSON (CommunicationDR e) = toJSON e
+  toJSON (CommunicationDR e) = toJSON e
 --  toJSON (CommunicationRequestDR e) = toJSON e
 --  toJSON (CompartmentDefinitionDR e) = toJSON e
---  toJSON (CompositionDR e) = toJSON e
+  toJSON (CompositionDR e) = toJSON e
 --  toJSON (ConceptMapDR e) = toJSON e
---  toJSON (ConditionDR e) = toJSON e
+  toJSON (ConditionDR e) = toJSON e
 --  toJSON (ConsentDR e) = toJSON e
 --  toJSON (ContractDR e) = toJSON e
 --  toJSON (CoverageDR e) = toJSON e
 --  toJSON (CoverageEligibilityRequestDR e) = toJSON e
 --  toJSON (CoverageEligibilityResponseDR e) = toJSON e
 --  toJSON (DetectedIssueDR e) = toJSON e
---  toJSON (DeviceDR e) = toJSON e
+  toJSON (DeviceDR e) = toJSON e
 --  toJSON (DeviceDefinitionDR e) = toJSON e
 --  toJSON (DeviceMetricDR e) = toJSON e
 --  toJSON (DeviceRequestDR e) = toJSON e
 --  toJSON (DeviceUseStatementDR e) = toJSON e
---  toJSON (DiagnosticReportDR e) = toJSON e
+  toJSON (DiagnosticReportDR e) = toJSON e
 --  toJSON (DocumentManifestDR e) = toJSON e
 --  toJSON (DocumentReferenceDR e) = toJSON e
 --  toJSON (EffectEvidenceSynthesisDR e) = toJSON e
@@ -522,7 +533,7 @@ instance ToJSON DomainResourceC where
 --  toJSON (EndpointDR e) = toJSON e
 --  toJSON (EnrollmentRequestDR e) = toJSON e
 --  toJSON (EnrollmentResponseDR e) = toJSON e
---  toJSON (EpisodeOfCareDR e) = toJSON e
+  toJSON (EpisodeOfCareDR e) = toJSON e
 --  toJSON (EventDefinitionDR e) = toJSON e
 --  toJSON (EvidenceDR e) = toJSON e
 --  toJSON (EvidenceVariableDR e) = toJSON e
@@ -530,7 +541,7 @@ instance ToJSON DomainResourceC where
 --  toJSON (ExplanationOfBenefitDR e) = toJSON e
 --  toJSON (FamilyMemberHistoryDR e) = toJSON e
 --  toJSON (FlagDR e) = toJSON e
---  toJSON (GoalDR e) = toJSON e
+  toJSON (GoalDR e) = toJSON e
 --  toJSON (GraphDefinitionDR e) = toJSON e
 --  toJSON (GroupDR e) = toJSON e
 --  toJSON (GuidanceResponseDR e) = toJSON e
@@ -545,7 +556,7 @@ instance ToJSON DomainResourceC where
 --  toJSON (LibraryDR e) = toJSON e
 --  toJSON (LinkageDR e) = toJSON e
 --  toJSON (ListDR e) = toJSON e
---  toJSON (LocationDR e) = toJSON e
+  toJSON (LocationDR e) = toJSON e
 --  toJSON (MeasureDR e) = toJSON e
 --  toJSON (MeasureReportDR e) = toJSON e
 --  toJSON (MediaDR e) = toJSON e
@@ -553,7 +564,7 @@ instance ToJSON DomainResourceC where
 --  toJSON (MedicationAdministrationDR e) = toJSON e
 --  toJSON (MedicationDispenseDR e) = toJSON e
 --  toJSON (MedicationKnowledgeDR e) = toJSON e
---  toJSON (MedicationRequestDR e) = toJSON e
+  toJSON (MedicationRequestDR e) = toJSON e
 --  toJSON (MedicationStatementDR e) = toJSON e
 --  toJSON (MedicinalProductDR e) = toJSON e
 --  toJSON (MedicinalProductAuthorizationDR e) = toJSON e
@@ -570,7 +581,7 @@ instance ToJSON DomainResourceC where
 --  toJSON (MolecularSequenceDR e) = toJSON e
 --  toJSON (NamingSystemDR e) = toJSON e
 --  toJSON (NutritionOrderDR e) = toJSON e
---  toJSON (ObservationDR e) = toJSON e
+  toJSON (ObservationDR e) = toJSON e
 --  toJSON (ObservationDefinitionDR e) = toJSON e
 --  toJSON (OperationDefinitionDR e) = toJSON e
   toJSON (OperationOutcomeDR e) = toJSON e
@@ -581,9 +592,9 @@ instance ToJSON DomainResourceC where
 --  toJSON (PaymentReconciliationDR e) = toJSON e
 --  toJSON (PersonDR e) = toJSON e
 --  toJSON (PlanDefinitionDR e) = toJSON e
---  toJSON (PractitionerDR e) = toJSON e
---  toJSON (PractitionerRoleDR e) = toJSON e
---  toJSON (ProcedureDR e) = toJSON e
+  toJSON (PractitionerDR e) = toJSON e
+  toJSON (PractitionerRoleDR e) = toJSON e
+  toJSON (ProcedureDR e) = toJSON e
 --  toJSON (ProvenanceDR e) = toJSON e
 --  toJSON (QuestionnaireDR e) = toJSON e
 --  toJSON (QuestionnaireResponseDR e) = toJSON e
@@ -612,7 +623,7 @@ instance ToJSON DomainResourceC where
 --  toJSON (SubstanceSourceMaterialDR e) = toJSON e
 --  toJSON (SupplyDeliveryDR e) = toJSON e
 --  toJSON (SupplyRequestDR e) = toJSON e
---  toJSON (TaskDR e) = toJSON e
+  toJSON (TaskDR e) = toJSON e
 --  toJSON (TerminologyCapabilitiesDR e) = toJSON e
 --  toJSON (TestReportDR e) = toJSON e
 --  toJSON (TestScriptDR e) = toJSON e
@@ -636,8 +647,8 @@ instance FromJSON DomainResourceC where
 --         Just "BiologicallyDerivedProduct" -> BiologicallyDerivedProductDR <$> parseJSON (Object v)
 --         Just "BodyStructure" -> BodyStructureDR <$> parseJSON (Object v)
 --         Just "CapabilityStatement" -> CapabilityStatementDR <$> parseJSON (Object v)
---         Just "CarePlan" -> CarePlanDR <$> parseJSON (Object v)
---         Just "CareTeam" -> CareTeamDR <$> parseJSON (Object v)
+         Just "CarePlan" -> CarePlanDR <$> parseJSON (Object v)
+         Just "CareTeam" -> CareTeamDR <$> parseJSON (Object v)
 --         Just "CatalogEntry" -> CatalogEntryDR <$> parseJSON (Object v)
 --         Just "ChargeItem" -> ChargeItemDR <$> parseJSON (Object v)
 --         Just "ChargeItemDefinition" -> ChargeItemDefinitionDR <$> parseJSON (Object v)
@@ -645,24 +656,24 @@ instance FromJSON DomainResourceC where
 --         Just "ClaimResponse" -> ClaimResponseDR <$> parseJSON (Object v)
 --         Just "ClinicalImpression" -> ClinicalImpressionDR <$> parseJSON (Object v)
 --         Just "CodeSystem" -> CodeSystemDR <$> parseJSON (Object v)
---         Just "Communication" -> CommunicationDR <$> parseJSON (Object v)
+         Just "Communication" -> CommunicationDR <$> parseJSON (Object v)
 --         Just "CommunicationRequest" -> CommunicationRequestDR <$> parseJSON (Object v)
 --         Just "CompartmentDefinition" -> CompartmentDefinitionDR <$> parseJSON (Object v)
---         Just "Composition" -> CompositionDR <$> parseJSON (Object v)
+         Just "Composition" -> CompositionDR <$> parseJSON (Object v)
 --         Just "ConceptMap" -> ConceptMapDR <$> parseJSON (Object v)
---         Just "Condition" -> ConditionDR <$> parseJSON (Object v)
+         Just "Condition" -> ConditionDR <$> parseJSON (Object v)
 --         Just "Consent" -> ConsentDR <$> parseJSON (Object v)
 --         Just "Contract" -> ContractDR <$> parseJSON (Object v)
 --         Just "Coverage" -> CoverageDR <$> parseJSON (Object v)
 --         Just "CoverageEligibilityRequest" -> CoverageEligibilityRequestDR <$> parseJSON (Object v)
 --         Just "CoverageEligibilityResponse" -> CoverageEligibilityResponseDR <$> parseJSON (Object v)
 --         Just "DetectedIssue" -> DetectedIssueDR <$> parseJSON (Object v)
---         Just "Device" -> DeviceDR <$> parseJSON (Object v)
+         Just "Device" -> DeviceDR <$> parseJSON (Object v)
 --         Just "DeviceDefinition" -> DeviceDefinitionDR <$> parseJSON (Object v)
 --         Just "DeviceMetric" -> DeviceMetricDR <$> parseJSON (Object v)
 --         Just "DeviceRequest" -> DeviceRequestDR <$> parseJSON (Object v)
 --         Just "DeviceUseStatement" -> DeviceUseStatementDR <$> parseJSON (Object v)
---         Just "DiagnosticReport" -> DiagnosticReportDR <$> parseJSON (Object v)
+         Just "DiagnosticReport" -> DiagnosticReportDR <$> parseJSON (Object v)
 --         Just "DocumentManifest" -> DocumentManifestDR <$> parseJSON (Object v)
 --         Just "DocumentReference" -> DocumentReferenceDR <$> parseJSON (Object v)
 --         Just "EffectEvidenceSynthesis" -> EffectEvidenceSynthesisDR <$> parseJSON (Object v)
@@ -670,7 +681,7 @@ instance FromJSON DomainResourceC where
 --         Just "Endpoint" -> EndpointDR <$> parseJSON (Object v)
 --         Just "EnrollmentRequest" -> EnrollmentRequestDR <$> parseJSON (Object v)
 --         Just "EnrollmentResponse" -> EnrollmentResponseDR <$> parseJSON (Object v)
---         Just "EpisodeOfCare" -> EpisodeOfCareDR <$> parseJSON (Object v)
+         Just "EpisodeOfCare" -> EpisodeOfCareDR <$> parseJSON (Object v)
 --         Just "EventDefinition" -> EventDefinitionDR <$> parseJSON (Object v)
 --         Just "Evidence" -> EvidenceDR <$> parseJSON (Object v)
 --         Just "EvidenceVariable" -> EvidenceVariableDR <$> parseJSON (Object v)
@@ -678,7 +689,7 @@ instance FromJSON DomainResourceC where
 --         Just "ExplanationOfBenefit" -> ExplanationOfBenefitDR <$> parseJSON (Object v)
 --         Just "FamilyMemberHistory" -> FamilyMemberHistoryDR <$> parseJSON (Object v)
 --         Just "Flag" -> FlagDR <$> parseJSON (Object v)
---         Just "Goal" -> GoalDR <$> parseJSON (Object v)
+         Just "Goal" -> GoalDR <$> parseJSON (Object v)
 --         Just "GraphDefinition" -> GraphDefinitionDR <$> parseJSON (Object v)
 --         Just "Group" -> GroupDR <$> parseJSON (Object v)
 --         Just "GuidanceResponse" -> GuidanceResponseDR <$> parseJSON (Object v)
@@ -693,7 +704,7 @@ instance FromJSON DomainResourceC where
 --         Just "Library" -> LibraryDR <$> parseJSON (Object v)
 --         Just "Linkage" -> LinkageDR <$> parseJSON (Object v)
 --         Just "List" -> ListDR <$> parseJSON (Object v)
---         Just "Location" -> LocationDR <$> parseJSON (Object v)
+         Just "Location" -> LocationDR <$> parseJSON (Object v)
 --         Just "Measure" -> MeasureDR <$> parseJSON (Object v)
 --         Just "MeasureReport" -> MeasureReportDR <$> parseJSON (Object v)
 --         Just "Media" -> MediaDR <$> parseJSON (Object v)
@@ -701,7 +712,7 @@ instance FromJSON DomainResourceC where
 --         Just "MedicationAdministration" -> MedicationAdministrationDR <$> parseJSON (Object v)
 --         Just "MedicationDispense" -> MedicationDispenseDR <$> parseJSON (Object v)
 --         Just "MedicationKnowledge" -> MedicationKnowledgeDR <$> parseJSON (Object v)
---         Just "MedicationRequest" -> MedicationRequestDR <$> parseJSON (Object v)
+         Just "MedicationRequest" -> MedicationRequestDR <$> parseJSON (Object v)
 --         Just "MedicationStatement" -> MedicationStatementDR <$> parseJSON (Object v)
 --         Just "MedicinalProduct" -> MedicinalProductDR <$> parseJSON (Object v)
 --         Just "MedicinalProductAuthorization" -> MedicinalProductAuthorizationDR <$> parseJSON (Object v)
@@ -718,7 +729,7 @@ instance FromJSON DomainResourceC where
 --         Just "MolecularSequence" -> MolecularSequenceDR <$> parseJSON (Object v)
 --         Just "NamingSystem" -> NamingSystemDR <$> parseJSON (Object v)
 --         Just "NutritionOrder" -> NutritionOrderDR <$> parseJSON (Object v)
---         Just "Observation" -> ObservationDR <$> parseJSON (Object v)
+         Just "Observation" -> ObservationDR <$> parseJSON (Object v)
 --         Just "ObservationDefinition" -> ObservationDefinitionDR <$> parseJSON (Object v)
 --         Just "OperationDefinition" -> OperationDefinitionDR <$> parseJSON (Object v)
          Just "OperationOutcome" -> OperationOutcomeDR <$> parseJSON (Object v)
@@ -729,9 +740,9 @@ instance FromJSON DomainResourceC where
 --         Just "PaymentReconciliation" -> PaymentReconciliationDR <$> parseJSON (Object v)
 --         Just "Person" -> PersonDR <$> parseJSON (Object v)
 --         Just "PlanDefinition" -> PlanDefinitionDR <$> parseJSON (Object v)
---         Just "Practitioner" -> PractitionerDR <$> parseJSON (Object v)
---         Just "PractitionerRole" -> PractitionerRoleDR <$> parseJSON (Object v)
---         Just "Procedure" -> ProcedureDR <$> parseJSON (Object v)
+         Just "Practitioner" -> PractitionerDR <$> parseJSON (Object v)
+         Just "PractitionerRole" -> PractitionerRoleDR <$> parseJSON (Object v)
+         Just "Procedure" -> ProcedureDR <$> parseJSON (Object v)
 --         Just "Provenance" -> ProvenanceDR <$> parseJSON (Object v)
 --         Just "Questionnaire" -> QuestionnaireDR <$> parseJSON (Object v)
 --         Just "QuestionnaireResponse" -> QuestionnaireResponseDR <$> parseJSON (Object v)
@@ -760,7 +771,7 @@ instance FromJSON DomainResourceC where
 --         Just "SubstanceSourceMaterial" -> SubstanceSourceMaterialDR <$> parseJSON (Object v)
 --         Just "SupplyDelivery" -> SupplyDeliveryDR <$> parseJSON (Object v)
 --         Just "SupplyRequest" -> SupplyRequestDR <$> parseJSON (Object v)
---         Just "Task" -> TaskDR <$> parseJSON (Object v)
+         Just "Task" -> TaskDR <$> parseJSON (Object v)
 --         Just "TerminologyCapabilities" -> TerminologyCapabilitiesDR <$> parseJSON (Object v)
 --         Just "TestReport" -> TestReportDR <$> parseJSON (Object v)
 --         Just "TestScript" -> TestScriptDR <$> parseJSON (Object v)
@@ -784,8 +795,8 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (BiologicallyDerivedProductDR e) = Xmlbf.toXml e
 --  toXml (BodyStructureDR e) = Xmlbf.toXml e
 --  toXml (CapabilityStatementDR e) = Xmlbf.toXml e
---  toXml (CarePlanDR e) = Xmlbf.toXml e
---  toXml (CareTeamDR e) = Xmlbf.toXml e
+  toXml (CarePlanDR e) = Xmlbf.toXml e
+  toXml (CareTeamDR e) = Xmlbf.toXml e
 --  toXml (CatalogEntryDR e) = Xmlbf.toXml e
 --  toXml (ChargeItemDR e) = Xmlbf.toXml e
 --  toXml (ChargeItemDefinitionDR e) = Xmlbf.toXml e
@@ -793,24 +804,24 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (ClaimResponseDR e) = Xmlbf.toXml e
 --  toXml (ClinicalImpressionDR e) = Xmlbf.toXml e
 --  toXml (CodeSystemDR e) = Xmlbf.toXml e
---  toXml (CommunicationDR e) = Xmlbf.toXml e
+  toXml (CommunicationDR e) = Xmlbf.toXml e
 --  toXml (CommunicationRequestDR e) = Xmlbf.toXml e
 --  toXml (CompartmentDefinitionDR e) = Xmlbf.toXml e
---  toXml (CompositionDR e) = Xmlbf.toXml e
+  toXml (CompositionDR e) = Xmlbf.toXml e
 --  toXml (ConceptMapDR e) = Xmlbf.toXml e
---  toXml (ConditionDR e) = Xmlbf.toXml e
+  toXml (ConditionDR e) = Xmlbf.toXml e
 --  toXml (ConsentDR e) = Xmlbf.toXml e
 --  toXml (ContractDR e) = Xmlbf.toXml e
 --  toXml (CoverageDR e) = Xmlbf.toXml e
 --  toXml (CoverageEligibilityRequestDR e) = Xmlbf.toXml e
 --  toXml (CoverageEligibilityResponseDR e) = Xmlbf.toXml e
 --  toXml (DetectedIssueDR e) = Xmlbf.toXml e
---  toXml (DeviceDR e) = Xmlbf.toXml e
+  toXml (DeviceDR e) = Xmlbf.toXml e
 --  toXml (DeviceDefinitionDR e) = Xmlbf.toXml e
 --  toXml (DeviceMetricDR e) = Xmlbf.toXml e
 --  toXml (DeviceRequestDR e) = Xmlbf.toXml e
 --  toXml (DeviceUseStatementDR e) = Xmlbf.toXml e
---  toXml (DiagnosticReportDR e) = Xmlbf.toXml e
+  toXml (DiagnosticReportDR e) = Xmlbf.toXml e
 --  toXml (DocumentManifestDR e) = Xmlbf.toXml e
 --  toXml (DocumentReferenceDR e) = Xmlbf.toXml e
 --  toXml (EffectEvidenceSynthesisDR e) = Xmlbf.toXml e
@@ -818,7 +829,7 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (EndpointDR e) = Xmlbf.toXml e
 --  toXml (EnrollmentRequestDR e) = Xmlbf.toXml e
 --  toXml (EnrollmentResponseDR e) = Xmlbf.toXml e
---  toXml (EpisodeOfCareDR e) = Xmlbf.toXml e
+  toXml (EpisodeOfCareDR e) = Xmlbf.toXml e
 --  toXml (EventDefinitionDR e) = Xmlbf.toXml e
 --  toXml (EvidenceDR e) = Xmlbf.toXml e
 --  toXml (EvidenceVariableDR e) = Xmlbf.toXml e
@@ -826,7 +837,7 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (ExplanationOfBenefitDR e) = Xmlbf.toXml e
 --  toXml (FamilyMemberHistoryDR e) = Xmlbf.toXml e
 --  toXml (FlagDR e) = Xmlbf.toXml e
---  toXml (GoalDR e) = Xmlbf.toXml e
+  toXml (GoalDR e) = Xmlbf.toXml e
 --  toXml (GraphDefinitionDR e) = Xmlbf.toXml e
 --  toXml (GroupDR e) = Xmlbf.toXml e
 --  toXml (GuidanceResponseDR e) = Xmlbf.toXml e
@@ -841,7 +852,7 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (LibraryDR e) = Xmlbf.toXml e
 --  toXml (LinkageDR e) = Xmlbf.toXml e
 --  toXml (ListDR e) = Xmlbf.toXml e
---  toXml (LocationDR e) = Xmlbf.toXml e
+  toXml (LocationDR e) = Xmlbf.toXml e
 --  toXml (MeasureDR e) = Xmlbf.toXml e
 --  toXml (MeasureReportDR e) = Xmlbf.toXml e
 --  toXml (MediaDR e) = Xmlbf.toXml e
@@ -849,7 +860,7 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (MedicationAdministrationDR e) = Xmlbf.toXml e
 --  toXml (MedicationDispenseDR e) = Xmlbf.toXml e
 --  toXml (MedicationKnowledgeDR e) = Xmlbf.toXml e
---  toXml (MedicationRequestDR e) = Xmlbf.toXml e
+  toXml (MedicationRequestDR e) = Xmlbf.toXml e
 --  toXml (MedicationStatementDR e) = Xmlbf.toXml e
 --  toXml (MedicinalProductDR e) = Xmlbf.toXml e
 --  toXml (MedicinalProductAuthorizationDR e) = Xmlbf.toXml e
@@ -866,7 +877,7 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (MolecularSequenceDR e) = Xmlbf.toXml e
 --  toXml (NamingSystemDR e) = Xmlbf.toXml e
 --  toXml (NutritionOrderDR e) = Xmlbf.toXml e
---  toXml (ObservationDR e) = Xmlbf.toXml e
+  toXml (ObservationDR e) = Xmlbf.toXml e
 --  toXml (ObservationDefinitionDR e) = Xmlbf.toXml e
 --  toXml (OperationDefinitionDR e) = Xmlbf.toXml e
   toXml (OperationOutcomeDR e) = Xmlbf.toXml e
@@ -877,9 +888,9 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (PaymentReconciliationDR e) = Xmlbf.toXml e
 --  toXml (PersonDR e) = Xmlbf.toXml e
 --  toXml (PlanDefinitionDR e) = Xmlbf.toXml e
---  toXml (PractitionerDR e) = Xmlbf.toXml e
---  toXml (PractitionerRoleDR e) = Xmlbf.toXml e
---  toXml (ProcedureDR e) = Xmlbf.toXml e
+  toXml (PractitionerDR e) = Xmlbf.toXml e
+  toXml (PractitionerRoleDR e) = Xmlbf.toXml e
+  toXml (ProcedureDR e) = Xmlbf.toXml e
 --  toXml (ProvenanceDR e) = Xmlbf.toXml e
 --  toXml (QuestionnaireDR e) = Xmlbf.toXml e
 --  toXml (QuestionnaireResponseDR e) = Xmlbf.toXml e
@@ -908,7 +919,7 @@ instance Xmlbf.ToXml DomainResourceC where
 --  toXml (SubstanceSourceMaterialDR e) = Xmlbf.toXml e
 --  toXml (SupplyDeliveryDR e) = Xmlbf.toXml e
 --  toXml (SupplyRequestDR e) = Xmlbf.toXml e
---  toXml (TaskDR e) = Xmlbf.toXml e
+  toXml (TaskDR e) = Xmlbf.toXml e
 --  toXml (TerminologyCapabilitiesDR e) = Xmlbf.toXml e
 --  toXml (TestReportDR e) = Xmlbf.toXml e
 --  toXml (TestScriptDR e) = Xmlbf.toXml e
@@ -936,8 +947,8 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "BiologicallyDerivedProduct" -> BiologicallyDerivedProductDR <$> Xmlbf.fromXml
 --            "BodyStructure" -> BodyStructureDR <$> Xmlbf.fromXml
 --            "CapabilityStatement" -> CapabilityStatementDR <$> Xmlbf.fromXml
---            "CarePlan" -> CarePlanDR <$> Xmlbf.fromXml
---            "CareTeam" -> CareTeamDR <$> Xmlbf.fromXml
+              "CarePlan" -> CarePlanDR <$> Xmlbf.fromXml
+              "CareTeam" -> CareTeamDR <$> Xmlbf.fromXml
 --            "CatalogEntry" -> CatalogEntryDR <$> Xmlbf.fromXml
 --            "ChargeItem" -> ChargeItemDR <$> Xmlbf.fromXml
 --            "ChargeItemDefinition" -> ChargeItemDefinitionDR <$> Xmlbf.fromXml
@@ -945,24 +956,24 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "ClaimResponse" -> ClaimResponseDR <$> Xmlbf.fromXml
 --            "ClinicalImpression" -> ClinicalImpressionDR <$> Xmlbf.fromXml
 --            "CodeSystem" -> CodeSystemDR <$> Xmlbf.fromXml
---            "Communication" -> CommunicationDR <$> Xmlbf.fromXml
+              "Communication" -> CommunicationDR <$> Xmlbf.fromXml
 --            "CommunicationRequest" -> CommunicationRequestDR <$> Xmlbf.fromXml
 --            "CompartmentDefinition" -> CompartmentDefinitionDR <$> Xmlbf.fromXml
---            "Composition" -> CompositionDR <$> Xmlbf.fromXml
+              "Composition" -> CompositionDR <$> Xmlbf.fromXml
 --            "ConceptMap" -> ConceptMapDR <$> Xmlbf.fromXml
---            "Condition" -> ConditionDR <$> Xmlbf.fromXml
+              "Condition" -> ConditionDR <$> Xmlbf.fromXml
 --            "Consent" -> ConsentDR <$> Xmlbf.fromXml
 --            "Contract" -> ContractDR <$> Xmlbf.fromXml
 --            "Coverage" -> CoverageDR <$> Xmlbf.fromXml
 --            "CoverageEligibilityRequest" -> CoverageEligibilityRequestDR <$> Xmlbf.fromXml
 --            "CoverageEligibilityResponse" -> CoverageEligibilityResponseDR <$> Xmlbf.fromXml
 --            "DetectedIssue" -> DetectedIssueDR <$> Xmlbf.fromXml
---            "Device" -> DeviceDR <$> Xmlbf.fromXml
+              "Device" -> DeviceDR <$> Xmlbf.fromXml
 --            "DeviceDefinition" -> DeviceDefinitionDR <$> Xmlbf.fromXml
 --            "DeviceMetric" -> DeviceMetricDR <$> Xmlbf.fromXml
 --            "DeviceRequest" -> DeviceRequestDR <$> Xmlbf.fromXml
 --            "DeviceUseStatement" -> DeviceUseStatementDR <$> Xmlbf.fromXml
---            "DiagnosticReport" -> DiagnosticReportDR <$> Xmlbf.fromXml
+              "DiagnosticReport" -> DiagnosticReportDR <$> Xmlbf.fromXml
 --            "DocumentManifest" -> DocumentManifestDR <$> Xmlbf.fromXml
 --            "DocumentReference" -> DocumentReferenceDR <$> Xmlbf.fromXml
 --            "EffectEvidenceSynthesis" -> EffectEvidenceSynthesisDR <$> Xmlbf.fromXml
@@ -970,7 +981,7 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "Endpoint" -> EndpointDR <$> Xmlbf.fromXml
 --            "EnrollmentRequest" -> EnrollmentRequestDR <$> Xmlbf.fromXml
 --            "EnrollmentResponse" -> EnrollmentResponseDR <$> Xmlbf.fromXml
---            "EpisodeOfCare" -> EpisodeOfCareDR <$> Xmlbf.fromXml
+              "EpisodeOfCare" -> EpisodeOfCareDR <$> Xmlbf.fromXml
 --            "EventDefinition" -> EventDefinitionDR <$> Xmlbf.fromXml
 --            "Evidence" -> EvidenceDR <$> Xmlbf.fromXml
 --            "EvidenceVariable" -> EvidenceVariableDR <$> Xmlbf.fromXml
@@ -978,7 +989,7 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "ExplanationOfBenefit" -> ExplanationOfBenefitDR <$> Xmlbf.fromXml
 --            "FamilyMemberHistory" -> FamilyMemberHistoryDR <$> Xmlbf.fromXml
 --            "Flag" -> FlagDR <$> Xmlbf.fromXml
---            "Goal" -> GoalDR <$> Xmlbf.fromXml
+              "Goal" -> GoalDR <$> Xmlbf.fromXml
 --            "GraphDefinition" -> GraphDefinitionDR <$> Xmlbf.fromXml
 --            "Group" -> GroupDR <$> Xmlbf.fromXml
 --            "GuidanceResponse" -> GuidanceResponseDR <$> Xmlbf.fromXml
@@ -993,7 +1004,7 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "Library" -> LibraryDR <$> Xmlbf.fromXml
 --            "Linkage" -> LinkageDR <$> Xmlbf.fromXml
 --            "List" -> ListDR <$> Xmlbf.fromXml
---            "Location" -> LocationDR <$> Xmlbf.fromXml
+              "Location" -> LocationDR <$> Xmlbf.fromXml
 --            "Measure" -> MeasureDR <$> Xmlbf.fromXml
 --            "MeasureReport" -> MeasureReportDR <$> Xmlbf.fromXml
 --            "Media" -> MediaDR <$> Xmlbf.fromXml
@@ -1001,7 +1012,7 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "MedicationAdministration" -> MedicationAdministrationDR <$> Xmlbf.fromXml
 --            "MedicationDispense" -> MedicationDispenseDR <$> Xmlbf.fromXml
 --            "MedicationKnowledge" -> MedicationKnowledgeDR <$> Xmlbf.fromXml
---            "MedicationRequest" -> MedicationRequestDR <$> Xmlbf.fromXml
+              "MedicationRequest" -> MedicationRequestDR <$> Xmlbf.fromXml
 --            "MedicationStatement" -> MedicationStatementDR <$> Xmlbf.fromXml
 --            "MedicinalProduct" -> MedicinalProductDR <$> Xmlbf.fromXml
 --            "MedicinalProductAuthorization" -> MedicinalProductAuthorizationDR <$> Xmlbf.fromXml
@@ -1018,7 +1029,7 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "MolecularSequence" -> MolecularSequenceDR <$> Xmlbf.fromXml
 --            "NamingSystem" -> NamingSystemDR <$> Xmlbf.fromXml
 --            "NutritionOrder" -> NutritionOrderDR <$> Xmlbf.fromXml
---            "Observation" -> ObservationDR <$> Xmlbf.fromXml
+              "Observation" -> ObservationDR <$> Xmlbf.fromXml
 --            "ObservationDefinition" -> ObservationDefinitionDR <$> Xmlbf.fromXml
 --            "OperationDefinition" -> OperationDefinitionDR <$> Xmlbf.fromXml
 --            "OperationOutcome" -> OperationOutcomeDR <$> Xmlbf.fromXml
@@ -1029,9 +1040,9 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "PaymentReconciliation" -> PaymentReconciliationDR <$> Xmlbf.fromXml
 --            "Person" -> PersonDR <$> Xmlbf.fromXml
 --            "PlanDefinition" -> PlanDefinitionDR <$> Xmlbf.fromXml
---            "Practitioner" -> PractitionerDR <$> Xmlbf.fromXml
---            "PractitionerRole" -> PractitionerRoleDR <$> Xmlbf.fromXml
---            "Procedure" -> ProcedureDR <$> Xmlbf.fromXml
+              "Practitioner" -> PractitionerDR <$> Xmlbf.fromXml
+              "PractitionerRole" -> PractitionerRoleDR <$> Xmlbf.fromXml
+              "Procedure" -> ProcedureDR <$> Xmlbf.fromXml
 --            "Provenance" -> ProvenanceDR <$> Xmlbf.fromXml
 --            "Questionnaire" -> QuestionnaireDR <$> Xmlbf.fromXml
 --            "QuestionnaireResponse" -> QuestionnaireResponseDR <$> Xmlbf.fromXml
@@ -1060,7 +1071,7 @@ instance Xmlbf.FromXml DomainResourceC where
 --            "SubstanceSourceMaterial" -> SubstanceSourceMaterialDR <$> Xmlbf.fromXml
 --            "SupplyDelivery" -> SupplyDeliveryDR <$> Xmlbf.fromXml
 --            "SupplyRequest" -> SupplyRequestDR <$> Xmlbf.fromXml
---            "Task" -> TaskDR <$> Xmlbf.fromXml
+              "Task" -> TaskDR <$> Xmlbf.fromXml
 --            "TerminologyCapabilities" -> TerminologyCapabilitiesDR <$> Xmlbf.fromXml
 --            "TestReport" -> TestReportDR <$> Xmlbf.fromXml
 --            "TestScript" -> TestScriptDR <$> Xmlbf.fromXml

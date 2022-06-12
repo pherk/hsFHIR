@@ -135,6 +135,7 @@ data CarePlan = CarePlan {
   , carePlanActivity :: [CarePlanActivity]
   , carePlanNote :: [Annotation]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CarePlan where
@@ -364,6 +365,7 @@ data CarePlanActivity = CarePlanActivity {
   , carePlanActivityReference :: Maybe Reference
   , carePlanActivityDetail :: Maybe CarePlanDetail
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CarePlanActivity where
@@ -571,6 +573,7 @@ data CarePlanDetail = CarePlanDetail {
   , carePlanDetailQuantity :: Maybe Quantity
   , carePlanDetailDescription :: Maybe Text
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CarePlanDetail where

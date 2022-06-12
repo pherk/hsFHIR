@@ -35,28 +35,28 @@ data CompositionStatus
     = CSPreliminary
     | CSFinal
     | CSAmended
-    | CSEnteredInError
+    | CompSEnteredInError
   deriving (Eq, Show)
 
 instance ToJSON CompositionStatus where
     toJSON CSPreliminary = String "preliminary"
     toJSON CSFinal = String "final"
     toJSON CSAmended = String "amended"
-    toJSON CSEnteredInError = String "entered-in-error"
+    toJSON CompSEnteredInError = String "entered-in-error"
 instance FromJSON CompositionStatus where
     parseJSON "preliminary" = return CSPreliminary
     parseJSON "final" = return CSFinal
     parseJSON "amended" = return CSAmended
-    parseJSON "entered-in-error" = return CSEnteredInError
+    parseJSON "entered-in-error" = return CompSEnteredInError
 
 toCompositionStatus CSPreliminary = "preliminary"
 toCompositionStatus CSFinal = "final"
 toCompositionStatus CSAmended = "amended"
-toCompositionStatus CSEnteredInError = "entered-in-error"
+toCompositionStatus CompSEnteredInError = "entered-in-error"
 fromCompositionStatus "preliminary" = CSPreliminary
 fromCompositionStatus "final" = CSFinal
 fromCompositionStatus "amended" = CSAmended
-fromCompositionStatus "entered-in-error" = CSEnteredInError
+fromCompositionStatus "entered-in-error" = CompSEnteredInError
 
 
 data CompositionConfidentiality
@@ -122,6 +122,7 @@ data Composition = Composition {
   , compositionEvent :: [CompositionEvent]
   , compositionSection :: [CompositionSection]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Composition where
@@ -331,6 +332,7 @@ data CompositionSection = CompositionSection {
   , compositionSectionEmptyReason :: Maybe CodeableConcept
   , compositionSectionSection :: [CompositionSection]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CompositionSection where
@@ -472,6 +474,7 @@ data CompositionRelatesTo = CompositionRelatesTo {
   , compositionRelatesToTargetIdentifier :: Identifier
   , compositionRelatesToTargetReference :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CompositionRelatesTo where
@@ -566,6 +569,7 @@ data CompositionAttester = CompositionAttester {
   , compositionAttesterTime :: Maybe DateTime
   , compositionAttesterParty :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CompositionAttester where
@@ -632,6 +636,7 @@ data CompositionEvent = CompositionEvent {
   , compositionEventPeriod :: Maybe Period
   , compositionEventDetail :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON CompositionEvent where

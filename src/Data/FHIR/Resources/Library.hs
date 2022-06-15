@@ -77,6 +77,7 @@ data Library = Library {
   , libraryDataRequirement :: [DataRequirement]
   , libraryContent :: [Attachment]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Library where

@@ -183,6 +183,7 @@ data RequestGroup = RequestGroup {
   , requestGroupNote :: [Annotation]
   , requestGroupAction :: [RequestGroupAction]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON RequestGroup where
@@ -402,6 +403,7 @@ data RequestGroupCondition = RequestGroupCondition {
   , requestGroupConditionKind :: RequestGroupConditionKind
   , requestGroupConditionExpression :: Maybe Expression
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON RequestGroupCondition where
@@ -640,6 +642,7 @@ data RequestGroupAction = RequestGroupAction {
   , requestGroupActionResource :: Maybe Reference
   , requestGroupActionAction :: [RequestGroupAction]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON RequestGroupAction where
@@ -891,6 +894,7 @@ data RequestGroupRelatedAction = RequestGroupRelatedAction {
   , requestGroupRelatedActionOffsetDuration :: Maybe Duration
   , requestGroupRelatedActionOffsetRange :: Maybe Range
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON RequestGroupRelatedAction where

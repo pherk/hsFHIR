@@ -56,6 +56,7 @@ data Provenance = Provenance {
   , provenanceEntity :: [ProvenanceEntity]
   , provenanceSignature :: [Signature]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Provenance where
@@ -261,6 +262,7 @@ data ProvenanceEntity = ProvenanceEntity {
   , provenanceEntityWhat :: Reference
   , provenanceEntityAgent :: [ProvenanceAgent]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ProvenanceEntity where
@@ -328,6 +330,7 @@ data ProvenanceAgent = ProvenanceAgent {
   , provenanceAgentWho :: Reference
   , provenanceAgentOnBehalfOf :: Maybe Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ProvenanceAgent where

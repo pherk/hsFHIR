@@ -65,6 +65,7 @@ data HealthcareService = HealthcareService {
   , healthcareServiceAvailabilityExceptions :: Maybe Text
   , healthcareServiceEndpoint :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON HealthcareService where
@@ -297,6 +298,7 @@ data HealthcareServiceEligibility = HealthcareServiceEligibility {
   , healthcareServiceEligibilityCode :: Maybe CodeableConcept
   , healthcareServiceEligibilityComment :: Maybe Markdown
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON HealthcareServiceEligibility where
@@ -356,6 +358,7 @@ data HealthcareServiceNotAvailable = HealthcareServiceNotAvailable {
   , healthcareServiceNotAvailableDescription :: Text
   , healthcareServiceNotAvailableDuring :: Maybe Period
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON HealthcareServiceNotAvailable where
@@ -460,6 +463,7 @@ data HealthcareServiceAvailableTime = HealthcareServiceAvailableTime {
   , healthcareServiceAvailableTimeAvailableStartTime :: Maybe Time
   , healthcareServiceAvailableTimeAvailableEndTime :: Maybe Time
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON HealthcareServiceAvailableTime where

@@ -77,6 +77,7 @@ data PlanDefinition = PlanDefinition {
   , planDefinitionGoal :: [PlanDefinitionGoal]
   , planDefinitionAction :: [PlanDefinitionAction]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinition where
@@ -397,6 +398,7 @@ data PlanDefinitionCondition = PlanDefinitionCondition {
   , planDefinitionConditionKind :: PlanDefinitionConditionKind
   , planDefinitionConditionExpression :: Maybe Expression
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionCondition where
@@ -515,6 +517,7 @@ data PlanDefinitionRelatedAction = PlanDefinitionRelatedAction {
   , planDefinitionRelatedActionRelationship :: PlanDefinitionRelatedActionRelationship
   , planDefinitionRelatedActionOffset :: Maybe PlanDefinitionRelatedActionOffset
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionRelatedAction where
@@ -609,6 +612,7 @@ data PlanDefinitionGoal = PlanDefinitionGoal {
   , planDefinitionGoalDocumentation :: [RelatedArtifact]
   , planDefinitionGoalTarget :: [PlanDefinitionTarget]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionGoal where
@@ -705,6 +709,7 @@ data PlanDefinitionTarget = PlanDefinitionTarget {
   , planDefinitionTargetDetail :: Maybe PlanDefinitionTargetDetail
   , planDefinitionTargetDue :: Maybe Duration
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionTarget where
@@ -830,6 +835,7 @@ data PlanDefinitionParticipant = PlanDefinitionParticipant {
   , planDefinitionParticipantType :: PlanDefinitionParticipantType
   , planDefinitionParticipantRole :: Maybe CodeableConcept
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionParticipant where
@@ -889,6 +895,7 @@ data PlanDefinitionDynamicValue = PlanDefinitionDynamicValue {
   , planDefinitionDynamicValuePath :: Maybe Text
   , planDefinitionDynamicValueExpression :: Maybe Expression
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionDynamicValue where
@@ -1140,6 +1147,7 @@ data PlanDefinitionAction = PlanDefinitionAction {
   , planDefinitionActionDynamicValue :: [PlanDefinitionDynamicValue]
   , planDefinitionActionAction :: [PlanDefinitionAction]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON PlanDefinitionAction where

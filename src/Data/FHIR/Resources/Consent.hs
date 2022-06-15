@@ -37,7 +37,7 @@ data ConsentStatus
     | CSActive
     | CSRejected
     | CSInactive
-    | CSEnteredInError
+    | ConsentSEnteredInError
   deriving (Eq, Show)
 
 instance ToJSON ConsentStatus where
@@ -46,27 +46,27 @@ instance ToJSON ConsentStatus where
     toJSON CSActive = String "active"
     toJSON CSRejected = String "rejected"
     toJSON CSInactive = String "inactive"
-    toJSON CSEnteredInError = String "entered-in-error"
+    toJSON ConsentSEnteredInError = String "entered-in-error"
 instance FromJSON ConsentStatus where
     parseJSON "draft" = return CSDraft
     parseJSON "proposed" = return CSProposed
     parseJSON "active" = return CSActive
     parseJSON "rejected" = return CSRejected
     parseJSON "inactive" = return CSInactive
-    parseJSON "entered-in-error" = return CSEnteredInError
+    parseJSON "entered-in-error" = return ConsentSEnteredInError
 
 toConsentStatus CSDraft = "draft"
 toConsentStatus CSProposed = "proposed"
 toConsentStatus CSActive = "active"
 toConsentStatus CSRejected = "rejected"
 toConsentStatus CSInactive = "inactive"
-toConsentStatus CSEnteredInError = "entered-in-error"
+toConsentStatus ConsentSEnteredInError = "entered-in-error"
 fromConsentStatus "draft" = CSDraft
 fromConsentStatus "proposed" = CSProposed
 fromConsentStatus "active" = CSActive
 fromConsentStatus "rejected" = CSRejected
 fromConsentStatus "inactive" = CSInactive
-fromConsentStatus "entered-in-error" = CSEnteredInError
+fromConsentStatus "entered-in-error" = ConsentSEnteredInError
 
 
 data ConsentSource
@@ -97,6 +97,7 @@ data Consent = Consent {
   , consentVerification :: [ConsentVerification]
   , consentProvision :: Maybe ConsentProvision
   }
+    deriving (Eq, Show)
 --
 
 instance ToJSON Consent where
@@ -313,6 +314,7 @@ data ConsentProvision = ConsentProvision {
   , consentProvisionData :: [ConsentData]
   , consentProvisionProvision :: [ConsentProvision]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConsentProvision where
@@ -426,6 +428,7 @@ data ConsentPolicy = ConsentPolicy {
   , consentPolicyAuthority :: Maybe Uri
   , consentPolicyUri :: Maybe Uri
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConsentPolicy where
@@ -485,6 +488,7 @@ data ConsentActor = ConsentActor {
   , consentActorRole :: CodeableConcept
   , consentActorReference :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConsentActor where
@@ -572,6 +576,7 @@ data ConsentData = ConsentData {
   , consentDataMeaning :: ConsentDataMeaning
   , consentDataReference :: Reference
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConsentData where
@@ -632,6 +637,7 @@ data ConsentVerification = ConsentVerification {
   , consentVerificationVerifiedWith :: Maybe Reference
   , consentVerificationVerificationDate :: Maybe DateTime
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON ConsentVerification where

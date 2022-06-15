@@ -101,7 +101,7 @@ data Resource
   | CompositionR Composition
 --  | ConceptMapR ConceptMap
   | ConditionR Condition
---  | ConsentR Consent
+  | ConsentR Consent
 --  | ContractR Contract
 --  | CoverageR Coverage
 --  | CoverageEligibilityRequestR CoverageEligibilityRequest
@@ -132,7 +132,7 @@ data Resource
 --  | GraphDefinitionR GraphDefinition
 --  | GroupR Group
 --  | GuidanceResponseR GuidanceResponse
---  | HealthcareServiceR HealthcareService
+  | HealthcareServiceR HealthcareService
 --  | ImagingStudyR ImagingStudy
 --  | ImmunizationR Immunization
 --  | ImmunizationEvaluationR ImmunizationEvaluation
@@ -140,7 +140,7 @@ data Resource
 --  | ImplementationGuideR ImplementationGuide
 --  | InsurancePlanR InsurancePlan
 --  | InvoiceR Invoice
---  | LibraryR Library
+  | LibraryR Library
 --  | LinkageR Linkage
 --  | ListR List
   | LocationR Location
@@ -172,22 +172,22 @@ data Resource
 --  | ObservationDefinitionR ObservationDefinition
 --  | OperationDefinitionR OperationDefinition
   | OperationOutcomeR OperationOutcome
---  | OrganizationR Organization
+  | OrganizationR Organization
 --  | OrganizationAffiliationR OrganizationAffiliation
 --  | ParametersR Parameters
   | PatientR Patient
 --  | PaymentNoticeR PaymentNotice
 --  | PaymentReconciliationR PaymentReconciliation
 --  | PersonR Person
---  | PlanDefinitionR PlanDefinition
+  | PlanDefinitionR PlanDefinition
   | PractitionerR Practitioner
   | PractitionerRoleR PractitionerRole
   | ProcedureR Procedure
---  | ProvenanceR Provenance
---  | QuestionnaireR Questionnaire
---  | QuestionnaireResponseR QuestionnaireResponse
+  | ProvenanceR Provenance
+  | QuestionnaireR Questionnaire
+  | QuestionnaireResponseR QuestionnaireResponse
 --  | RelatedPersonR RelatedPerson
---  | RequestGroupR RequestGroup
+  | RequestGroupR RequestGroup
 --  | ResearchDefinitionR ResearchDefinition
 --  | ResearchElementDefinitionR ResearchElementDefinition
 --  | ResearchStudyR ResearchStudy
@@ -252,7 +252,7 @@ instance ToJSON Resource where
   toJSON (CompositionR e) = toJSON e
 --  toJSON (ConceptMapR e) = toJSON e
   toJSON (ConditionR e) = toJSON e
---  toJSON (ConsentR e) = toJSON e
+  toJSON (ConsentR e) = toJSON e
 --  toJSON (ContractR e) = toJSON e
 --  toJSON (CoverageR e) = toJSON e
 --  toJSON (CoverageEligibilityRequestR e) = toJSON e
@@ -283,7 +283,7 @@ instance ToJSON Resource where
 --  toJSON (GraphDefinitionR e) = toJSON e
 --  toJSON (GroupR e) = toJSON e
 --  toJSON (GuidanceResponseR e) = toJSON e
---  toJSON (HealthcareServiceR e) = toJSON e
+  toJSON (HealthcareServiceR e) = toJSON e
 --  toJSON (ImagingStudyR e) = toJSON e
 --  toJSON (ImmunizationR e) = toJSON e
 --  toJSON (ImmunizationEvaluationR e) = toJSON e
@@ -291,7 +291,7 @@ instance ToJSON Resource where
 --  toJSON (ImplementationGuideR e) = toJSON e
 --  toJSON (InsurancePlanR e) = toJSON e
 --  toJSON (InvoiceR e) = toJSON e
---  toJSON (LibraryR e) = toJSON e
+  toJSON (LibraryR e) = toJSON e
 --  toJSON (LinkageR e) = toJSON e
 --  toJSON (ListR e) = toJSON e
 --  toJSON (LocationR e) = toJSON e
@@ -323,21 +323,21 @@ instance ToJSON Resource where
 --  toJSON (ObservationDefinitionR e) = toJSON e
 --  toJSON (OperationDefinitionR e) = toJSON e
   toJSON (OperationOutcomeR e) = toJSON e
---  toJSON (OrganizationR e) = toJSON e
+  toJSON (OrganizationR e) = toJSON e
 --  toJSON (OrganizationAffiliationR e) = toJSON e
   toJSON (PatientR e) = toJSON e
 --  toJSON (PaymentNoticeR e) = toJSON e
 --  toJSON (PaymentReconciliationR e) = toJSON e
 --  toJSON (PersonR e) = toJSON e
---  toJSON (PlanDefinitionR e) = toJSON e
+  toJSON (PlanDefinitionR e) = toJSON e
   toJSON (PractitionerR e) = toJSON e
   toJSON (PractitionerRoleR e) = toJSON e
   toJSON (ProcedureR e) = toJSON e
---  toJSON (ProvenanceR e) = toJSON e
---  toJSON (QuestionnaireR e) = toJSON e
---  toJSON (QuestionnaireResponseR e) = toJSON e
+  toJSON (ProvenanceR e) = toJSON e
+  toJSON (QuestionnaireR e) = toJSON e
+  toJSON (QuestionnaireResponseR e) = toJSON e
 --  toJSON (RelatedPersonR e) = toJSON e
---  toJSON (RequestGroupR e) = toJSON e
+  toJSON (RequestGroupR e) = toJSON e
 --  toJSON (ResearchDefinitionR e) = toJSON e
 --  toJSON (ResearchElementDefinitionR e) = toJSON e
 --  toJSON (ResearchStudyR e) = toJSON e
@@ -403,7 +403,7 @@ instance FromJSON Resource where
          Just "Composition" -> CompositionR <$> parseJSON (Object v)
 --         Just "ConceptMap" -> ConceptMapR <$> parseJSON (Object v)
          Just "Condition" -> ConditionR <$> parseJSON (Object v)
---         Just "Consent" -> ConsentR <$> parseJSON (Object v)
+         Just "Consent" -> ConsentR <$> parseJSON (Object v)
 --         Just "Contract" -> ContractR <$> parseJSON (Object v)
 --         Just "Coverage" -> CoverageR <$> parseJSON (Object v)
 --         Just "CoverageEligibilityRequest" -> CoverageEligibilityRequestR <$> parseJSON (Object v)
@@ -434,7 +434,7 @@ instance FromJSON Resource where
 --         Just "GraphDefinition" -> GraphDefinitionR <$> parseJSON (Object v)
 --         Just "Group" -> GroupR <$> parseJSON (Object v)
 --         Just "GuidanceResponse" -> GuidanceResponseR <$> parseJSON (Object v)
---         Just "HealthcareService" -> HealthcareServiceR <$> parseJSON (Object v)
+         Just "HealthcareService" -> HealthcareServiceR <$> parseJSON (Object v)
 --         Just "ImagingStudy" -> ImagingStudyR <$> parseJSON (Object v)
 --         Just "Immunization" -> ImmunizationR <$> parseJSON (Object v)
 --         Just "ImmunizationEvaluation" -> ImmunizationEvaluationR <$> parseJSON (Object v)
@@ -442,7 +442,7 @@ instance FromJSON Resource where
 --         Just "ImplementationGuide" -> ImplementationGuideR <$> parseJSON (Object v)
 --         Just "InsurancePlan" -> InsurancePlanR <$> parseJSON (Object v)
 --         Just "Invoice" -> InvoiceR <$> parseJSON (Object v)
---         Just "Library" -> LibraryR <$> parseJSON (Object v)
+         Just "Library" -> LibraryR <$> parseJSON (Object v)
 --         Just "Linkage" -> LinkageR <$> parseJSON (Object v)
 --         Just "List" -> ListR <$> parseJSON (Object v)
 --         Just "Location" -> LocationR <$> parseJSON (Object v)
@@ -474,21 +474,21 @@ instance FromJSON Resource where
 --         Just "ObservationDefinition" -> ObservationDefinitionR <$> parseJSON (Object v)
 --         Just "OperationDefinition" -> OperationDefinitionR <$> parseJSON (Object v)
          Just "OperationOutcome" -> OperationOutcomeR <$> parseJSON (Object v)
---         Just "Organization" -> OrganizationR <$> parseJSON (Object v)
+         Just "Organization" -> OrganizationR <$> parseJSON (Object v)
 --         Just "OrganizationAffiliation" -> OrganizationAffiliationR <$> parseJSON (Object v)
          Just "Patient" -> PatientR <$> parseJSON (Object v)
 --         Just "PaymentNotice" -> PaymentNoticeR <$> parseJSON (Object v)
 --         Just "PaymentReconciliation" -> PaymentReconciliationR <$> parseJSON (Object v)
 --         Just "Person" -> PersonR <$> parseJSON (Object v)
---         Just "PlanDefinition" -> PlanDefinitionR <$> parseJSON (Object v)
+         Just "PlanDefinition" -> PlanDefinitionR <$> parseJSON (Object v)
          Just "Practitioner" -> PractitionerR <$> parseJSON (Object v)
          Just "PractitionerRole" -> PractitionerRoleR <$> parseJSON (Object v)
          Just "Procedure" -> ProcedureR <$> parseJSON (Object v)
---         Just "Provenance" -> ProvenanceR <$> parseJSON (Object v)
---         Just "Questionnaire" -> QuestionnaireR <$> parseJSON (Object v)
---         Just "QuestionnaireResponse" -> QuestionnaireResponseR <$> parseJSON (Object v)
+         Just "Provenance" -> ProvenanceR <$> parseJSON (Object v)
+         Just "Questionnaire" -> QuestionnaireR <$> parseJSON (Object v)
+         Just "QuestionnaireResponse" -> QuestionnaireResponseR <$> parseJSON (Object v)
 --         Just "RelatedPerson" -> RelatedPersonR <$> parseJSON (Object v)
---         Just "RequestGroup" -> RequestGroupR <$> parseJSON (Object v)
+         Just "RequestGroup" -> RequestGroupR <$> parseJSON (Object v)
 --         Just "ResearchDefinition" -> ResearchDefinitionR <$> parseJSON (Object v)
 --         Just "ResearchElementDefinition" -> ResearchElementDefinitionR <$> parseJSON (Object v)
 --         Just "ResearchStudy" -> ResearchStudyR <$> parseJSON (Object v)
@@ -554,7 +554,7 @@ instance Xmlbf.ToXml Resource where
   toXml (CompositionR e) = Xmlbf.toXml e
 --  toXml (ConceptMapR e) = Xmlbf.toXml e
   toXml (ConditionR e) = Xmlbf.toXml e
---  toXml (ConsentR e) = Xmlbf.toXml e
+  toXml (ConsentR e) = Xmlbf.toXml e
 --  toXml (ContractR e) = Xmlbf.toXml e
 --  toXml (CoverageR e) = Xmlbf.toXml e
 --  toXml (CoverageEligibilityRequestR e) = Xmlbf.toXml e
@@ -585,7 +585,7 @@ instance Xmlbf.ToXml Resource where
 --  toXml (GraphDefinitionR e) = Xmlbf.toXml e
 --  toXml (GroupR e) = Xmlbf.toXml e
 --  toXml (GuidanceResponseR e) = Xmlbf.toXml e
---  toXml (HealthcareServiceR e) = Xmlbf.toXml e
+  toXml (HealthcareServiceR e) = Xmlbf.toXml e
 --  toXml (ImagingStudyR e) = Xmlbf.toXml e
 --  toXml (ImmunizationR e) = Xmlbf.toXml e
 --  toXml (ImmunizationEvaluationR e) = Xmlbf.toXml e
@@ -593,10 +593,10 @@ instance Xmlbf.ToXml Resource where
 --  toXml (ImplementationGuideR e) = Xmlbf.toXml e
 --  toXml (InsurancePlanR e) = Xmlbf.toXml e
 --  toXml (InvoiceR e) = Xmlbf.toXml e
---  toXml (LibraryR e) = Xmlbf.toXml e
+  toXml (LibraryR e) = Xmlbf.toXml e
 --  toXml (LinkageR e) = Xmlbf.toXml e
 --  toXml (ListR e) = Xmlbf.toXml e
---  toXml (LocationR e) = Xmlbf.toXml e
+  toXml (LocationR e) = Xmlbf.toXml e
 --  toXml (MeasureR e) = Xmlbf.toXml e
 --  toXml (MeasureReportR e) = Xmlbf.toXml e
 --  toXml (MediaR e) = Xmlbf.toXml e
@@ -625,21 +625,21 @@ instance Xmlbf.ToXml Resource where
 --  toXml (ObservationDefinitionR e) = Xmlbf.toXml e
 --  toXml (OperationDefinitionR e) = Xmlbf.toXml e
   toXml (OperationOutcomeR e) = Xmlbf.toXml e
---  toXml (OrganizationR e) = Xmlbf.toXml e
+  toXml (OrganizationR e) = Xmlbf.toXml e
 --  toXml (OrganizationAffiliationR e) = Xmlbf.toXml e
   toXml (PatientR e) = Xmlbf.toXml e
 --  toXml (PaymentNoticeR e) = Xmlbf.toXml e
 --  toXml (PaymentReconciliationR e) = Xmlbf.toXml e
 --  toXml (PersonR e) = Xmlbf.toXml e
---  toXml (PlanDefinitionR e) = Xmlbf.toXml e
+  toXml (PlanDefinitionR e) = Xmlbf.toXml e
   toXml (PractitionerR e) = Xmlbf.toXml e
   toXml (PractitionerRoleR e) = Xmlbf.toXml e
   toXml (ProcedureR e) = Xmlbf.toXml e
---  toXml (ProvenanceR e) = Xmlbf.toXml e
---  toXml (QuestionnaireR e) = Xmlbf.toXml e
---  toXml (QuestionnaireResponseR e) = Xmlbf.toXml e
+  toXml (ProvenanceR e) = Xmlbf.toXml e
+  toXml (QuestionnaireR e) = Xmlbf.toXml e
+  toXml (QuestionnaireResponseR e) = Xmlbf.toXml e
 --  toXml (RelatedPersonR e) = Xmlbf.toXml e
---  toXml (RequestGroupR e) = Xmlbf.toXml e
+  toXml (RequestGroupR e) = Xmlbf.toXml e
 --  toXml (ResearchDefinitionR e) = Xmlbf.toXml e
 --  toXml (ResearchElementDefinitionR e) = Xmlbf.toXml e
 --  toXml (ResearchStudyR e) = Xmlbf.toXml e
@@ -709,7 +709,7 @@ instance Xmlbf.FromXml Resource where
               "Composition" -> CompositionR <$> Xmlbf.fromXml
 --            "ConceptMap" -> ConceptMapR <$> Xmlbf.fromXml
               "Condition" -> ConditionR <$> Xmlbf.fromXml
---            "Consent" -> ConsentR <$> Xmlbf.fromXml
+              "Consent" -> ConsentR <$> Xmlbf.fromXml
 --            "Contract" -> ContractR <$> Xmlbf.fromXml
 --            "Coverage" -> CoverageR <$> Xmlbf.fromXml
 --            "CoverageEligibilityRequest" -> CoverageEligibilityRequestR <$> Xmlbf.fromXml
@@ -740,7 +740,7 @@ instance Xmlbf.FromXml Resource where
 --            "GraphDefinition" -> GraphDefinitionR <$> Xmlbf.fromXml
 --            "Group" -> GroupR <$> Xmlbf.fromXml
 --            "GuidanceResponse" -> GuidanceResponseR <$> Xmlbf.fromXml
---            "HealthcareService" -> HealthcareServiceR <$> Xmlbf.fromXml
+              "HealthcareService" -> HealthcareServiceR <$> Xmlbf.fromXml
 --            "ImagingStudy" -> ImagingStudyR <$> Xmlbf.fromXml
 --            "Immunization" -> ImmunizationR <$> Xmlbf.fromXml
 --            "ImmunizationEvaluation" -> ImmunizationEvaluationR <$> Xmlbf.fromXml
@@ -748,7 +748,7 @@ instance Xmlbf.FromXml Resource where
 --            "ImplementationGuide" -> ImplementationGuideR <$> Xmlbf.fromXml
 --            "InsurancePlan" -> InsurancePlanR <$> Xmlbf.fromXml
 --            "Invoice" -> InvoiceR <$> Xmlbf.fromXml
---            "Library" -> LibraryR <$> Xmlbf.fromXml
+              "Library" -> LibraryR <$> Xmlbf.fromXml
 --            "Linkage" -> LinkageR <$> Xmlbf.fromXml
 --            "List" -> ListR <$> Xmlbf.fromXml
 --            "Location" -> LocationR <$> Xmlbf.fromXml
@@ -780,21 +780,21 @@ instance Xmlbf.FromXml Resource where
 --            "ObservationDefinition" -> ObservationDefinitionR <$> Xmlbf.fromXml
 --            "OperationDefinition" -> OperationDefinitionR <$> Xmlbf.fromXml
               "OperationOutcome" -> OperationOutcomeR <$> Xmlbf.fromXml
---            "Organization" -> OrganizationR <$> Xmlbf.fromXml
+              "Organization" -> OrganizationR <$> Xmlbf.fromXml
 --            "OrganizationAffiliation" -> OrganizationAffiliationR <$> Xmlbf.fromXml
               "Patient" -> PatientR <$> Xmlbf.fromXml
 --            "PaymentNotice" -> PaymentNoticeR <$> Xmlbf.fromXml
 --            "PaymentReconciliation" -> PaymentReconciliationR <$> Xmlbf.fromXml
 --            "Person" -> PersonR <$> Xmlbf.fromXml
---            "PlanDefinition" -> PlanDefinitionR <$> Xmlbf.fromXml
+              "PlanDefinition" -> PlanDefinitionR <$> Xmlbf.fromXml
               "Practitioner" -> PractitionerR <$> Xmlbf.fromXml
               "PractitionerRole" -> PractitionerRoleR <$> Xmlbf.fromXml
               "Procedure" -> ProcedureR <$> Xmlbf.fromXml
---            "Provenance" -> ProvenanceR <$> Xmlbf.fromXml
---            "Questionnaire" -> QuestionnaireR <$> Xmlbf.fromXml
---            "QuestionnaireResponse" -> QuestionnaireResponseR <$> Xmlbf.fromXml
+              "Provenance" -> ProvenanceR <$> Xmlbf.fromXml
+              "Questionnaire" -> QuestionnaireR <$> Xmlbf.fromXml
+              "QuestionnaireResponse" -> QuestionnaireResponseR <$> Xmlbf.fromXml
 --            "RelatedPerson" -> RelatedPersonR <$> Xmlbf.fromXml
---            "RequestGroup" -> RequestGroupR <$> Xmlbf.fromXml
+              "RequestGroup" -> RequestGroupR <$> Xmlbf.fromXml
 --            "ResearchDefinition" -> ResearchDefinitionR <$> Xmlbf.fromXml
 --            "ResearchElementDefinition" -> ResearchElementDefinitionR <$> Xmlbf.fromXml
 --            "ResearchStudy" -> ResearchStudyR <$> Xmlbf.fromXml

@@ -64,7 +64,7 @@ getId r = case r of
     CompositionR o -> compositionId o
 --    ConceptMapR o -> conceptMapId o
     ConditionR o -> conditionId o
---    ConsentR o -> consentId o
+    ConsentR o -> consentId o
 --    ContractR o -> contractId o
 --    CoverageR o -> coverageId o
 --    CoverageEligibilityRequestR o -> coverageEligibilityRequestId o
@@ -95,7 +95,7 @@ getId r = case r of
 --    GraphDefinitionR o -> graphDefinitionId o
 --    GroupR o -> groupId o
 --    GuidanceResponseR o -> guidanceResponseId o
---    HealthcareServiceR o -> healthcareServiceId o
+    HealthcareServiceR o -> healthcareServiceId o
 --    ImagingStudyR o -> imagingStudyId o
 --    ImmunizationR o -> immunizationId o
 --    ImmunizationEvaluationR o -> immunizationEvaluationId o
@@ -103,7 +103,7 @@ getId r = case r of
 --    ImplementationGuideR o -> implementationGuideId o
 --    InsurancePlanR o -> insurancePlanId o
 --    InvoiceR o -> invoiceId o
---    LibraryR o -> libraryId o
+    LibraryR o -> libraryId o
 --    LinkageR o -> linkageId o
 --    ListR o -> listId o
     LocationR o -> locationId o
@@ -135,22 +135,22 @@ getId r = case r of
 --    ObservationDefinitionR o -> observationDefinitionId o
 --    OperationDefinitionR o -> operationDefinitionId o
     OperationOutcomeR o -> operationOutcomeId o
---    OrganizationR o -> organizationId o
+    OrganizationR o -> organizationId o
 --    OrganizationAffiliationR o -> organizationAffiliationId o
 --    ParametersR o -> parametersId o
     PatientR o -> patientId o
 --    PaymentNoticeR o -> paymentNoticeId o
 --    PaymentReconciliationR o -> paymentReconciliationId o
 --    PersonR o -> personId o
---    PlanDefinitionR o -> planDefinitionId o
+    PlanDefinitionR o -> planDefinitionId o
     PractitionerR o -> practitionerId o
     PractitionerRoleR o -> practitionerRoleId o
     ProcedureR o -> procedureId o
---    ProvenanceR o -> provenanceId o
---    QuestionnaireR o -> questionnaireId o
---    QuestionnaireResponseR o -> questionnaireResponseId o
+    ProvenanceR o -> provenanceId o
+    QuestionnaireR o -> questionnaireId o
+    QuestionnaireResponseR o -> questionnaireResponseId o
 --    RelatedPersonR o -> relatedPersonId o
---    RequestGroupR o -> requestGroupId o
+    RequestGroupR o -> requestGroupId o
 --    ResearchDefinitionR o -> researchDefinitionId o
 --    ResearchElementDefinitionR o -> researchElementDefinitionId o
 --    ResearchStudyR o -> researchStudyId o
@@ -216,7 +216,7 @@ setId id r = case r of
     CompositionR o -> CompositionR $ o{compositionId= id}
 --    ConceptMapR o -> ConceptMapR $ o{conceptMapId= id}
     ConditionR o -> ConditionR $ o{conditionId= id}
---    ConsentR o -> ConsentR $ o{consentId= id}
+    ConsentR o -> ConsentR $ o{consentId= id}
 --    ContractR o -> ContractR $ o{contractId= id}
 --    CoverageR o -> CoverageR $ o{coverageId= id}
 --    CoverageEligibilityRequestR o -> CoverageEligibilityRequestR $ o{coverageEligibilityRequestId= id}
@@ -247,7 +247,7 @@ setId id r = case r of
 --    GraphDefinitionR o -> GraphDefinitionR $ o{graphDefinitionId= id}
 --    GroupR o -> GroupR $ o{groupId= id}
 --    GuidanceResponseR o -> GuidanceResponseR $ o{guidanceResponseId= id}
---    HealthcareServiceR o -> HealthcareServiceR $ o{healthcareServiceId= id}
+    HealthcareServiceR o -> HealthcareServiceR $ o{healthcareServiceId= id}
 --    ImagingStudyR o -> ImagingStudyR $ o{imagingStudyId= id}
 --    ImmunizationR o -> ImmunizationR $ o{immunizationId= id}
 --    ImmunizationEvaluationR o -> ImmunizationEvaluationR $ o{immunizationEvaluationId= id}
@@ -255,7 +255,7 @@ setId id r = case r of
 --    ImplementationGuideR o -> ImplementationGuideR $ o{implementationGuideId= id}
 --    InsurancePlanR o -> InsurancePlanR $ o{insurancePlanId= id}
 --    InvoiceR o -> InvoiceR $ o{invoiceId= id}
---    LibraryR o -> LibraryR $ o{libraryId= id}
+    LibraryR o -> LibraryR $ o{libraryId= id}
 --    LinkageR o -> LinkageR $ o{linkageId= id}
 --    ListR o -> ListR $ o{listId= id}
     LocationR o -> LocationR $ o{locationId= id}
@@ -287,22 +287,22 @@ setId id r = case r of
 --    ObservationDefinitionR o -> ObservationDefinitionR $ o{observationDefinitionId= id}
 --    OperationDefinitionR o -> OperationDefinitionR $ o{operationDefinitionId= id}
     OperationOutcomeR o -> OperationOutcomeR $ o{operationOutcomeId= id}
---    OrganizationR o -> OrganizationR $ o{organizationId= id}
+    OrganizationR o -> OrganizationR $ o{organizationId= id}
 --    OrganizationAffiliationR o -> OrganizationAffiliationR $ o{organizationAffiliationId= id}
 --    ParametersR o -> ParametersR $ o{parametersId= id}
     PatientR o -> PatientR $ o{patientId= id}
 --    PaymentNoticeR o -> PaymentNoticeR $ o{paymentNoticeId= id}
 --    PaymentReconciliationR o -> PaymentReconciliationR $ o{paymentReconciliationId= id}
 --    PersonR o -> PersonR $ o{personId= id}
---    PlanDefinitionR o -> PlanDefinitionR $ o{planDefinitionId= id}
+    PlanDefinitionR o -> PlanDefinitionR $ o{planDefinitionId= id}
     PractitionerR o -> PractitionerR $ o{practitionerId= id}
     PractitionerRoleR o -> PractitionerRoleR $ o{practitionerRoleId= id}
     ProcedureR o -> ProcedureR $ o{procedureId= id}
---    ProvenanceR o -> ProvenanceR $ o{provenanceId= id}
---    QuestionnaireR o -> QuestionnaireR $ o{questionnaireId= id}
---    QuestionnaireResponseR o -> QuestionnaireResponseR $ o{questionnaireResponseId= id}
+    ProvenanceR o -> ProvenanceR $ o{provenanceId= id}
+    QuestionnaireR o -> QuestionnaireR $ o{questionnaireId= id}
+    QuestionnaireResponseR o -> QuestionnaireResponseR $ o{questionnaireResponseId= id}
 --    RelatedPersonR o -> RelatedPersonR $ o{relatedPersonId= id}
---    RequestGroupR o -> RequestGroupR $ o{requestGroupId= id}
+    RequestGroupR o -> RequestGroupR $ o{requestGroupId= id}
 --    ResearchDefinitionR o -> ResearchDefinitionR $ o{researchDefinitionId= id}
 --    ResearchElementDefinitionR o -> ResearchElementDefinitionR $ o{researchElementDefinitionId= id}
 --    ResearchStudyR o -> ResearchStudyR $ o{researchStudyId= id}
@@ -368,7 +368,7 @@ getMeta r = case r of
     CompositionR o -> compositionMeta o
 --    ConceptMapR o -> conceptMapMeta o
     ConditionR o -> conditionMeta o
---    ConsentR o -> consentMeta o
+    ConsentR o -> consentMeta o
 --    ContractR o -> contractMeta o
 --    CoverageR o -> coverageMeta o
 --    CoverageEligibilityRequestR o -> coverageEligibilityRequestMeta o
@@ -395,11 +395,11 @@ getMeta r = case r of
 --    ExplanationOfBenefitR o -> explanationOfBenefitMeta o
 --    FamilyMemberHistoryR o -> familyMemberHistoryMeta o
 --    FlagR o -> flagMeta o
---    GoalR o -> goalMeta o
+    GoalR o -> goalMeta o
 --    GraphDefinitionR o -> graphDefinitionMeta o
 --    GroupR o -> groupMeta o
 --    GuidanceResponseR o -> guidanceResponseMeta o
---    HealthcareServiceR o -> healthcareServiceMeta o
+    HealthcareServiceR o -> healthcareServiceMeta o
 --    ImagingStudyR o -> imagingStudyMeta o
 --    ImmunizationR o -> immunizationMeta o
 --    ImmunizationEvaluationR o -> immunizationEvaluationMeta o
@@ -407,7 +407,7 @@ getMeta r = case r of
 --    ImplementationGuideR o -> implementationGuideMeta o
 --    InsurancePlanR o -> insurancePlanMeta o
 --    InvoiceR o -> invoiceMeta o
---    LibraryR o -> libraryMeta o
+    LibraryR o -> libraryMeta o
 --    LinkageR o -> linkageMeta o
 --    ListR o -> listMeta o
     LocationR o -> locationMeta o
@@ -439,22 +439,22 @@ getMeta r = case r of
 --    ObservationDefinitionR o -> observationDefinitionMeta o
 --    OperationDefinitionR o -> operationDefinitionMeta o
     OperationOutcomeR o -> operationOutcomeMeta o
---    OrganizationR o -> organizationMeta o
+    OrganizationR o -> organizationMeta o
 --    OrganizationAffiliationR o -> organizationAffiliationMeta o
 --    ParametersR o -> parametersMeta o
     PatientR o -> patientMeta o
 --    PaymentNoticeR o -> paymentNoticeMeta o
 --    PaymentReconciliationR o -> paymentReconciliationMeta o
 --    PersonR o -> personMeta o
---    PlanDefinitionR o -> planDefinitionMeta o
+    PlanDefinitionR o -> planDefinitionMeta o
     PractitionerR o -> practitionerMeta o
     PractitionerRoleR o -> practitionerRoleMeta o
     ProcedureR o -> procedureMeta o
---    ProvenanceR o -> provenanceMeta o
---    QuestionnaireR o -> questionnaireMeta o
---    QuestionnaireResponseR o -> questionnaireResponseMeta o
+    ProvenanceR o -> provenanceMeta o
+    QuestionnaireR o -> questionnaireMeta o
+    QuestionnaireResponseR o -> questionnaireResponseMeta o
 --    RelatedPersonR o -> relatedPersonMeta o
---    RequestGroupR o -> requestGroupMeta o
+    RequestGroupR o -> requestGroupMeta o
 --    ResearchDefinitionR o -> researchDefinitionMeta o
 --    ResearchElementDefinitionR o -> researchElementDefinitionMeta o
 --    ResearchStudyR o -> researchStudyMeta o
@@ -520,7 +520,7 @@ setMeta meta r = case r of
     CompositionR o -> CompositionR $ o{compositionMeta= meta}
 --    ConceptMapR o -> ConceptMapR $ o{conceptMapMeta= meta}
     ConditionR o -> ConditionR $ o{conditionMeta= meta}
---    ConsentR o -> ConsentR $ o{consentMeta= meta}
+    ConsentR o -> ConsentR $ o{consentMeta= meta}
 --    ContractR o -> ContractR $ o{contractMeta= meta}
 --    CoverageR o -> CoverageR $ o{coverageMeta= meta}
 --    CoverageEligibilityRequestR o -> CoverageEligibilityRequestR $ o{coverageEligibilityRequestMeta= meta}
@@ -541,8 +541,8 @@ setMeta meta r = case r of
 --    EnrollmentResponseR o -> EnrollmentResponseR $ o{enrollmentResponseMeta= meta}
     EpisodeOfCareR o -> EpisodeOfCareR $ o{episodeOfCareMeta= meta}
 --    EventDefinitionR o -> EventDefinitionR $ o{eventDefinitionMeta= meta}
---    EvmetaenceR o -> EvidenceR $ o{evidenceMeta= id}
---    EvmetaenceVariableR o -> EvidenceVariableR $ o{evidenceVariableMeta= id}
+--    EvidenceR o -> EvidenceR $ o{evidenceMeta= id}
+--    EvidenceVariableR o -> EvidenceVariableR $ o{evidenceVariableMeta= id}
 --    ExampleScenarioR o -> ExampleScenarioR $ o{exampleScenarioMeta= meta}
 --    ExplanationOfBenefitR o -> ExplanationOfBenefitR $ o{explanationOfBenefitMeta= meta}
 --    FamilyMemberHistoryR o -> FamilyMemberHistoryR $ o{familyMemberHistoryMeta= meta}
@@ -551,7 +551,7 @@ setMeta meta r = case r of
 --    GraphDefinitionR o -> GraphDefinitionR $ o{graphDefinitionMeta= meta}
 --    GroupR o -> GroupR $ o{groupMeta= meta}
 --    GumetaanceResponseR o -> GuidanceResponseR $ o{guidanceResponseMeta= id}
---    HealthcareServiceR o -> HealthcareServiceR $ o{healthcareServiceMeta= meta}
+    HealthcareServiceR o -> HealthcareServiceR $ o{healthcareServiceMeta= meta}
 --    ImagingStudyR o -> ImagingStudyR $ o{imagingStudyMeta= meta}
 --    ImmunizationR o -> ImmunizationR $ o{immunizationMeta= meta}
 --    ImmunizationEvaluationR o -> ImmunizationEvaluationR $ o{immunizationEvaluationMeta= meta}
@@ -559,7 +559,7 @@ setMeta meta r = case r of
 --    ImplementationGumetaeR o -> ImplementationGuideR $ o{implementationGuideMeta= id}
 --    InsurancePlanR o -> InsurancePlanR $ o{insurancePlanMeta= meta}
 --    InvoiceR o -> InvoiceR $ o{invoiceMeta= meta}
---    LibraryR o -> LibraryR $ o{libraryMeta= meta}
+    LibraryR o -> LibraryR $ o{libraryMeta= meta}
 --    LinkageR o -> LinkageR $ o{linkageMeta= meta}
 --    ListR o -> ListR $ o{listMeta= meta}
     LocationR o -> LocationR $ o{locationMeta= meta}
@@ -591,22 +591,22 @@ setMeta meta r = case r of
 --    ObservationDefinitionR o -> ObservationDefinitionR $ o{observationDefinitionMeta= meta}
 --    OperationDefinitionR o -> OperationDefinitionR $ o{operationDefinitionMeta= meta}
     OperationOutcomeR o -> OperationOutcomeR $ o{operationOutcomeMeta= meta}
---    OrganizationR o -> OrganizationR $ o{organizationMeta= meta}
+    OrganizationR o -> OrganizationR $ o{organizationMeta= meta}
 --    OrganizationAffiliationR o -> OrganizationAffiliationR $ o{organizationAffiliationMeta= meta}
 --    ParametersR o -> ParametersR $ o{parametersMeta= meta}
     PatientR o -> PatientR $ o{patientMeta= meta}
 --    PaymentNoticeR o -> PaymentNoticeR $ o{paymentNoticeMeta= meta}
 --    PaymentReconciliationR o -> PaymentReconciliationR $ o{paymentReconciliationMeta= meta}
 --    PersonR o -> PersonR $ o{personMeta= meta}
---    PlanDefinitionR o -> PlanDefinitionR $ o{planDefinitionMeta= meta}
+    PlanDefinitionR o -> PlanDefinitionR $ o{planDefinitionMeta= meta}
     PractitionerR o -> PractitionerR $ o{practitionerMeta= meta}
     PractitionerRoleR o -> PractitionerRoleR $ o{practitionerRoleMeta= meta}
     ProcedureR o -> ProcedureR $ o{procedureMeta= meta}
---    ProvenanceR o -> ProvenanceR $ o{provenanceMeta= meta}
---    QuestionnaireR o -> QuestionnaireR $ o{questionnaireMeta= meta}
---    QuestionnaireResponseR o -> QuestionnaireResponseR $ o{questionnaireResponseMeta= meta}
+    ProvenanceR o -> ProvenanceR $ o{provenanceMeta= meta}
+    QuestionnaireR o -> QuestionnaireR $ o{questionnaireMeta= meta}
+    QuestionnaireResponseR o -> QuestionnaireResponseR $ o{questionnaireResponseMeta= meta}
 --    RelatedPersonR o -> RelatedPersonR $ o{relatedPersonMeta= meta}
---    RequestGroupR o -> RequestGroupR $ o{requestGroupMeta= meta}
+    RequestGroupR o -> RequestGroupR $ o{requestGroupMeta= meta}
 --    ResearchDefinitionR o -> ResearchDefinitionR $ o{researchDefinitionMeta= meta}
 --    ResearchElementDefinitionR o -> ResearchElementDefinitionR $ o{researchElementDefinitionMeta= meta}
 --    ResearchStudyR o -> ResearchStudyR $ o{researchStudyMeta= meta}

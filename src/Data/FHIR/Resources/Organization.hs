@@ -51,6 +51,7 @@ data Organization = Organization {
   , organizationContact :: [OrganizationContact]
   , organizationEndpoint :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON Organization where
@@ -214,6 +215,7 @@ data OrganizationAffiliation = OrganizationAffiliation {
   , organizationAffiliationTelecom :: [ContactPoint]
   , organizationAffiliationEndpoint :: [Reference]
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON OrganizationAffiliation where
@@ -376,6 +378,7 @@ data OrganizationContact = OrganizationContact {
   , organizationContactTelecom :: [ContactPoint]
   , organizationContactAddress :: Maybe Address
   }
+  deriving (Eq, Show)
 --
 
 instance ToJSON OrganizationContact where

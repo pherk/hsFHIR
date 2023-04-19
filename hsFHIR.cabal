@@ -118,7 +118,6 @@ library
     , base >=4.7 && <5
     , bytestring
     , containers
-    , couchbase-simple
     , data-default
     , lens
     , mtl

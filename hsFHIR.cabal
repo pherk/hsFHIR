@@ -1,7 +1,7 @@
 cabal-version: 1.12
 
 name:           hsFHIR
-version:        0.2.6.3
+version:        0.3.0
 description:    Please see the README on GitHub at <https://github.com/pherk/hasntwo#readme>
 homepage:       https://github.com/pherk/hsFHIR#readme
 bug-reports:    https://github.com/pherk/hsFHIR/issues
@@ -104,6 +104,7 @@ library
         Paths_hsFHIR
   hs-source-dirs:
       src
+  ghc-options: -Wall
   build-depends:
       aeson
     , attoparsec >= 0.13

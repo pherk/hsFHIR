@@ -159,7 +159,7 @@ data UserConfigEditorTemplate = UserConfigEditorTemplate {
   , userConfigEditorTemplateName :: Text
   , userConfigEditorTemplateImage :: Maybe Text
   , userConfigEditorTemplateDescription:: Maybe Text
-  , userConfigEditorTemplateDiv :: Narrative
+  , userConfigEditorTemplateTEI :: Narrative
   }
   deriving (Eq, Show)
 
@@ -171,7 +171,7 @@ instance ToJSON UserConfigEditorTemplate where
     , "name" .= toJSON (userConfigEditorTemplateName p)
     , "image" .= toJSON (userConfigEditorTemplateImage p)
     , "description" .= toJSON (userConfigEditorTemplateDescription p)
-    , "div" .= toJSON (userConfigEditorTemplateDiv p)
+    , "tei" .= toJSON (userConfigEditorTemplateTEI p)
     ]
 instance FromJSON UserConfigEditorTemplate where
   parseJSON = withObject "UserConfigEditorTemplate" $ \o -> do
@@ -179,13 +179,13 @@ instance FromJSON UserConfigEditorTemplate where
         n  <- o .:  "name"
         i  <- o .:? "image"
         d  <- o .:? "description"
-        di <- o .:  "div"
+        di <- o .:  "tei"
         return UserConfigEditorTemplate{
             userConfigEditorTemplateAttrId = id
           , userConfigEditorTemplateName= n
           , userConfigEditorTemplateImage= i
           , userConfigEditorTemplateDescription= d
-          , userConfigEditorTemplateDiv= di
+          , userConfigEditorTemplateTEI= di
           }
 instance Xmlbf.ToXml UserConfigEditorTemplate where
   toXml p = concatMap toElement $
@@ -194,7 +194,7 @@ instance Xmlbf.ToXml UserConfigEditorTemplate where
              , Val     "name"  (toString (userConfigEditorTemplateName p))
              , OptVal  "image" (fmap toString (userConfigEditorTemplateImage p))
              , OptVal  "description" (fmap toString (userConfigEditorTemplateDescription p))
-             , Prop    "div"   (HM.empty,Xmlbf.toXml (userConfigEditorTemplateDiv p))
+             , Prop    "tei"   (HM.empty,Xmlbf.toXml (userConfigEditorTemplateTEI p))
              ]
 instance Xmlbf.FromXml UserConfigEditorTemplate where
   fromXml = do
@@ -202,13 +202,13 @@ instance Xmlbf.FromXml UserConfigEditorTemplate where
     n  <-            Xmlbf.pElement "name" (Xmlbf.pAttr "value")
     i  <- optional $ Xmlbf.pElement "image" (Xmlbf.pAttr "value")
     d  <- optional $ Xmlbf.pElement "description" (Xmlbf.pAttr "value")
-    di <-            Xmlbf.pElement "div" Xmlbf.fromXml
+    di <-            Xmlbf.pElement "tei" Xmlbf.fromXml
     return UserConfigEditorTemplate{
             userConfigEditorTemplateAttrId = id
           , userConfigEditorTemplateName = n
           , userConfigEditorTemplateImage= i
           , userConfigEditorTemplateDescription= d
-          , userConfigEditorTemplateDiv= di
+          , userConfigEditorTemplateTEI= di
           }
 
 

@@ -96,18 +96,18 @@
                     <<"contained">> => <<"commented-out">>
                   }).
 
--spec compile(Dir :: binary()) -> (ok | {error, binary()}).
-compile(Dir) ->
+-spec compile(Version::binary(), Dir :: binary()) -> (ok | {error, binary()}).
+compile(Version,Dir) ->
     AllTypes = maps:keys(?fhir_xsd),
     Types = ?RESOURCES,
-    lists:foreach(fun (T) -> compile_type(T,AllTypes,Dir) end, Types),
+    lists:foreach(fun (T) -> compile_type(Version,T,AllTypes,Dir) end, Types),
     ok.
 
-compile_type(T,Types,Dir) ->
+compile_type(Version,T,Types,Dir) ->
     case maps:find(T, ?fhir_xsd) of
       {ok, DT} ->
            BBEs = backbones(T,Types),
-           module({T,DT},BBEs,Dir);
+           module(Version,{T,DT},BBEs,Dir);
       error   -> ok
     end.
 
@@ -124,7 +124,7 @@ backbone(T,DR) ->
     end.
 
 
-module({Type, _DT}=DR, Backbones, Dir) ->
+module(Version,{Type, _DT}=DR, Backbones, Dir) ->
     % io:format("module: ~p~n~p~n",[DR, Backbones]),
     File = list_to_binary([Dir,<<"/">>,Type,<<".hs">>]),
     io:format("write module: ~p~n",[File]),
@@ -132,6 +132,7 @@ module({Type, _DT}=DR, Backbones, Dir) ->
     io:format(S,"{-# LANGUAGE NoImplicitPrelude  #-}~n~n",[]),
 
     io:format(S,"{-# LANGUAGE DataKinds         #-}~n",[]),
+    io:format(S,"{-# LANGUAGE DerivingStrategies #-}~n",[]),
     io:format(S,"{-# LANGUAGE DeriveGeneric     #-}~n",[]),
     io:format(S,"{-# LANGUAGE FlexibleInstances #-}~n",[]),
     io:format(S,"{-# LANGUAGE GADTs #-}~n",[]),
@@ -142,7 +143,7 @@ module({Type, _DT}=DR, Backbones, Dir) ->
     io:format(S,"{-# LANGUAGE RecordWildCards #-}~n",[]),
     io:format(S,"{-# LANGUAGE TypeOperators     #-}~n~n",[]),
     io:format(S,"--~n",[]),
-    io:format(S,"-- FHIR 4.0.0 ~s~n",[Type]),
+    io:format(S,"-- FHIR ~s ~s~n",[Version,Type]),
     io:format(S,"--~n~n",[]),
     io:format(S,"module Data.FHIR.Resources.~s where~n~n",[Type]),
 
@@ -185,7 +186,7 @@ write_data(DataType,Base,Attrs,Info,FieldPrefix,S) ->
 %%    io:format(S,"  anyAttribs :: anyAttribs(),~n",[]),
     I = write_props(attrs,RAttrs,DataType,FieldPrefix,0,S),
     _ = write_props(props,RProps,DataType,FieldPrefix,I,S),
-    io:format(S,"  } deriving (Eq, Show)~n",[]),
+    io:format(S,"  } deriving stock (Eq, Show)~n",[]),
     io:format(S,"--~n~n",[]).
 
 write_code_sum_types([],_,_) -> ok;
@@ -209,7 +210,7 @@ write_code_sum_types([_|T],Type,S) ->
 write_code_sum_type(CST,DT,TP,I,S) ->
     io:format(S,"data ~s~n",[DT]),
     write_code_st_items(CST,TP,I,S),
-    io:format(S,"  deriving (Eq, Show)~n~n",[]).
+    io:format(S,"  deriving stock (Eq, Show)~n~n",[]).
 
 write_code_st_items([],_,_,_) -> ok;
 write_code_st_items([H|T],TP,I,S) ->
@@ -259,7 +260,7 @@ write_poly_sum_types([H|T],Type,S) ->
     Field = cap(binary:part(lists:nth(1,HL),0,PL)),
     io:format(S,"data ~s~s~n",[conc(Type),Field]),
     write_sum_type(HL,Type,PL,0,S),
-    io:format(S,"    deriving (Eq, Show)~n~n",[]),
+    io:format(S,"    deriving stock (Eq, Show)~n~n",[]),
     write_poly_sum_types(T,Type,S). 
 
 write_sum_type([],_,_,_,_) -> ok;

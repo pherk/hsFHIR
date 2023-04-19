@@ -104,7 +104,13 @@ library
         Paths_hsFHIR
   hs-source-dirs:
       src
-  ghc-options: -Wall
+  ghc-options: -Weverything -Wno-missing-exported-signatures -Wno-missing-import-lists
+               -Wno-missed-specialisations -Wno-all-missed-specialisations -Wno-unsafe -Wno-safe
+               -Wno-missing-local-signatures -Wno-monomorphism-restriction
+               -Wno-missing-safe-haskell-mode
+               -Wno-prepositive-qualified-module
+               -Wno-missing-kind-signatures
+               -Wno-incomplete-record-updates
   build-depends:
       aeson
     , attoparsec >= 0.13

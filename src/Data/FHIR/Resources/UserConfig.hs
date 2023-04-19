@@ -238,7 +238,7 @@ data UserConfig = UserConfig {
   , userConfigLastLogin   :: Maybe DateTime
   , userConfigVerified    :: Maybe Text
   , userConfigRoom        :: [Text]
-  , userConfigPatient     :: [Text]
+  , userConfigWorkSet     :: [Reference]
   , userConfigCard        :: [UserConfigCard]
   , userConfigEditorTemplate :: [UserConfigEditorTemplate]
   }
@@ -271,7 +271,7 @@ instance ToJSON UserConfig where
     , "lastLogin" .= toJSON (userConfigLastLogin  p)
     , "verified" .= toJSON (userConfigVerified p)
     , "room" .= toJSON (userConfigRoom p)
-    , "patient" .= toJSON (userConfigPatient p)
+    , "workSet" .= toJSON (userConfigWorkSet p)
     , "card" .= toJSON (userConfigCard p)
     , "editorTemplate" .= toJSON (userConfigEditorTemplate p)
     ]
@@ -301,7 +301,7 @@ instance FromJSON UserConfig where
         lastLogin  <- o .:? "lastLogin"
         verified   <- o .:? "verified"
         room       <- o .:  "room" .!= []
-        patient    <- o .:  "patient" .!= []
+        workset    <- o .:  "workSet" .!= []
         card       <- o .:  "card" .!= []
         template   <- o .:  "editorTemplate" .!= []
         return UserConfig{
@@ -326,7 +326,7 @@ instance FromJSON UserConfig where
           , userConfigLastLogin  = lastLogin
           , userConfigVerified = verified
           , userConfigRoom     = room
-          , userConfigPatient  = patient
+          , userConfigWorkSet  = workset
           , userConfigCard     = card
           , userConfigEditorTemplate = template
           }
@@ -361,7 +361,7 @@ instance Xmlbf.ToXml UserConfig where
              , OptVal   "lastLogin"   (fmap toDateTime (userConfigLastLogin p))
              , OptVal   "verified"    (fmap toString (userConfigVerified p))
              , ValList  "room"        (fmap toString (userConfigRoom p))
-             , ValList  "patient"     (fmap toString (userConfigPatient p))
+             , PropList "workSet"     (fmap Xmlbf.toXml (userConfigWorkSet p))
              , PropList "card"        (fmap Xmlbf.toXml (userConfigCard p))
              , PropList "editorTemplate" (fmap Xmlbf.toXml (userConfigEditorTemplate p))
              ]
@@ -388,7 +388,7 @@ instance Xmlbf.FromXml UserConfig where
     lastLogin  <- optional $ Xmlbf.pElement "lastLogin" (Xmlbf.pAttr "value")
     verified   <- optional $ Xmlbf.pElement "verified" (Xmlbf.pAttr "value")
     room       <- many     $ Xmlbf.pElement "room" (Xmlbf.pAttr "value")
-    patient    <- many     $ Xmlbf.pElement "patient " (Xmlbf.pAttr "value")
+    workset    <- many     $ Xmlbf.pElement "workSet" Xmlbf.fromXml
     card       <- many     $ Xmlbf.pElement "card"  Xmlbf.fromXml
     template   <- many     $ Xmlbf.pElement "template"  Xmlbf.fromXml
     return UserConfig {
@@ -413,7 +413,7 @@ instance Xmlbf.FromXml UserConfig where
           , userConfigLastLogin  = fmap fromDateTime lastLogin
           , userConfigVerified = verified
           , userConfigRoom  = room
-          , userConfigPatient = patient
+          , userConfigWorkSet = workset
           , userConfigCard  = card
           , userConfigEditorTemplate = template
           }

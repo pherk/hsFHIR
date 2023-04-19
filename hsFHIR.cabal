@@ -145,16 +145,16 @@ test-suite unit
       test/unit
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      aeson
+      aeson >=1.5 && < 1.6 || >=2.0 && <2.1
     , attoparsec >= 0.13
     , attoparsec-iso8601 >= 1.0.0
     , base
     , bytestring
-    , containers                                                                                                                                 
+    , containers
     , hsFHIR
     , hspec
     , hspec-discover
-    , refined >= 0.4.2.1                                                                                                                       
+    , refined >= 0.4.2.1
     , rio >= 0.1.9.2
     , text
     , time-compat

@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE CPP #-}
 
 {-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
@@ -22,6 +23,10 @@
 
 module Data.FHIR.Datatypes.XML where
 
+#if MIN_VERSION_aeson(2,0,0)
+import Data.Aeson.Key as AK
+import Data.Aeson.KeyMap as AKM
+#endif
 import           Data.FHIR.Datatypes.Internal
 import           Data.FHIR.Datatypes.XhtmlDiv
 import           Data.FHIR.Datatypes.XmlUtils

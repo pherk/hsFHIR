@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE CPP #-}
 
 {-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
@@ -173,6 +174,11 @@ module Data.FHIR.Resources.ResourceContainer (
 
 import Data.Aeson  
 import Data.Aeson.Types hiding (parseJSON)
+#if MIN_VERSION_aeson(2,0,0)
+import Data.Aeson.Key as AK
+import Data.Aeson.KeyMap as AKM
+#endif
+
 import GHC.TypeLits
 
 import RIO
@@ -780,7 +786,11 @@ instance FromJSON DomainResourceC where
          Just "UserConfig" -> UserConfigDR <$> parseJSON (Object v)
          Just "Leave" -> LeaveDR <$> parseJSON (Object v)
          Just "ICalendar" -> ICalendarDR <$> parseJSON (Object v)
+#if MIN_VERSION_aeson(2,0,0)
+       where rt = AKM.lookup "resourceType" v
+#else
        where rt = HM.lookup "resourceType" v
+#endif
 
 instance Xmlbf.ToXml DomainResourceC where
 --  toXml (AccountDR e) = Xmlbf.toXml e

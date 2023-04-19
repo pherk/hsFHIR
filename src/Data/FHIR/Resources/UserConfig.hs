@@ -152,6 +152,65 @@ instance Xmlbf.FromXml UserConfigCard where
           , userConfigCardStatus = s
           }
 
+data UserConfigEditorTemplate = UserConfigEditorTemplate {
+    userConfigEditorTemplateAttrId :: Maybe Text
+--  , userConfigEditorTemplateExtension :: [Extension]
+--  , userConfigEditorTemplateModifierExtension :: [Extension]
+  , userConfigEditorTemplateName :: Text
+  , userConfigEditorTemplateImage :: Maybe Text
+  , userConfigEditorTemplateDescription:: Maybe Text
+  , userConfigEditorTemplateDiv :: Narrative
+  }
+  deriving (Eq, Show)
+
+instance ToJSON UserConfigEditorTemplate where
+  toJSON p = object $
+    filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+    [
+      "_id" .= toJSON (userConfigEditorTemplateAttrId p)
+    , "name" .= toJSON (userConfigEditorTemplateName p)
+    , "image" .= toJSON (userConfigEditorTemplateImage p)
+    , "description" .= toJSON (userConfigEditorTemplateDescription p)
+    , "div" .= toJSON (userConfigEditorTemplateDiv p)
+    ]
+instance FromJSON UserConfigEditorTemplate where
+  parseJSON = withObject "UserConfigEditorTemplate" $ \o -> do
+        id <- o .:? "_id"
+        n  <- o .:  "name"
+        i  <- o .:? "image"
+        d  <- o .:? "description"
+        di <- o .:  "div"
+        return UserConfigEditorTemplate{
+            userConfigEditorTemplateAttrId = id
+          , userConfigEditorTemplateName= n
+          , userConfigEditorTemplateImage= i
+          , userConfigEditorTemplateDescription= d
+          , userConfigEditorTemplateDiv= di
+          }
+instance Xmlbf.ToXml UserConfigEditorTemplate where
+  toXml p = concatMap toElement $
+             [
+               OptVal "_id"    (userConfigEditorTemplateAttrId p)
+             , Val     "name"  (toString (userConfigEditorTemplateName p))
+             , OptVal  "image" (fmap toString (userConfigEditorTemplateImage p))
+             , OptVal  "description" (fmap toString (userConfigEditorTemplateDescription p))
+             , Prop    "div"   (HM.empty,Xmlbf.toXml (userConfigEditorTemplateDiv p))
+             ]
+instance Xmlbf.FromXml UserConfigEditorTemplate where
+  fromXml = do
+    id <- optional $ Xmlbf.pAttr "id"
+    n  <-            Xmlbf.pElement "name" (Xmlbf.pAttr "value")
+    i  <- optional $ Xmlbf.pElement "image" (Xmlbf.pAttr "value")
+    d  <- optional $ Xmlbf.pElement "description" (Xmlbf.pAttr "value")
+    di <-            Xmlbf.pElement "div" Xmlbf.fromXml
+    return UserConfigEditorTemplate{
+            userConfigEditorTemplateAttrId = id
+          , userConfigEditorTemplateName = n
+          , userConfigEditorTemplateImage= i
+          , userConfigEditorTemplateDescription= d
+          , userConfigEditorTemplateDiv= di
+          }
+
 
 data UserConfig = UserConfig {
     userConfigId :: Maybe Id
@@ -159,9 +218,9 @@ data UserConfig = UserConfig {
   , userConfigImplicitRules :: Maybe Uri
   , userConfigLanguage :: Maybe Language
 --  , userConfigText :: Maybe Narrative
---    encounterContained :: [ResourceContainer]
+--    userConfigContained :: [ResourceContainer]
 --  , userConfigExtension :: [Extension]
---  , userCOnfigModifierExtension :: [Extension]
+--  , userConfigModifierExtension :: [Extension]
   , userConfigIdentifier :: [Identifier]
   , userConfigActive :: Maybe Bool
   , userConfigSubject :: Maybe Reference
@@ -178,8 +237,10 @@ data UserConfig = UserConfig {
   , userConfigRegistered  :: Maybe Date
   , userConfigLastLogin   :: Maybe DateTime
   , userConfigVerified    :: Maybe Text
-  , userConfigRooms       :: [Text]
-  , userConfigCard :: [UserConfigCard]
+  , userConfigRoom        :: [Text]
+  , userConfigPatient     :: [Text]
+  , userConfigCard        :: [UserConfigCard]
+  , userConfigEditorTemplate :: [UserConfigEditorTemplate]
   }
   deriving (Eq, Show)
 --
@@ -209,8 +270,10 @@ instance ToJSON UserConfig where
     , "registered" .= toJSON (userConfigRegistered p)
     , "lastLogin" .= toJSON (userConfigLastLogin  p)
     , "verified" .= toJSON (userConfigVerified p)
-    , "rooms" .= toJSON (userConfigRooms   p)
+    , "room" .= toJSON (userConfigRoom p)
+    , "patient" .= toJSON (userConfigPatient p)
     , "card" .= toJSON (userConfigCard p)
+    , "editorTemplate" .= toJSON (userConfigEditorTemplate p)
     ]
 instance FromJSON UserConfig where
   parseJSON = withObject "UserConfig" $ \o -> do
@@ -237,8 +300,10 @@ instance FromJSON UserConfig where
         registered <- o .:? "registered"
         lastLogin  <- o .:? "lastLogin"
         verified   <- o .:? "verified"
-        rooms      <- o .:  "rooms" .!= []
+        room       <- o .:  "room" .!= []
+        patient    <- o .:  "patient" .!= []
         card       <- o .:  "card" .!= []
+        template   <- o .:  "editorTemplate" .!= []
         return UserConfig{
             userConfigId = id
           , userConfigMeta = meta
@@ -260,8 +325,10 @@ instance FromJSON UserConfig where
           , userConfigRegistered = registered
           , userConfigLastLogin  = lastLogin
           , userConfigVerified = verified
-          , userConfigRooms   = rooms
+          , userConfigRoom     = room
+          , userConfigPatient  = patient
           , userConfigCard     = card
+          , userConfigEditorTemplate = template
           }
       _ -> fail "not a UserConfig"
 instance Xmlbf.ToXml UserConfig where
@@ -293,8 +360,10 @@ instance Xmlbf.ToXml UserConfig where
              , OptVal   "registered"  (fmap toDate (userConfigRegistered p))
              , OptVal   "lastLogin"   (fmap toDateTime (userConfigLastLogin p))
              , OptVal   "verified"    (fmap toString (userConfigVerified p))
-             , ValList  "rooms"       (fmap toString (userConfigRooms   p))
+             , ValList  "room"        (fmap toString (userConfigRoom p))
+             , ValList  "patient"     (fmap toString (userConfigPatient p))
              , PropList "card"        (fmap Xmlbf.toXml (userConfigCard p))
+             , PropList "editorTemplate" (fmap Xmlbf.toXml (userConfigEditorTemplate p))
              ]
 instance Xmlbf.FromXml UserConfig where
   fromXml = do
@@ -318,8 +387,10 @@ instance Xmlbf.FromXml UserConfig where
     registered <- optional $ Xmlbf.pElement "registered" (Xmlbf.pAttr "value")
     lastLogin  <- optional $ Xmlbf.pElement "lastLogin" (Xmlbf.pAttr "value")
     verified   <- optional $ Xmlbf.pElement "verified" (Xmlbf.pAttr "value")
-    rooms      <- many     $ Xmlbf.pElement "rooms" (Xmlbf.pAttr "value")
+    room       <- many     $ Xmlbf.pElement "room" (Xmlbf.pAttr "value")
+    patient    <- many     $ Xmlbf.pElement "patient " (Xmlbf.pAttr "value")
     card       <- many     $ Xmlbf.pElement "card"  Xmlbf.fromXml
+    template   <- many     $ Xmlbf.pElement "template"  Xmlbf.fromXml
     return UserConfig {
             userConfigId = fmap fromId id
           , userConfigMeta = meta
@@ -341,10 +412,8 @@ instance Xmlbf.FromXml UserConfig where
           , userConfigRegistered = fmap fromDate registered
           , userConfigLastLogin  = fmap fromDateTime lastLogin
           , userConfigVerified = verified
-          , userConfigRooms   = rooms
-          , userConfigCard     = card
+          , userConfigRoom  = room
+          , userConfigPatient = patient
+          , userConfigCard  = card
+          , userConfigEditorTemplate = template
           }
-
-
-
-

@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE CPP #-}
 
 {-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
@@ -31,6 +32,10 @@ module Data.FHIR.Datatypes.Internal where
 
 import Data.Aeson  
 import Data.Aeson.Types hiding (parseJSON)
+#if MIN_VERSION_aeson(2,0,0)
+import qualified Data.Aeson.Key                as AK
+import qualified Data.Aeson.KeyMap             as AKM
+#endif
 
 import Data.Int(Int64)
 import Data.Scientific (Scientific)
@@ -488,10 +493,23 @@ instance FromJSON Reference where
                    , referenceDisplay=d
                    }
 
+#if MIN_VERSION_aeson(2,0,0)
+toAttribsJSON :: HM.HashMap Text Text -> [(Key,Value)]
+toAttribsJSON c = fmap toAttribJSON as
+    where as = fromObject c
+          fromObject = HM.toList
+
+toAttribJSON :: (Text,Text) -> (Key,Value)
+toAttribJSON (k,v) = (AK.fromText k) .= toJSON v
+#else
 toAttribsJSON :: HM.HashMap Text Text -> [(Text,Value)]
 toAttribsJSON c = fmap toAttribJSON as
-    where as = HM.toList c
+    where as = fromObject c
+          fromObject = HM.toList
+
+toAttribJSON :: (Text, Text) -> (Text,Value)
 toAttribJSON (k,v) = k .= toJSON v
+#endif
 
 
 data Period
@@ -3408,8 +3426,13 @@ instance FromJSON Extension where
             , extensionValue=va 
             }
 parseMaybeExtensionValue :: Object -> Parser (Maybe ExtensionValue)
+#if MIN_VERSION_aeson(2,0,0)
+parseMaybeExtensionValue o  = parseExtensionValue n o
+    where n = fmap AK.toText $ filter (T.isPrefixOf "value" . AK.toText) $ AKM.keys o
+#else
 parseMaybeExtensionValue o  = parseExtensionValue n o
     where n = filter (T.isPrefixOf "value") $ HM.keys o
+#endif
 
 parseExtensionValue :: [Text] -> Object -> Parser (Maybe ExtensionValue)
 parseExtensionValue [] o  = o .:? "empty" 

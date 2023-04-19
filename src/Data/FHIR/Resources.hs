@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE CPP #-}
 
 {-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
@@ -28,6 +29,10 @@ module Data.FHIR.Resources (
 
 import Data.Aeson  
 import Data.Aeson.Types hiding (parseJSON)
+#if MIN_VERSION_aeson(2,0,0)
+import Data.Aeson.Key as AK
+import Data.Aeson.KeyMap as AKM
+#endif
 
 --import GHC.Generics
 import GHC.TypeLits
@@ -50,7 +55,7 @@ data ResourceN = ResourceN (Maybe Id) (Maybe Meta) (Maybe Uri) (Maybe Language) 
 
 instance ToJSON ResourceN where
   toJSON (ResourceN i m ir l r) = object $
-    filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+    RIO.filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
     [
       rt
     , "id" .= toJSON i 
@@ -60,7 +65,12 @@ instance ToJSON ResourceN where
     ]
     ++ rest
     where (Object v) = toJSON r
+#if MIN_VERSION_aeson(2,0,0)
+          rt:rest    = AKM.toList v
+#else
           rt:rest    = HM.toList v
+#endif
+
 instance FromJSON ResourceN where
   parseJSON = withObject "ResourceN" $ \o -> do
       i  <- o .:? "id"
@@ -522,7 +532,11 @@ instance FromJSON Resource where
          Just "Leave" -> LeaveR <$> parseJSON (Object v)
          Just "ICalendar" -> ICalendarR <$> parseJSON (Object v)
          _         -> fail "not supported resource"
+#if MIN_VERSION_aeson(2,0,0)
+      where rt = AKM.lookup "resourceType" v
+#else
       where rt = HM.lookup "resourceType" v
+#endif
 
 instance Xmlbf.ToXml Resource where
   toXml (BinaryR e) = Xmlbf.toXml e

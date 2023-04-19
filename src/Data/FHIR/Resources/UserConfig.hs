@@ -236,6 +236,7 @@ data UserConfig = UserConfig {
   , userConfigProfession  :: Maybe Text
   , userConfigRegistered  :: Maybe Date
   , userConfigLastLogin   :: Maybe DateTime
+  , userConfigLastRoom    :: Maybe Text
   , userConfigVerified    :: Maybe Text
   , userConfigRoom        :: [Text]
   , userConfigWorkSet     :: [Reference]
@@ -269,6 +270,7 @@ instance ToJSON UserConfig where
     , "profession" .= toJSON (userConfigProfession p)
     , "registered" .= toJSON (userConfigRegistered p)
     , "lastLogin" .= toJSON (userConfigLastLogin  p)
+    , "lastRoom"  .= toJSON (userConfigLastRoom p)
     , "verified" .= toJSON (userConfigVerified p)
     , "room" .= toJSON (userConfigRoom p)
     , "workSet" .= toJSON (userConfigWorkSet p)
@@ -299,6 +301,7 @@ instance FromJSON UserConfig where
         profession <- o .:? "profession"
         registered <- o .:? "registered"
         lastLogin  <- o .:? "lastLogin"
+        lastRoom   <- o .:? "lastRoom"
         verified   <- o .:? "verified"
         room       <- o .:  "room" .!= []
         workset    <- o .:  "workSet" .!= []
@@ -324,6 +327,7 @@ instance FromJSON UserConfig where
           , userConfigProfession = profession
           , userConfigRegistered = registered
           , userConfigLastLogin  = lastLogin
+          , userConfigLastRoom   = lastRoom
           , userConfigVerified = verified
           , userConfigRoom     = room
           , userConfigWorkSet  = workset
@@ -359,6 +363,7 @@ instance Xmlbf.ToXml UserConfig where
              , OptVal   "profession"  (fmap toString (userConfigProfession p))
              , OptVal   "registered"  (fmap toDate (userConfigRegistered p))
              , OptVal   "lastLogin"   (fmap toDateTime (userConfigLastLogin p))
+             , OptVal   "lastRoom"    (fmap toString   (userConfigLastRoom p))
              , OptVal   "verified"    (fmap toString (userConfigVerified p))
              , ValList  "room"        (fmap toString (userConfigRoom p))
              , PropList "workSet"     (fmap Xmlbf.toXml (userConfigWorkSet p))
@@ -386,6 +391,7 @@ instance Xmlbf.FromXml UserConfig where
     profession <- optional $ Xmlbf.pElement "profession" (Xmlbf.pAttr "value")
     registered <- optional $ Xmlbf.pElement "registered" (Xmlbf.pAttr "value")
     lastLogin  <- optional $ Xmlbf.pElement "lastLogin" (Xmlbf.pAttr "value")
+    lastRoom   <- optional $ Xmlbf.pElement "lastRoom" (Xmlbf.pAttr "value")
     verified   <- optional $ Xmlbf.pElement "verified" (Xmlbf.pAttr "value")
     room       <- many     $ Xmlbf.pElement "room" (Xmlbf.pAttr "value")
     workset    <- many     $ Xmlbf.pElement "workSet" Xmlbf.fromXml
@@ -411,6 +417,7 @@ instance Xmlbf.FromXml UserConfig where
           , userConfigProfession = profession
           , userConfigRegistered = fmap fromDate registered
           , userConfigLastLogin  = fmap fromDateTime lastLogin
+          , userConfigLastRoom   = lastRoom
           , userConfigVerified = verified
           , userConfigRoom  = room
           , userConfigWorkSet = workset

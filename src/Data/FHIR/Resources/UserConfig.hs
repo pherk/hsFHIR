@@ -198,7 +198,7 @@ instance Xmlbf.ToXml UserConfigEditorTemplate where
              ]
 instance Xmlbf.FromXml UserConfigEditorTemplate where
   fromXml = do
-    id <- optional $ Xmlbf.pAttr "id"
+    id <- optional $ Xmlbf.pAttr "_id"
     n  <-            Xmlbf.pElement "name" (Xmlbf.pAttr "value")
     i  <- optional $ Xmlbf.pElement "image" (Xmlbf.pAttr "value")
     d  <- optional $ Xmlbf.pElement "description" (Xmlbf.pAttr "value")
@@ -237,7 +237,7 @@ data UserConfig = UserConfig {
   , userConfigRegistered  :: Maybe Date
   , userConfigLastLogin   :: Maybe DateTime
   , userConfigLastRoom    :: Maybe Text
-  , userConfigVerified    :: Maybe Boolean
+  , userConfigVerified    :: Maybe Bool
   , userConfigRoom        :: [Text]
   , userConfigWorkSet     :: [Reference]
   , userConfigCard        :: [UserConfigCard]

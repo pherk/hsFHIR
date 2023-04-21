@@ -237,7 +237,7 @@ data UserConfig = UserConfig {
   , userConfigRegistered  :: Maybe Date
   , userConfigLastLogin   :: Maybe DateTime
   , userConfigLastRoom    :: Maybe Text
-  , userConfigVerified    :: Maybe Text
+  , userConfigVerified    :: Maybe Boolean
   , userConfigRoom        :: [Text]
   , userConfigWorkSet     :: [Reference]
   , userConfigCard        :: [UserConfigCard]
@@ -364,7 +364,7 @@ instance Xmlbf.ToXml UserConfig where
              , OptVal   "registered"  (fmap toDate (userConfigRegistered p))
              , OptVal   "lastLogin"   (fmap toDateTime (userConfigLastLogin p))
              , OptVal   "lastRoom"    (fmap toString   (userConfigLastRoom p))
-             , OptVal   "verified"    (fmap toString (userConfigVerified p))
+             , OptVal   "verified"    (fmap toBoolean (userConfigVerified p))
              , ValList  "room"        (fmap toString (userConfigRoom p))
              , PropList "workSet"     (fmap Xmlbf.toXml (userConfigWorkSet p))
              , PropList "card"        (fmap Xmlbf.toXml (userConfigCard p))
@@ -418,7 +418,7 @@ instance Xmlbf.FromXml UserConfig where
           , userConfigRegistered = fmap fromDate registered
           , userConfigLastLogin  = fmap fromDateTime lastLogin
           , userConfigLastRoom   = lastRoom
-          , userConfigVerified = verified
+          , userConfigVerified = fmap fromBoolean verified
           , userConfigRoom  = room
           , userConfigWorkSet = workset
           , userConfigCard  = card

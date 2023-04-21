@@ -1,5 +1,10 @@
 # hsFHIR
 
+# Possible Improvements
+
+- allow recursive imports of extensions and ResourceContainer which can be broken by hs-boot files (see GHC 5.8.10).
+- naming of constants to eliminate conflicts (xsd2hs.erl)
+
 # steps to add new Resource
 
 1. new module in Data/FHIR/Resources

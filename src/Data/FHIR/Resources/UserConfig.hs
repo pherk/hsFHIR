@@ -57,7 +57,7 @@ data UserConfigCard = UserConfigCard {
   , userConfigCardSubtitle :: Maybe Text
   , userConfigCardUser :: Text
   , userConfigCardModel :: Text
---  , userConfigCardList :: [List]
+  , userConfigCardCOnfig :: [KV]
   , userConfigCardData :: [KV]
 --  , userConfigCardContext :: [Text]
 --  , userConfigCardParentt :: Maybe Text
@@ -79,6 +79,7 @@ instance ToJSON UserConfigCard where
     , "subtitle" .= toJSON (userConfigCardSubtitle p)
     , "user" .= toJSON (userConfigCardUser p)
     , "model" .= toJSON (userConfigCardModel p)
+    , "config" .= toJSON (userConfigCardConfig p)
     , "data" .= toJSON (userConfigCardData p)
     , "icon" .= toJSON (userConfigCardIcon p)
     , "iconColor" .= toJSON (userConfigCardIconColor p)
@@ -93,6 +94,7 @@ instance FromJSON UserConfigCard where
         st <- o .:? "subtitle"
         u  <- o .:  "user"
         m  <- o .:  "model"
+        co <- o .:? "config" .!= []
         d  <- o .:? "data" .!= []
         i  <- o .:? "icon"
         ic <- o .:? "iconColor"
@@ -105,6 +107,7 @@ instance FromJSON UserConfigCard where
           , userConfigCardSubtitle = st
           , userConfigCardUser= u
           , userConfigCardModel = m
+          , userConfigCardConfig = co
           , userConfigCardData = d
           , userConfigCardIcon = i
           , userConfigCardIconColor = ic
@@ -120,6 +123,7 @@ instance Xmlbf.ToXml UserConfigCard where
              , OptVal  "subtitle" (fmap toString (userConfigCardSubtitle p))
              , Val     "user    " (toString (userConfigCardUser p))
              , Val     "model"    (toString (userConfigCardModel p))
+             , PropList "config"  (fmap Xmlbf.toXml (userConfigCardConfig p))
              , PropList "data"    (fmap Xmlbf.toXml (userConfigCardData p))
              , OptVal  "icon"     (fmap toString (userConfigCardIcon p))
              , OptVal  "iconColor"   (fmap toString (userConfigCardIconColor p))
@@ -134,6 +138,7 @@ instance Xmlbf.FromXml UserConfigCard where
     st <- optional $ Xmlbf.pElement "subtitle" (Xmlbf.pAttr "value")
     u  <-            Xmlbf.pElement "user" (Xmlbf.pAttr "value")
     m  <-            Xmlbf.pElement "model" (Xmlbf.pAttr "value")
+    co <- many     $ Xmlbf.pElement "config" Xmlbf.fromXml
     d  <- many     $ Xmlbf.pElement "data" Xmlbf.fromXml
     i  <- optional $ Xmlbf.pElement "icon" (Xmlbf.pAttr "value")
     ic <- optional $ Xmlbf.pElement "iconColor" (Xmlbf.pAttr "value")
@@ -146,6 +151,7 @@ instance Xmlbf.FromXml UserConfigCard where
           , userConfigCardSubtitle = st
           , userConfigCardUser= u
           , userConfigCardModel = m
+          , userConfigCardConfig = co
           , userConfigCardData = d
           , userConfigCardIcon = ic
           , userConfigCardIconColor = ic

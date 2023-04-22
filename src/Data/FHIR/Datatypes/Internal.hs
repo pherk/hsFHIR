@@ -3,6 +3,7 @@
 
 {-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleContexts #-}
@@ -178,14 +179,14 @@ fromUuid :: Text -> Uuid
 fromUuid = id
 
 data AnyAttrib = AnyAttrib (Text,Text)
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 {-
 data Element
     = Element { elementId :: Maybe Text
               , elementExtension :: [Extension]
               }
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Element where
   toJSON (Element{elementId=Nothing})  = object []
@@ -223,7 +224,7 @@ data BackboneElement
             , backboneElementExtension :: [Extension]
             , backboneElementModifierExtension :: [Extension]
             }
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toBackboneElementJSON c = 
       filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
@@ -384,7 +385,7 @@ toLinkType LtSeeAlso    = "seealso"
 data Language 
   = LangDE
   | LangUS
-  deriving (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 instance ToJSON Language where
   toJSON LangDE = String "de"
@@ -460,7 +461,7 @@ data Reference
         , referenceType       :: Maybe Uri
         , referenceIdentifier :: Maybe Identifier
         , referenceDisplay    :: Maybe Text}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Reference where
     toJSON c = object $
@@ -520,7 +521,7 @@ data Period
         , periodStart :: Maybe DateTime
         , periodEnd :: Maybe DateTime
         }
-        deriving (Eq, Show)
+        deriving stock (Eq, Generic, Show)
 
 instance ToJSON Period where
     toJSON c = object $
@@ -547,7 +548,7 @@ instance FromJSON Period where
 
 
 data QuantityComparator
-    = QcGt | QcGe | QcLt | QcLe deriving (Eq, Show)
+    = QcGt | QcGe | QcLt | QcLe deriving stock (Eq, Generic, Show)
 
 instance ToJSON QuantityComparator where
     toJSON (QcGt) = String "gt"
@@ -571,7 +572,7 @@ data Quantity = Quantity {
         , quantityUnit :: Maybe Ucum  
         , quantitySystem :: Maybe Uri
         , quantityCode :: Maybe Code}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Quantity where
     toJSON c = object $
@@ -607,7 +608,7 @@ instance FromJSON Quantity where
 
 data AddressType
     = AtPostal | AtPhysical | AtBoth
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON AddressType where
     toJSON (AtPostal  ) = String "postal"
@@ -622,7 +623,7 @@ instance FromJSON AddressType where
 
 data AddressUse
     = AuBilling | AuHome | AuOld | AuTemp | AuWork
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON AddressUse where
     toJSON (AuBilling) = String "billing"
@@ -651,7 +652,7 @@ data Address = Address {
         , addressPostalCode :: Maybe Text
         , addressCountry :: Maybe Text
         , addressPeriod :: Maybe Period}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Address where
     toJSON c = object $
@@ -701,7 +702,7 @@ instance FromJSON Address where
 
 data AdministrativeGender
     = AgFemale | AgMale | AgOther | AgUnknown
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON AdministrativeGender where
     toJSON (AgFemale)  = String "female"
@@ -725,7 +726,7 @@ data Age = Age {
         , ageUnit :: Maybe Ucum  
         , ageSystem :: Maybe Uri
         , ageCode :: Maybe Code}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Age where
     toJSON c = object $
@@ -762,7 +763,7 @@ instance FromJSON Age where
 
 data AggregationMode
     = AmBundled | AmContained | AmReferenced
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON AggregationMode where
     toJSON (AmBundled)    = String "bundled"
@@ -778,7 +779,7 @@ instance FromJSON AggregationMode where
 data AnnotationAuthor
     = AnnotationAuthorReference Reference
     | AnnotationAuthorString Text
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toAnnotationAuthorJSON (AnnotationAuthorReference r) = ("authorReference", toJSON r)
 toAnnotationAuthorJSON (AnnotationAuthorString r) = ("authorString", toJSON r)
@@ -792,7 +793,7 @@ data Annotation
         , annotationTime :: Maybe DateTime
         , annotationText :: Markdown
         }
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Annotation where
     toJSON c = object $
@@ -843,7 +844,7 @@ data Attachment = Attachment {
         , attachmentHash :: Maybe Base64Binary
         , attachmentTitle :: Maybe Text
         , attachmentCreation :: Maybe DateTime}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Attachment where
     toJSON c = object $
@@ -897,7 +898,7 @@ data Coding
         , codingCode :: Maybe Code
         , codingDisplay :: Maybe Text
         , codingUserSelected :: Maybe Boolean}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Coding where
     toJSON c = object $
@@ -937,7 +938,7 @@ data CodeableConcept
        , codeableConceptExtension :: [Extension]
        , codeableConceptCoding :: [Coding]
        , codeableConceptText :: Maybe Text}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON CodeableConcept where
     toJSON c = object $
@@ -972,7 +973,7 @@ data ConceptMapEquivalence
     | CmeSubsumes
     | CmeUnmatched
     | CmeWider
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 
 instance ToJSON ConceptMapEquivalence where
@@ -1001,7 +1002,7 @@ instance FromJSON ConceptMapEquivalence where
 
 
 data ConstraintSeverity = CsError | CsWarning 
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ConstraintSeverity where
     toJSON (CsError)   = String "error"
@@ -1022,7 +1023,7 @@ instance FromJSON ConstraintSeverity where
 -}
 data ContactPointSystem
     = CpsEmail | CpsFax | CpsOther | CpsPager | CpsPhone | CpsSms | CpsUrl
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ContactPointSystem where
     toJSON (CpsEmail) = String "email"
@@ -1044,7 +1045,7 @@ instance FromJSON ContactPointSystem where
 
 data ContactPointUse
     = CpuHome | CpuMobile | CpuOld | CpuTemp | CpuWork
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ContactPointUse where
     toJSON (CpuHome) = String "home"
@@ -1070,7 +1071,7 @@ data ContactPoint
         , contactPointUse :: Maybe ContactPointUse
         , contactPointRank :: Maybe PositiveInt
         , contactPointPeriod :: Maybe Period}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ContactPoint where
     toJSON c = object $
@@ -1111,7 +1112,7 @@ data Count = Count {
         , countUnit :: Maybe Ucum  
         , countSystem :: Maybe Uri
         , countCode :: Maybe Code}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Count where
     toJSON c = object $
@@ -1148,7 +1149,7 @@ instance FromJSON Count where
 
 data DiscriminatorType
     = DtExists | DtPattern | DtProfile | DtType | DtValue
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DiscriminatorType where
     toJSON (DtExists)  = String "exists"
@@ -1174,7 +1175,7 @@ data Distance = Distance {
         , distanceUnit :: Maybe Ucum  
         , distanceSystem :: Maybe Uri
         , distanceCode :: Maybe Code}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Distance where
     toJSON c = object $
@@ -1211,7 +1212,7 @@ instance FromJSON Distance where
 
 data DocumentReferenceStatus
     = DrsCurrent | DrsEnteredInError | DrsSuperseeded
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DocumentReferenceStatus where
     toJSON (DrsCurrent)        = String "current"
@@ -1233,7 +1234,7 @@ data Duration = Duration {
         , durationUnit :: Maybe Ucum  
         , durationSystem :: Maybe Uri
         , durationCode :: Maybe Code}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Duration where
     toJSON c = object $
@@ -1295,7 +1296,7 @@ data EventTiming
     | EtPCV
     | EtPHS
     | EtWAKE
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON EventTiming where
     toJSON (EtAC)       = String "AC"
@@ -1378,7 +1379,7 @@ data FHIRVersion
     | Fv_350
     | Fv_400
     | Fv_401
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON FHIRVersion where
   toJSON Fv_001 = String "0.01"
@@ -1431,7 +1432,7 @@ instance FromJSON FHIRVersion where
 
 data NameUse
     = NuAnonymous | NuMaiden | NuNickname | NuOfficial | NuOld | NuTemp | NuUsual
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON NameUse where
     toJSON (NuAnonymous) = String "anonymous"
@@ -1464,7 +1465,7 @@ data HumanName
         , humanNamePrefix :: [Text]
         , humanNameSuffix :: [Text]
         , humanNamePeriod :: Maybe Period}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON HumanName where
     toJSON c = object $
@@ -1516,7 +1517,7 @@ instance FromJSON HumanName where
 
 data IdentifierUse
     = IuOfficial | IuOld | IuSecondary | IuTemp | IuUsual
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON IdentifierUse where
     toJSON (IuOfficial) = String "official"
@@ -1543,7 +1544,7 @@ data Identifier
             , identifierValue :: Maybe Text
             , identifierPeriod :: Maybe Period
             , identifierAssigner :: Maybe Reference}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Identifier where
     toJSON c = object $
@@ -1581,7 +1582,7 @@ instance FromJSON Identifier where
 
 data LinkType
     = LtRefer | LtReplacedBy | LtReplaces | LtSeeAlso
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON LinkType where 
     toJSON (LtRefer) = String "refer"
@@ -1606,7 +1607,7 @@ data MarketingStatus
         , marketingStatusStatus :: CodeableConcept
         , marketingStatusDateRange :: Period
         , marketingStatusRestoreDate :: Maybe DateTime}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON MarketingStatus where
     toJSON c = object $
@@ -1646,7 +1647,7 @@ data Money
         , moneyExtension :: [Extension]
         , moneyValue :: Maybe Decimal
         , moneyCurrency :: Maybe Code}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Money where
     toJSON c = object $
@@ -1670,7 +1671,7 @@ instance FromJSON Money where
                   , moneyValue=v
                   , moneyCurrency=c}
 
-data NoteType = NtDisplay | NtPrint | NtPrintoper deriving (Eq, Show)
+data NoteType = NtDisplay | NtPrint | NtPrintoper deriving stock (Eq, Generic, Show)
 
 instance ToJSON NoteType where 
     toJSON (NtDisplay) = String "display"
@@ -1690,7 +1691,7 @@ data Range
         , rangeExtension :: [Extension]
         , rangeLow :: Maybe Quantity
         , rangeHigh :: Maybe Quantity}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Range where
     toJSON c = object $
@@ -1721,7 +1722,7 @@ data Ratio
         , ratioExtension :: [Extension]
         , ratioNumerator :: Maybe Quantity
         , ratioDenominator :: Maybe Quantity}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Ratio where
     toJSON c = object $
@@ -1748,7 +1749,7 @@ instance FromJSON Ratio where
 data PopulationAge
     = PopulationAgeRange Range
     | PopulationAgeCodeableConcept CodeableConcept
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toPopulationAgeJSON (PopulationAgeRange           r) = ("ageRange", toJSON r)
 toPopulationAgeJSON (PopulationAgeCodeableConcept r) = ("ageCodeableConcept", toJSON r)
@@ -1762,7 +1763,7 @@ data Population
         , populationGender :: Maybe CodeableConcept
         , populationRace :: Maybe CodeableConcept
         , populationPhysiologicalCondition :: Maybe CodeableConcept}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Population where
     toJSON c = object $
@@ -1807,7 +1808,7 @@ data ProductShelfLife
         , productShelfLifeType :: CodeableConcept
         , productShelfLifePeriod :: Quantity
         , productShelfLifeSpecialPrecautionsForStorage :: [CodeableConcept]}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ProductShelfLife where
     toJSON c = object $
@@ -1853,7 +1854,7 @@ data ProdCharacteristic
         , prodCharacteristicImprint :: [Text]
         , prodCharacteristicImage :: [Attachment]
         , prodCharacteristicScoring :: Maybe CodeableConcept}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ProdCharacteristic where
     toJSON c = object $
@@ -1906,7 +1907,7 @@ instance FromJSON ProdCharacteristic where
 
 data PropertyRepresentation 
     = PrcdaText | PrtypeAttr | Prxhtml | PrxmlAttr | PrxmlText
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON PropertyRepresentation where
     toJSON (PrcdaText)  = String "cdaText"
@@ -1924,7 +1925,7 @@ instance FromJSON PropertyRepresentation where
 
 data PublicationStatus
     = PsActive | PsDraft | PsRetired | PsUnknown
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON PublicationStatus where
     toJSON (PsActive)  = String "active"
@@ -1941,7 +1942,7 @@ instance FromJSON PublicationStatus where
 
 data RemittanceOutcome
     = RoComplete | RoError | RoPartial | RoQueued
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON RemittanceOutcome where
     toJSON (RoComplete) = String "complete"
@@ -1968,7 +1969,7 @@ data SampledData
         , sampledDataUpperLimit :: Maybe Decimal
         , sampledDataDimensions :: PositiveInt
         , sampledDataData :: Maybe SampledDataDataType}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON SampledData where
     toJSON c = object $
@@ -2018,7 +2019,7 @@ data SearchParamType
     | SptString
     | SptToken
     | SptUri
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON SearchParamType where
     toJSON (SptComposite)= String "composite"
@@ -2054,7 +2055,7 @@ data Signature = Signature {
         , signatureTargetFormat :: Maybe Code
         , signatureSigFormat :: Maybe Code
         , signatureData :: Maybe Base64Binary}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Signature where
     toJSON c = object $
@@ -2098,7 +2099,7 @@ data SlicingRules
     = SrClosed
     | SrOpen
     | SrOpenAtEnd
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON SlicingRules where
     toJSON (SrClosed)    = String "closed"
@@ -2114,7 +2115,7 @@ instance FromJSON SlicingRules where
 data SortDirection
     = SdAscending
     | SdDescending
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON SortDirection where
     toJSON (SdAscending)  = String "ascending"
@@ -2132,7 +2133,7 @@ data SubstanceAmountReferenceRange
         , substanceAmountReferenceRangeExtension :: [Extension]
         , substanceAmountReferenceRangeLowLimit :: Maybe Quantity
         , substanceAmountReferenceRangeHighLimit :: Maybe Quantity}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON SubstanceAmountReferenceRange where
     toJSON c = object $
@@ -2160,7 +2161,7 @@ data SubstanceAmountAmount
     = SubstanceAmountAmountQuantity Quantity
     | SubstanceAmountAmountRange Range
     | SubstanceAmountAmountString Text
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toSubstanceAmountAmountJSON (SubstanceAmountAmountQuantity q) = ("amountQuantity", toJSON q)
 toSubstanceAmountAmountJSON (SubstanceAmountAmountRange q)    = ("amountRange", toJSON q)
@@ -2173,7 +2174,7 @@ data SubstanceAmount
         , substanceAmountAmountType :: Maybe CodeableConcept
         , substanceAmountAmountText :: Maybe Text
         , substanceAmountReferenceRange :: Maybe SubstanceAmountReferenceRange}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON SubstanceAmount where
     toJSON c = object $
@@ -2220,7 +2221,7 @@ data UnitsOfTime
     | UotMo
     | UotS
     | UotWk
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON UnitsOfTime where
     toJSON (UotA) = String "a"
@@ -2245,7 +2246,7 @@ data TimingRepeatBounds
     = TimingRepeatBoundsDuration Duration
     | TimingRepeatBoundsRange Range
     | TimingRepeatBoundsPeriod Period
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toTimingRepeatBoundsJSON (TimingRepeatBoundsDuration b) = ("boundDuration", toJSON b)
 toTimingRepeatBoundsJSON (TimingRepeatBoundsRange    b) = ("boundRange", toJSON b)
@@ -2271,7 +2272,7 @@ data TimingRepeat
         , timingRepeatTimeOfDay :: [Time]
         , timingRepeatWhen :: [EventTiming]
         , timingRepeatOffset :: Maybe UnsignedInt}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON TimingRepeat where
     toJSON c = object $
@@ -2351,7 +2352,7 @@ data Timing
         , timingEvent :: [DateTime]
         , timingRepeat :: Maybe TimingRepeat
         , timingCode :: Maybe CodeableConcept}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Timing where
     toJSON c = object $
@@ -2388,7 +2389,7 @@ data ContactDetail
         , contactDetailExtension :: [Extension]
         , contactDetailName :: Maybe Text
         , contactDetailTelecom :: [ContactPoint]}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ContactDetail where
     toJSON c = object $
@@ -2414,7 +2415,7 @@ instance FromJSON ContactDetail where
 
 data ContributorType
     = CtAuthor | CtEditor | CtEndorser | CtReviewer
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ContributorType where
     toJSON (CtAuthor) = String "author"
@@ -2436,7 +2437,7 @@ data Contributor
         , contributorType :: ContributorType
         , contributorName :: Text
         , contributorContact :: [ContactDetail]}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Contributor where
     toJSON c = object $
@@ -2472,7 +2473,7 @@ data DataRequirementCodeFilter
         , dataRequirementCodeFilterSearchParam :: Maybe Text
         , dataRequirementCodeFilterValueSet :: Maybe Canonical
         , dataRequirementCodeFilterCode :: [Coding]}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DataRequirementCodeFilter where
     toJSON c = object $
@@ -2506,7 +2507,7 @@ data DataRequirementDateFilterValue
     = DataRequirementDateFilterValueDateTime DateTime
     | DataRequirementDateFilterValuePeriod Period
     | DataRequirementDateFilterValueDuration Duration
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toDataRequirementDateFilterValueJSON (DataRequirementDateFilterValueDateTime c) = ("valueDateTime", toJSON c)
 toDataRequirementDateFilterValueJSON (DataRequirementDateFilterValuePeriod   c) = ("valuePeriod", toJSON c)
@@ -2520,7 +2521,7 @@ data DataRequirementDateFilter
         , dataRequirementDateFilterPath :: Maybe Text
         , dataRequirementDateFilterSearchParam :: Maybe Text
         , dataRequirementDateFilterValue :: DataRequirementDateFilterValue}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DataRequirementDateFilter where
     toJSON c = object $
@@ -2564,7 +2565,7 @@ data DataRequirementSort
         , dataRequirementSortExtension :: [Extension]
         , dataRequirementSortPath :: Text
         , dataRequirementSortDirection :: SortDirection}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DataRequirementSort where
     toJSON c = object $
@@ -2591,7 +2592,7 @@ instance FromJSON DataRequirementSort where
 data DataRequirementSubject
     = DataRequirementSubjectCodeableConcept CodeableConcept
     | DataRequirementSubjectReference Reference
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toDataRequirementSubjectJSON (DataRequirementSubjectCodeableConcept c) = ("subjectCodeableConcept", toJSON c)
 toDataRequirementSubjectJSON (DataRequirementSubjectReference c) = ("subjectReference", toJSON c)
@@ -2609,7 +2610,7 @@ data DataRequirement
         , dataRequirementDateFilter :: [DataRequirementDateFilter]
         , dataRequirementLimit :: Maybe PositiveInt
         , dataRequirementSort :: [DataRequirementSort]}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DataRequirement where
     toJSON c = object $
@@ -2662,7 +2663,7 @@ data ExpressionLanguage
     = ElApplicationXFhirQuery
     | ElTextCql
     | ElTextFhirpath
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ExpressionLanguage where
     toJSON (ElApplicationXFhirQuery) = String "application/x-fhir-query"
@@ -2685,7 +2686,7 @@ data Expression
         , expressionLanguage :: ExpressionLanguage
         , expressionExpression :: Maybe Text
         , expressionReference :: Maybe Uri}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Expression where
     toJSON c = object $
@@ -2730,7 +2731,7 @@ data ParameterDefinition
         , parameterDefinitionDocumentation :: Maybe Text
         , parameterDefinitionType :: Code
         , parameterDefinitionProfile :: Maybe Canonical}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ParameterDefinition where
     toJSON c = object $
@@ -2778,7 +2779,7 @@ data RelatedArtifactType
     | RatJustification
     | RatPredecessor
     | RatSuccessor
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON RelatedArtifactType where
     toJSON (RatCitation)     = String "citation"
@@ -2813,7 +2814,7 @@ data RelatedArtifact
         , relatedArtifactUrl :: Maybe Url
         , relatedArtifactDocument :: Maybe Attachment
         , relatedArtifactResource :: Maybe Canonical}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON RelatedArtifact where
     toJSON c = object $
@@ -2857,7 +2858,7 @@ data TriggerDefinitionTiming
     | TriggerDefinitionTimingReference Reference
     | TriggerDefinitionTimingDate Date
     | TriggerDefinitionTimingDateTime DateTime
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toTriggerDefinitionTimingJSON (TriggerDefinitionTimingTiming    c) = ("timingTiming", toJSON c)
 toTriggerDefinitionTimingJSON (TriggerDefinitionTimingReference c) = ("timingReference", toJSON c)
@@ -2873,7 +2874,7 @@ data TriggerType
     | TtDataRemoved
     | TtNamedEvent
     | TtPeriodic
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON TriggerType where
     toJSON (TtDataAccessEnded) = String "data-access-ended"
@@ -2906,7 +2907,7 @@ data TriggerDefinition
         , triggerDefinitionTiming :: TriggerDefinitionTiming
         , triggerDefinitionData :: [DataRequirement]
         , triggerDefinitionCondition :: Maybe Expression}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON TriggerDefinition where
     toJSON c = object $
@@ -2958,7 +2959,7 @@ data UsageContextValue
     | UcvQuantity Quantity
     | UcvRange Range
     | UcvReference Reference
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toUsageContextValueJSON (UcvCC        cc) = ("valueCodeableConcept", toJSON cc)
 toUsageContextValueJSON (UcvQuantity   q) = ("valueQuantity", toJSON q)
@@ -2972,7 +2973,7 @@ data UsageContext
         , usageContextExtension :: [Extension]
         , usageContextCode :: Coding
         , usageContextValue :: UsageContextValue}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON UsageContext where
     toJSON c = object $
@@ -3016,7 +3017,7 @@ instance FromJSON UsageContext where
 data DosageAsNeeded
     = DosageAsNeededBoolean Boolean
     | DosageAsNeededCodeableConcept CodeableConcept
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toDosageAsNeededJSON (DosageAsNeededBoolean          b) = ("asNeededBoolean", toJSON b)
 toDosageAsNeededJSON (DosageAsNeededCodeableConcept cc) = ("asNeededCodeableConcept", toJSON cc)
@@ -3024,7 +3025,7 @@ toDosageAsNeededJSON (DosageAsNeededCodeableConcept cc) = ("asNeededCodeableConc
 data DosageDoseAndRateDose
     = DosageDoseAndRateDoseRange Range
     | DosageDoseAndRateDoseQuantity Quantity
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toDosageDoseAndRateDoseJSON (DosageDoseAndRateDoseRange    r) = ("doseAndRateRange", toJSON r)
 toDosageDoseAndRateDoseJSON (DosageDoseAndRateDoseQuantity q) = ("doseAndRateQuantity", toJSON q)
@@ -3033,7 +3034,7 @@ data DosageDoseAndRateRate
     = DosageDoseAndRateRateRatio Ratio
     | DosageDoseAndRateRateRange Range
     | DosageDoseAndRateRateQuantity Quantity
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 toDosageDoseAndRateRateJSON (DosageDoseAndRateRateRatio    r) = ("doseAndRateRatio", toJSON r)
 toDosageDoseAndRateRateJSON (DosageDoseAndRateRateRange    r) = ("doseAndRateRange", toJSON r)
@@ -3047,7 +3048,7 @@ data DosageDoseAndRate
         , dosageDoseAndRateType :: Maybe CodeableConcept
         , dosageDoseAndRateDose :: DosageDoseAndRateDose
         , dosageDoseAndRateRate :: DosageDoseAndRateRate}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON DosageDoseAndRate where
     toJSON c = object $
@@ -3106,7 +3107,7 @@ data Dosage
         , dosageMaxDosePerPeriod :: Maybe Ratio
         , dosageMaxDosePerAdministration :: Maybe Quantity
         , dosageMaxDosePerLifetime :: Maybe Quantity}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Dosage where
     toJSON c = object $
@@ -3180,7 +3181,7 @@ data Meta
         , metaProfile :: [Canonical]
         , metaSecurity :: [Coding]
         , metaTag :: [Coding]}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Meta where
     toJSON m = object $
@@ -3219,7 +3220,7 @@ instance FromJSON Meta where
 
 data MimeType
     = MtXml | MtJson | MtTtl
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON MimeType where
     toJSON MtXml = String "xml"
@@ -3228,7 +3229,7 @@ instance ToJSON MimeType where
 
 data NarrativeStatus
     = NsAdditional | NsEmpty | NsExtensions | NsGenerated
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance FromJSON NarrativeStatus where
     parseJSON (String s) = case T.unpack s of
@@ -3244,7 +3245,7 @@ data Narrative
         , narrativeExtension :: [Extension]
         , narrativeStatus :: NarrativeStatus
         , narrativeXhtmlDiv :: XhtmlDiv}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Narrative where
     toJSON e = object $
@@ -3324,7 +3325,7 @@ data ExtensionValue
     | ExtensionValueReference Reference
     | ExtensionValueDosage Dosage
     | ExtensionValueMeta Meta
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON ExtensionValue where
     toJSON (ExtensionValueMeta m) = object [ ("valueMeta", toJSON m) ]
@@ -3402,7 +3403,7 @@ data Extension
         , extensionId :: Maybe Id
         , extensionExtension :: [Extension]
         , extensionValue :: Maybe ExtensionValue}
-    deriving (Eq, Show)
+    deriving stock (Eq, Generic, Show)
 
 instance ToJSON Extension where
     toJSON e = object $

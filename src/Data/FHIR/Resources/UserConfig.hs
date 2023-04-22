@@ -2,6 +2,7 @@
 
 {-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE InstanceSigs #-}
@@ -66,7 +67,7 @@ data UserConfigCard = UserConfigCard {
   , userConfigCardPersistence :: Maybe Text
   , userConfigCardStatus :: Maybe Text
   }
-  deriving (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 instance ToJSON UserConfigCard where
   toJSON p = object $
@@ -161,7 +162,7 @@ data UserConfigEditorTemplate = UserConfigEditorTemplate {
   , userConfigEditorTemplateDescription:: Maybe Text
   , userConfigEditorTemplateTEI :: Narrative
   }
-  deriving (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 
 instance ToJSON UserConfigEditorTemplate where
   toJSON p = object $
@@ -243,7 +244,7 @@ data UserConfig = UserConfig {
   , userConfigCard        :: [UserConfigCard]
   , userConfigEditorTemplate :: [UserConfigEditorTemplate]
   }
-  deriving (Eq, Show)
+  deriving stock (Eq, Generic, Show)
 --
 
 instance ToJSON UserConfig where

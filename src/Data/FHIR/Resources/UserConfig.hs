@@ -57,7 +57,7 @@ data UserConfigCard = UserConfigCard {
   , userConfigCardSubtitle :: Maybe Text
   , userConfigCardUser :: Text
   , userConfigCardModel :: Text
-  , userConfigCardCOnfig :: [KV]
+  , userConfigCardConfig :: [KV]
   , userConfigCardData :: [KV]
 --  , userConfigCardContext :: [Text]
 --  , userConfigCardParentt :: Maybe Text
@@ -74,7 +74,7 @@ instance ToJSON UserConfigCard where
     filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
     [
       "_id" .= toJSON (userConfigCardAttrId p)
-    , "id" .= toJSON (userConfigCardCard p)
+    , "card" .= toJSON (userConfigCardCard p)
     , "title" .= toJSON (userConfigCardTitle p)
     , "subtitle" .= toJSON (userConfigCardSubtitle p)
     , "user" .= toJSON (userConfigCardUser p)
@@ -89,7 +89,7 @@ instance ToJSON UserConfigCard where
 instance FromJSON UserConfigCard where
   parseJSON = withObject "UserConfigCard" $ \o -> do
         id <- o .:? "_id"
-        c  <- o .:  "id"
+        c  <- o .:  "card"
         t  <- o .:? "title"
         st <- o .:? "subtitle"
         u  <- o .:  "user"
@@ -118,7 +118,7 @@ instance Xmlbf.ToXml UserConfigCard where
   toXml p = concatMap toElement $
              [
                OptVal "_id"   (userConfigCardAttrId p)
-             , Val     "id"     (toString (userConfigCardCard p))
+             , Val     "card"     (toString (userConfigCardCard p))
              , OptVal  "title"    (fmap toString (userConfigCardTitle p))
              , OptVal  "subtitle" (fmap toString (userConfigCardSubtitle p))
              , Val     "user    " (toString (userConfigCardUser p))
@@ -133,7 +133,7 @@ instance Xmlbf.ToXml UserConfigCard where
 instance Xmlbf.FromXml UserConfigCard where
   fromXml = do
     id <- optional $ Xmlbf.pAttr "id"
-    c  <-            Xmlbf.pElement "id" (Xmlbf.pAttr "value")
+    c  <-            Xmlbf.pElement "card" (Xmlbf.pAttr "value")
     t  <- optional $ Xmlbf.pElement "title" (Xmlbf.pAttr "value")
     st <- optional $ Xmlbf.pElement "subtitle" (Xmlbf.pAttr "value")
     u  <-            Xmlbf.pElement "user" (Xmlbf.pAttr "value")
@@ -293,7 +293,7 @@ instance FromJSON UserConfig where
         meta <- o .:? "meta"
         implicitRules <- o .:? "implicitRules"
         language   <- o .:? "language"
-        identifier <- o .:  "identifier" .!= []
+        identifier <- o .:? "identifier" .!= []
         active     <- o .:? "active"
         subject    <- o .:? "subject"
         welcome    <- o .:? "welcome"
@@ -304,16 +304,16 @@ instance FromJSON UserConfig where
         title      <- o .:? "title"
         gender     <- o .:? "gender"
         location   <- o .:? "location"
-        education  <- o .:  "education" .!= []
+        education  <- o .:? "education" .!= []
         profession <- o .:? "profession"
         registered <- o .:? "registered"
         lastLogin  <- o .:? "lastLogin"
         lastRoom   <- o .:? "lastRoom"
         verified   <- o .:? "verified"
-        room       <- o .:  "room" .!= []
-        workset    <- o .:  "workSet" .!= []
-        card       <- o .:  "card" .!= []
-        template   <- o .:  "editorTemplate" .!= []
+        room       <- o .:? "room" .!= []
+        workset    <- o .:? "workSet" .!= []
+        card       <- o .:? "card" .!= []
+        template   <- o .:? "editorTemplate" .!= []
         return UserConfig{
             userConfigId = id
           , userConfigMeta = meta

@@ -30,19 +30,42 @@ import           Data.FHIR.Datatypes.XmlUtils
 import           Data.FHIR.Resources.DomainResource
 import qualified Xmlbf  as Xmlbf
 
-type KV = (Text,Text)
+data UserConfigCardData = UserConfigCardData {
+    userConfigCardDataKey :: Text
+  , userConfigCardDataValue :: Text
+  }
+  deriving stock (Eq, Generic, Show)
 
-instance Xmlbf.ToXml KV where
+
+instance ToJSON UserConfigCardData where
+  toJSON p = object $
+    filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+    [
+      "key" .= toJSON (userConfigCardDataKey p)
+    , "value" .= toJSON (userConfigCardDataValue p)
+    ]
+instance FromJSON UserConfigCardData where
+  parseJSON = withObject "UserConfigCardData" $ \o -> do
+        k <- o .: "key"
+        v  <- o .: "value"
+        return UserConfigCardData{
+            userConfigCardDataKey = k
+          , userConfigCardDataValue= v
+          }
+instance Xmlbf.ToXml UserConfigCardData where
   toXml p = concatMap toElement $
              [
-               Val "key"   (toString (fst p))
-             , Val "value" (toString (snd p))
+               Val "key"   (toString (userConfigCardDataKey p))
+             , Val "value" (toString (userConfigCardDataValue p))
              ]
-instance Xmlbf.FromXml KV where
+instance Xmlbf.FromXml UserConfigCardData where
   fromXml = do
     k  <- Xmlbf.pElement "key"   (Xmlbf.pAttr "value")
     v  <- Xmlbf.pElement "value" (Xmlbf.pAttr "value")
-    return (k,v)
+    return UserConfigCardData{
+            userConfigCardDataKey = k
+          , userConfigCardDataValue = v
+          }
 {-
 instance ToJSON KVList where
   toJSON kvs = object [ k .= v | (k,v) <- kvs ]
@@ -57,8 +80,8 @@ data UserConfigCard = UserConfigCard {
   , userConfigCardSubtitle :: Maybe Text
   , userConfigCardUser :: Text
   , userConfigCardModel :: Text
-  , userConfigCardConfig :: [KV]
-  , userConfigCardData :: [KV]
+  , userConfigCardConfig :: [UserConfigCardData]
+  , userConfigCardData :: [UserConfigCardData]
 --  , userConfigCardContext :: [Text]
 --  , userConfigCardParentt :: Maybe Text
 --  , userConfigCardContext :: [Text]

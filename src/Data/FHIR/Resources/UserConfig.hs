@@ -21,7 +21,7 @@ import qualified Data.HashMap.Strict as HM
 --import GHC.Generics
 import GHC.TypeLits
 
-import RIO
+import RIO                  hiding(fromString)
 import qualified RIO.Vector as V
 -- import Xmlbf
 import           Data.FHIR.Datatypes
@@ -30,46 +30,268 @@ import           Data.FHIR.Datatypes.XmlUtils
 import           Data.FHIR.Resources.DomainResource
 import qualified Xmlbf  as Xmlbf
 
-data UserConfigCardData = UserConfigCardData {
-    userConfigCardDataKey :: Text
-  , userConfigCardDataValue :: Text
-  }
-  deriving stock (Eq, Generic, Show)
+
+data UserConfigItem = UserConfigItem {
+    userConfigItemAttrId :: Maybe Text
+  , userConfigItemExtension :: [Extension]
+  , userConfigItemModifierExtension :: [Extension]
+  , userConfigItemLinkId :: Text
+  , userConfigItemDefinition :: Maybe Uri
+  , userConfigItemText :: Maybe Text
+  , userConfigItemData :: [UserConfigData]
+  , userConfigItemItem :: [UserConfigItem]
+  } deriving stock (Eq, Generic, Show)
+--
 
 
-instance ToJSON UserConfigCardData where
+
+instance ToJSON UserConfigItem where
   toJSON p = object $
     filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
     [
-      "key" .= toJSON (userConfigCardDataKey p)
-    , "value" .= toJSON (userConfigCardDataValue p)
+      "id" .= toJSON (userConfigItemAttrId p)
+    ,  "extension" .= toJSON (userConfigItemExtension p)
+    ,  "modifierExtension" .= toJSON (userConfigItemModifierExtension p)
+    ,  "linkId" .= toJSON (userConfigItemLinkId p)
+    ,  "definition" .= toJSON (userConfigItemDefinition p)
+    ,  "text" .= toJSON (userConfigItemText p)
+    ,  "data" .= toJSON (userConfigItemData p)
+    ,  "item" .= toJSON (userConfigItemItem p)
     ]
-instance FromJSON UserConfigCardData where
-  parseJSON = withObject "UserConfigCardData" $ \o -> do
-        k <- o .: "key"
-        v  <- o .: "value"
-        return UserConfigCardData{
-            userConfigCardDataKey = k
-          , userConfigCardDataValue= v
+instance FromJSON UserConfigItem where
+  parseJSON = withObject "UserConfigItem" $ \o -> do
+        iid <- o .:? "id"
+        extension <- o .:? "extension" .!= []
+        modifierExtension <- o .:? "modifierExtension" .!= []
+        linkId <- o .:  "linkId"
+        definition <- o .:? "definition"
+        text <- o .:? "text"
+        da <- o .:? "data" .!= []
+        item <- o .:? "item" .!= []
+        return UserConfigItem{
+            userConfigItemAttrId = iid
+          , userConfigItemExtension = extension
+          , userConfigItemModifierExtension = modifierExtension
+          , userConfigItemLinkId = linkId
+          , userConfigItemDefinition = definition
+          , userConfigItemText = text
+          , userConfigItemData = da
+          , userConfigItemItem = item
           }
-instance Xmlbf.ToXml UserConfigCardData where
+instance Xmlbf.ToXml UserConfigItem where
   toXml p = concatMap toElement $
              [
-               Val "key"   (toString (userConfigCardDataKey p))
-             , Val "value" (toString (userConfigCardDataValue p))
+               OptVal "id"   (userConfigItemAttrId p)
+             , PropList "extension" (fmap Xmlbf.toXml (userConfigItemExtension p))
+             , PropList "modifierExtension" (fmap Xmlbf.toXml (userConfigItemModifierExtension p))
+             , Val      "linkId" (     toString (userConfigItemLinkId p))
+             , OptVal   "definition" (fmap toUri (userConfigItemDefinition p))
+             , OptVal   "text" (fmap toString (userConfigItemText p))
+             , PropList "data" (fmap Xmlbf.toXml (userConfigItemData p))
+             , PropList "item" (fmap Xmlbf.toXml (userConfigItemItem p))
              ]
-instance Xmlbf.FromXml UserConfigCardData where
+instance Xmlbf.FromXml UserConfigItem where
   fromXml = do
-    k  <- Xmlbf.pElement "key"   (Xmlbf.pAttr "value")
-    v  <- Xmlbf.pElement "value" (Xmlbf.pAttr "value")
-    return UserConfigCardData{
-            userConfigCardDataKey = k
-          , userConfigCardDataValue = v
+    iid <- optional $ Xmlbf.pAttr "id"
+    extension <- many     $ Xmlbf.pElement "extension" Xmlbf.fromXml
+    modifierExtension <- many     $ Xmlbf.pElement "modifierExtension" Xmlbf.fromXml
+    linkId <-            Xmlbf.pElement "linkId" (Xmlbf.pAttr "value")
+    definition <- optional $ Xmlbf.pElement "definition" (Xmlbf.pAttr "value")
+    text <- optional $ Xmlbf.pElement "text" (Xmlbf.pAttr "value")
+    da <- many     $ Xmlbf.pElement "data" Xmlbf.fromXml
+    item <- many     $ Xmlbf.pElement "item" Xmlbf.fromXml
+    return UserConfigItem {
+            userConfigItemAttrId = iid
+          , userConfigItemExtension = extension
+          , userConfigItemModifierExtension = modifierExtension
+          , userConfigItemLinkId = fromString linkId
+          , userConfigItemDefinition = fmap fromUri definition
+          , userConfigItemText = fmap fromString text
+          , userConfigItemData = da
+          , userConfigItemItem = item
           }
-{-
-instance ToJSON KVList where
-  toJSON kvs = object [ k .= v | (k,v) <- kvs ]
--}
+
+
+
+data UserConfigDataValue
+    = UserConfigDataValueBoolean Boolean
+    | UserConfigDataValueDecimal Decimal
+    | UserConfigDataValueInteger Integer
+    | UserConfigDataValueDate Date
+    | UserConfigDataValueDateTime DateTime
+    | UserConfigDataValueTime Time
+    | UserConfigDataValueString Text
+    | UserConfigDataValueUri Uri
+    | UserConfigDataValueAttachment Attachment
+    | UserConfigDataValueCoding Coding
+    | UserConfigDataValueQuantity Quantity
+    | UserConfigDataValueReference Reference
+    deriving stock (Eq, Show)
+
+data UserConfigData = UserConfigData {
+    userConfigDataAttrId :: Maybe Text
+  , userConfigDataExtension :: [Extension]
+  , userConfigDataModifierExtension :: [Extension]
+  , userConfigDataValue :: Maybe UserConfigDataValue
+  , userConfigDataItem :: [UserConfigItem]
+  } deriving stock (Eq, Show)
+--
+
+instance ToJSON UserConfigData where
+  toJSON p = object $
+    filter (\(_,v) -> (v /= Null) && (v/=(Array V.empty))) $
+    [
+      "id" .= toJSON (userConfigDataAttrId p)
+    ,  "extension" .= toJSON (userConfigDataExtension p)
+    ,  "modifierExtension" .= toJSON (userConfigDataModifierExtension p)
+    , toValueJSON (userConfigDataValue p)
+    ,  "item" .= toJSON (userConfigDataItem p)
+    ]
+    where 
+      toValueJSON (     Nothing   ) = ("value", Null)
+      toValueJSON (Just (UserConfigDataValueBoolean c)) = ("valueBoolean", toJSON c)
+      toValueJSON (Just (UserConfigDataValueDecimal c)) = ("valueDecimal", toJSON c)
+      toValueJSON (Just (UserConfigDataValueInteger c)) = ("valueInteger", toJSON c)
+      toValueJSON (Just (UserConfigDataValueDate c)) = ("valueDate", toJSON c)
+      toValueJSON (Just (UserConfigDataValueDateTime c)) = ("valueDateTime", toJSON c)
+      toValueJSON (Just (UserConfigDataValueTime c)) = ("valueTime", toJSON c)
+      toValueJSON (Just (UserConfigDataValueString c)) = ("valueString", toJSON c)
+      toValueJSON (Just (UserConfigDataValueUri c)) = ("valueUri", toJSON c)
+      toValueJSON (Just (UserConfigDataValueAttachment c)) = ("valueAttachment", toJSON c)
+      toValueJSON (Just (UserConfigDataValueCoding c)) = ("valueCoding", toJSON c)
+      toValueJSON (Just (UserConfigDataValueQuantity c)) = ("valueQuantity", toJSON c)
+      toValueJSON (Just (UserConfigDataValueReference c)) = ("valueReference", toJSON c)
+instance FromJSON UserConfigData where
+  parseJSON = withObject "UserConfigData" $ \o -> do
+        iid <- o .:? "id"
+        extension <- o .:? "extension" .!= []
+        modifierExtension <- o .:? "modifierExtension" .!= []
+        value <- parseValue o
+        item <- o .:? "item" .!= []
+        return UserConfigData{
+            userConfigDataAttrId = iid
+          , userConfigDataExtension = extension
+          , userConfigDataModifierExtension = modifierExtension
+          , userConfigDataValue = value
+          , userConfigDataItem = item
+          }
+    where 
+      parseValue o = parseValueBoolean o <|> parseValueDecimal o <|> parseValueInteger o <|> parseValueDate o <|> parseValueDateTime o <|> parseValueTime o <|> parseValueString o <|> parseValueUri o <|> parseValueAttachment o <|> parseValueCoding o <|> parseValueQuantity o <|> parseValueReference o
+      parseValueBoolean o = do
+                has <- o .: "valueBoolean"
+                return $ Just (UserConfigDataValueBoolean has)
+      parseValueDecimal o = do
+                has <- o .: "valueDecimal"
+                return $ Just (UserConfigDataValueDecimal has)
+      parseValueInteger o = do
+                has <- o .: "valueInteger"
+                return $ Just (UserConfigDataValueInteger has)
+      parseValueDate o = do
+                has <- o .: "valueDate"
+                return $ Just (UserConfigDataValueDate has)
+      parseValueDateTime o = do
+                has <- o .: "valueDateTime"
+                return $ Just (UserConfigDataValueDateTime has)
+      parseValueTime o = do
+                has <- o .: "valueTime"
+                return $ Just (UserConfigDataValueTime has)
+      parseValueString o = do
+                has <- o .: "valueString"
+                return $ Just (UserConfigDataValueString has)
+      parseValueUri o = do
+                has <- o .: "valueUri"
+                return $ Just (UserConfigDataValueUri has)
+      parseValueAttachment o = do
+                has <- o .: "valueAttachment"
+                return $ Just (UserConfigDataValueAttachment has)
+      parseValueCoding o = do
+                has <- o .: "valueCoding"
+                return $ Just (UserConfigDataValueCoding has)
+      parseValueQuantity o = do
+                has <- o .: "valueQuantity"
+                return $ Just (UserConfigDataValueQuantity has)
+      parseValueReference o = do
+                has <- o .: "valueReference"
+                return $ Just (UserConfigDataValueReference has)
+instance Xmlbf.ToXml UserConfigData where
+  toXml p = concatMap toElement $
+             [
+               OptVal "id"   (userConfigDataAttrId p)
+             , PropList "extension" (fmap Xmlbf.toXml (userConfigDataExtension p))
+             , PropList "modifierExtension" (fmap Xmlbf.toXml (userConfigDataModifierExtension p))
+             , toValueXml (userConfigDataValue p)
+             , PropList "item" (fmap Xmlbf.toXml (userConfigDataItem p))
+             ]
+       where 
+          toValueXml ( Nothing   ) = (OptVal "value" Nothing)
+          toValueXml (Just (UserConfigDataValueBoolean v)) = Val   "valueBoolean" (toBoolean v)
+          toValueXml (Just (UserConfigDataValueDecimal v)) = Val   "valueDecimal" (toDecimal v)
+          toValueXml (Just (UserConfigDataValueInteger v)) = Val   "valueInteger" (toInt v)
+          toValueXml (Just (UserConfigDataValueDate v)) = Val   "valueDate" (toDate v)
+          toValueXml (Just (UserConfigDataValueDateTime v)) = Val   "valueDateTime" (toDateTime v)
+          toValueXml (Just (UserConfigDataValueTime v)) = Val   "valueTime" (toTime v)
+          toValueXml (Just (UserConfigDataValueString v)) = Val   "valueString" (toString v)
+          toValueXml (Just (UserConfigDataValueUri v)) = Val   "valueUri" (toUri v)
+          toValueXml (Just (UserConfigDataValueAttachment v)) = Prop  "valueAttachment" (HM.empty, Xmlbf.toXml v)
+          toValueXml (Just (UserConfigDataValueCoding v)) = Prop  "valueCoding" (HM.empty, Xmlbf.toXml v)
+          toValueXml (Just (UserConfigDataValueQuantity v)) = Prop  "valueQuantity" (HM.empty, Xmlbf.toXml v)
+          toValueXml (Just (UserConfigDataValueReference v)) = Prop  "valueReference" (HM.empty, Xmlbf.toXml v)
+instance Xmlbf.FromXml UserConfigData where
+  fromXml = do
+    iid <- optional $ Xmlbf.pAttr "id"
+    extension <- many     $ Xmlbf.pElement "extension" Xmlbf.fromXml
+    modifierExtension <- many     $ Xmlbf.pElement "modifierExtension" Xmlbf.fromXml
+    value <- fromValueXml
+    item <- many     $ Xmlbf.pElement "item" Xmlbf.fromXml
+    return UserConfigData {
+            userConfigDataAttrId = iid
+          , userConfigDataExtension = extension
+          , userConfigDataModifierExtension = modifierExtension
+          , userConfigDataValue = value
+          , userConfigDataItem = item
+          }
+
+    where 
+      fromValueXml = parseValueBoolean <|> parseValueDecimal <|> parseValueInteger <|> parseValueDate <|> parseValueDateTime <|> parseValueTime <|> parseValueString <|> parseValueUri <|> parseValueAttachment <|> parseValueCoding <|> parseValueQuantity <|> parseValueReference <|> pure Nothing
+      parseValueBoolean = do
+                has <- Xmlbf.pElement "valueBoolean" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueBoolean (     fromBoolean has))
+      parseValueDecimal = do
+                has <- Xmlbf.pElement "valueDecimal" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueDecimal (     fromDecimal has))
+      parseValueInteger = do
+                has <- Xmlbf.pElement "valueInteger" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueInteger (     fromInt has))
+      parseValueDate = do
+                has <- Xmlbf.pElement "valueDate" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueDate (     fromDate has))
+      parseValueDateTime = do
+                has <- Xmlbf.pElement "valueDateTime" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueDateTime (     fromDateTime has))
+      parseValueTime = do
+                has <- Xmlbf.pElement "valueTime" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueTime (     fromTime has))
+      parseValueString = do
+                has <- Xmlbf.pElement "valueString" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueString (     fromString has))
+      parseValueUri = do
+                has <- Xmlbf.pElement "valueUri" (Xmlbf.pAttr "value")
+                return $ Just (UserConfigDataValueUri (     fromUri has))
+      parseValueAttachment = do
+                has <- Xmlbf.pElement "valueAttachment" Xmlbf.fromXml
+                return $ Just (UserConfigDataValueAttachment (                      has))
+      parseValueCoding = do
+                has <- Xmlbf.pElement "valueCoding" Xmlbf.fromXml
+                return $ Just (UserConfigDataValueCoding (                      has))
+      parseValueQuantity = do
+                has <- Xmlbf.pElement "valueQuantity" Xmlbf.fromXml
+                return $ Just (UserConfigDataValueQuantity (                      has))
+      parseValueReference = do
+                has <- Xmlbf.pElement "valueReference" Xmlbf.fromXml
+                return $ Just (UserConfigDataValueReference (                      has))
+
+
+
 
 data UserConfigCard = UserConfigCard {
     userConfigCardAttrId :: Maybe Text
@@ -80,8 +302,8 @@ data UserConfigCard = UserConfigCard {
   , userConfigCardSubtitle :: Maybe Text
   , userConfigCardUser :: Text
   , userConfigCardModel :: Text
-  , userConfigCardConfig :: [UserConfigCardData]
-  , userConfigCardData :: [UserConfigCardData]
+  , userConfigCardConfig :: [UserConfigItem]
+  , userConfigCardData :: [UserConfigItem]
 --  , userConfigCardContext :: [Text]
 --  , userConfigCardParentt :: Maybe Text
 --  , userConfigCardContext :: [Text]
@@ -111,7 +333,7 @@ instance ToJSON UserConfigCard where
     ]
 instance FromJSON UserConfigCard where
   parseJSON = withObject "UserConfigCard" $ \o -> do
-        id <- o .:? "_id"
+        iid <- o .:? "_id"
         c  <- o .:  "card"
         t  <- o .:? "title"
         st <- o .:? "subtitle"
@@ -124,7 +346,7 @@ instance FromJSON UserConfigCard where
         p  <- o .:? "persistence"
         s  <- o .:? "status"
         return UserConfigCard{
-            userConfigCardAttrId = id
+            userConfigCardAttrId = iid
           , userConfigCardCard = c
           , userConfigCardTitle= t
           , userConfigCardSubtitle = st
@@ -155,7 +377,7 @@ instance Xmlbf.ToXml UserConfigCard where
              ]
 instance Xmlbf.FromXml UserConfigCard where
   fromXml = do
-    id <- optional $ Xmlbf.pAttr "id"
+    iid <- optional $ Xmlbf.pAttr "id"
     c  <-            Xmlbf.pElement "card" (Xmlbf.pAttr "value")
     t  <- optional $ Xmlbf.pElement "title" (Xmlbf.pAttr "value")
     st <- optional $ Xmlbf.pElement "subtitle" (Xmlbf.pAttr "value")
@@ -168,7 +390,7 @@ instance Xmlbf.FromXml UserConfigCard where
     p  <- optional $ Xmlbf.pElement "peristence" (Xmlbf.pAttr "value")
     s  <- optional $ Xmlbf.pElement "status" (Xmlbf.pAttr "value")
     return UserConfigCard{
-            userConfigCardAttrId = id
+            userConfigCardAttrId = iid
           , userConfigCardCard = c
           , userConfigCardTitle= t
           , userConfigCardSubtitle = st
@@ -176,7 +398,7 @@ instance Xmlbf.FromXml UserConfigCard where
           , userConfigCardModel = m
           , userConfigCardConfig = co
           , userConfigCardData = d
-          , userConfigCardIcon = ic
+          , userConfigCardIcon = i
           , userConfigCardIconColor = ic
           , userConfigCardPersistence = p
           , userConfigCardStatus = s
@@ -205,13 +427,13 @@ instance ToJSON UserConfigEditorTemplate where
     ]
 instance FromJSON UserConfigEditorTemplate where
   parseJSON = withObject "UserConfigEditorTemplate" $ \o -> do
-        id <- o .:? "_id"
+        iid <- o .:? "_id"
         n  <- o .:  "name"
         i  <- o .:? "image"
         d  <- o .:? "description"
         di <- o .:  "tei"
         return UserConfigEditorTemplate{
-            userConfigEditorTemplateAttrId = id
+            userConfigEditorTemplateAttrId = iid
           , userConfigEditorTemplateName= n
           , userConfigEditorTemplateImage= i
           , userConfigEditorTemplateDescription= d
@@ -228,13 +450,13 @@ instance Xmlbf.ToXml UserConfigEditorTemplate where
              ]
 instance Xmlbf.FromXml UserConfigEditorTemplate where
   fromXml = do
-    id <- optional $ Xmlbf.pAttr "_id"
+    iid <- optional $ Xmlbf.pAttr "_id"
     n  <-            Xmlbf.pElement "name" (Xmlbf.pAttr "value")
     i  <- optional $ Xmlbf.pElement "image" (Xmlbf.pAttr "value")
     d  <- optional $ Xmlbf.pElement "description" (Xmlbf.pAttr "value")
     di <-            Xmlbf.pElement "tei" Xmlbf.fromXml
     return UserConfigEditorTemplate{
-            userConfigEditorTemplateAttrId = id
+            userConfigEditorTemplateAttrId = iid
           , userConfigEditorTemplateName = n
           , userConfigEditorTemplateImage= i
           , userConfigEditorTemplateDescription= d
@@ -312,7 +534,7 @@ instance FromJSON UserConfig where
     rt     <- o .:  "resourceType"  :: Parser Text
     case rt of
       "UserConfig" -> do
-        id <- o .:? "id"
+        iid <- o .:? "id"
         meta <- o .:? "meta"
         implicitRules <- o .:? "implicitRules"
         language   <- o .:? "language"
@@ -338,7 +560,7 @@ instance FromJSON UserConfig where
         card       <- o .:? "card" .!= []
         template   <- o .:? "editorTemplate" .!= []
         return UserConfig{
-            userConfigId = id
+            userConfigId = iid
           , userConfigMeta = meta
           , userConfigImplicitRules = implicitRules
           , userConfigLanguage = language
@@ -402,7 +624,7 @@ instance Xmlbf.ToXml UserConfig where
              ]
 instance Xmlbf.FromXml UserConfig where
   fromXml = do
-    id <- optional $ Xmlbf.pElement "id" (Xmlbf.pAttr "value")
+    iid <- optional $ Xmlbf.pElement "id" (Xmlbf.pAttr "value")
     meta <- optional $ Xmlbf.pElement "meta" Xmlbf.fromXml
     implicitRules <- optional $ Xmlbf.pElement "implicitRules" (Xmlbf.pAttr "value")
     language   <- optional $ Xmlbf.pElement "language" (Xmlbf.pAttr "value")
@@ -428,7 +650,7 @@ instance Xmlbf.FromXml UserConfig where
     card       <- many     $ Xmlbf.pElement "card"  Xmlbf.fromXml
     template   <- many     $ Xmlbf.pElement "template"  Xmlbf.fromXml
     return UserConfig {
-            userConfigId = fmap fromId id
+            userConfigId = fmap fromId iid
           , userConfigMeta = meta
           , userConfigImplicitRules = fmap fromUri implicitRules
           , userConfigLanguage = fmap fromLanguage language

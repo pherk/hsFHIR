@@ -5,30 +5,12 @@
 
 packages:
 - completed:
-    hackage: c2hs-extra-0.1.0.1@sha256:d1a3395cdad371c97351e2548676b054ed32d85a4472ec2e5bcc92c2450d8e17,901
-    pantry-tree:
-      sha256: e85c0360e9fca644ba825de5a35af7ed2452a5784ea2ccc2b91ba363f5dec1b7
-      size: 221
-  original:
-    hackage: c2hs-extra-0.1.0.1@sha256:d1a3395cdad371c97351e2548676b054ed32d85a4472ec2e5bcc92c2450d8e17,901
-- completed:
     hackage: json-0.10@sha256:d9fc6b07ce92b8894825a17d2cf14799856767eb30c8bf55962baa579207d799,3210
     pantry-tree:
       sha256: 5654f66b7cd8bf087ac040a9b0a83eb064219eab32230f61a3adeddfdbb4d4cd
       size: 3190
   original:
     hackage: json-0.10@sha256:d9fc6b07ce92b8894825a17d2cf14799856767eb30c8bf55962baa579207d799,3210
-- completed:
-    commit: c12fdfc77c0c86e08033bd2d4b8f89743169c6ea
-    git: https://github.com/pherk/couchbase-simple.git
-    name: couchbase-simple
-    pantry-tree:
-      sha256: cebd0b67ccea120afd23f472180f4d7ea720a8de402e2c3b074f11f92e18c68a
-      size: 3427
-    version: 0.1.1.0
-  original:
-    commit: c12fdfc77c0c86e08033bd2d4b8f89743169c6ea
-    git: https://github.com/pherk/couchbase-simple.git
 - completed:
     hackage: servant-xml-1.0.1.4@sha256:6c9f2986ac42e72fe24b794c660763a1966a18d696b34cd4f4ed15165edd4aa0,851
     pantry-tree:

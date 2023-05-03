@@ -18,10 +18,10 @@ packages:
 #
 extra-deps:
         #  - bytestring-encoding-0.1.1.0@sha256:1c3b97eb6345fd7153006211c8272215cd78bb0cf440c41185290822f1e3f2c2,1738
-  - c2hs-extra-0.1.0.1@sha256:d1a3395cdad371c97351e2548676b054ed32d85a4472ec2e5bcc92c2450d8e17,901
+        #  - c2hs-extra-0.1.0.1@sha256:d1a3395cdad371c97351e2548676b054ed32d85a4472ec2e5bcc92c2450d8e17,901
   - json-0.10@sha256:d9fc6b07ce92b8894825a17d2cf14799856767eb30c8bf55962baa579207d799,3210
-  - git: https://github.com/pherk/couchbase-simple.git
-    commit : c12fdfc77c0c86e08033bd2d4b8f89743169c6ea
+    #  - git: https://github.com/pherk/couchbase-simple.git
+    #    commit : c12fdfc77c0c86e08033bd2d4b8f89743169c6ea
     #  - git: https://github.com/pherk/hasFHIR.git
     #    commit: 68fac3bd0e385b489772a36a44d16477f65d5345 
   - servant-xml-1.0.1.4@sha256:6c9f2986ac42e72fe24b794c660763a1966a18d696b34cd4f4ed15165edd4aa0,851
